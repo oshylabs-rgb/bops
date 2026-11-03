@@ -1,3 +1,5 @@
+> **Oshy Ops: an unofficial Windows port, based on Bops.** This fork (oshylabs-rgb/bops, branch work by Oshylabs Ltd) adds a Windows build where bots can run on Claude Code. It is not the official Bops and isn't made or supported by Orgo. Same license (FSL-1.1-ALv2). See [docs/WINDOWS.md](docs/WINDOWS.md).
+
 <p align="center">
   <a href="https://bops.bot"><img src="desktop/icon.png" width="112" height="112" alt="Bops"></a>
 </p>

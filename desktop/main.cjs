@@ -18,6 +18,8 @@ const { installPreviewFrames } = require("./preview-frames.cjs");
 const { ownCall } = require("./own-call.cjs");
 
 const PORT = 3210;
+/** Running on Windows (the Oshy Ops port): no Unix sockets, login shell, symlinks or Mac permissions. */
+const WIN = process.platform === "win32";
 const URL = `http://localhost:${PORT}`;
 /*
  * The server listens on 127.0.0.1 only. "localhost" can also mean ::1, where another account on this
@@ -55,6 +57,8 @@ function windowToken() {
  * from an earlier start reaches it too). A path too long for a socket goes in this user's own temp folder.
  */
 function renderSocket() {
+  // Windows has no Unix sockets: a named pipe, named for this user's app folder. Calls on it still need the window's token.
+  if (WIN) return `\\\\.\\pipe\\oshyops-render-${crypto.createHash("sha256").update(app.getPath("userData")).digest("hex").slice(0, 16)}`;
   const file = path.join(app.getPath("userData"), "render.sock");
   return Buffer.byteLength(file) < 100 ? file : path.join(os.tmpdir(), "bops-render.sock");
 }
@@ -69,7 +73,7 @@ const REPO = (() => {
     return path.resolve(__dirname, "..");
   }
 })();
-const ICON = path.join(__dirname, "icon.png");
+const ICON = path.join(__dirname, WIN ? "oshyops.png" : "icon.png");
 
 let server;
 let mainWin;
@@ -109,6 +113,7 @@ let shellPath;
 /** The login shell still being asked, so quitting can stop it. */
 let pathProbe;
 function loginPath() {
+  if (WIN) return (shellPath ??= Promise.resolve(process.env.PATH ?? ""));
   shellPath ??= new Promise((resolve) => {
     const fallback = [...new Set([...(process.env.PATH ?? "").split(":").filter(Boolean), ...FALLBACK_PATH])].join(":");
     let out = "";
@@ -307,10 +312,15 @@ function packagedServer() {
     if (name === ".data" || name.startsWith(".env")) continue;
     const link = path.join(home, name);
     const st = fs.lstatSync(link, { throwIfNoEntry: false });
-    if (st && !st.isSymbolicLink()) continue;
-    if (st && fs.readlinkSync(link) === path.join(dir, name)) continue;
+    if (st && !st.isSymbolicLink() && !(WIN && st.isFile())) continue;
+    if (st && st.isSymbolicLink() && path.resolve(fs.readlinkSync(link)) === path.resolve(path.join(dir, name))) continue;
     if (st) fs.unlinkSync(link);
-    fs.symlinkSync(path.join(dir, name), link);
+    if (WIN && !fs.statSync(path.join(dir, name)).isDirectory()) {
+      // A file: copied (again each start, so an update's files replace the old ones).
+      fs.copyFileSync(path.join(dir, name), link);
+      continue;
+    }
+    fs.symlinkSync(path.join(dir, name), link, WIN ? "junction" : undefined);
   }
   // Settings for this Mac (self-hosting, testing) go in ~/Library/Application Support/Bops/.env.local;
   // the app itself ships with no keys.
@@ -385,12 +395,15 @@ async function spawnServer() {
         },
         stdio: ["ignore", packaged.log, packaged.log],
         detached: true,
+        windowsHide: true,
       })
-    : spawn("npx", ["next", "dev", "--port", String(PORT)], {
+    : spawn(WIN ? "npx.cmd" : "npx", ["next", "dev", "--port", String(PORT)], {
         cwd: REPO,
         env: { ...process.env, PATH, BOPS_UI_TOKEN: windowToken(), BOPS_RENDER_SOCKET: renderSocket() },
         stdio: "ignore",
         detached: true,
+        windowsHide: true,
+        shell: WIN,
       });
   if (packaged) fs.closeSync(packaged.log);
   server = child;
@@ -1359,11 +1372,15 @@ app.whenReady().then(() => {
   if (process.platform === "darwin" && fs.existsSync(ICON)) app.dock.setIcon(nativeImage.createFromPath(ICON));
   // Release builds only: not `npm run app`, nor a build that runs the source folder (desktop/repo.json).
   if (isRelease()) {
-    updates = createUpdates({ autoUpdater, app, fs, path, note: updateNote, send: sendUpdate });
     // macOS logging out or shutting down quits Bops itself: that quit isn't held (see before-quit).
     powerMonitor.on("shutdown", () => (systemQuit = true));
-    void checkForUpdate();
-    setInterval(() => void checkForUpdate(), 60 * 60_000);
+    // Oshy Ops on Windows doesn't update from bops.bot: that feed is Orgo's Mac app. New versions come
+    // from this fork's own builds (.github/workflows/windows.yml).
+    if (!WIN) {
+      updates = createUpdates({ autoUpdater, app, fs, path, note: updateNote, send: sendUpdate });
+      void checkForUpdate();
+      setInterval(() => void checkForUpdate(), 60 * 60_000);
+    }
   }
   // The apps the bots make: their own session, where nothing but their pages loads (before any window can show one).
   appFrames = installAppFrames({ app, session, server: URL, preload: path.join(__dirname, "app-frame-preload.cjs"), log: mainLog });

@@ -1,0 +1,67 @@
+name: Windows (Oshy Ops)
+
+# Builds the Windows port on a Windows machine: tests the Windows vault (DPAPI), typechecks, builds the
+# installer and zip, smoke-tests the bundled server, and keeps the installer as a download on the run.
+on:
+  push:
+  workflow_dispatch:
+
+# Read-only: it builds and never writes to the repo.
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Windows vault test (DPAPI)
+        run: node --conditions=react-server scripts/test-win-vault.mjs
+      - name: Route types
+        run: npx next typegen
+      - name: Typecheck
+        run: npx tsc --noEmit -p .
+      - name: Build the Windows app
+        run: npm run app:build:win
+      - name: Smoke test the bundled server
+        shell: pwsh
+        run: |
+          $exe = Get-ChildItem dist-desktop/win-unpacked -Filter "Oshy Ops.exe" | Select-Object -First 1
+          if (-not $exe) { throw "No Oshy Ops.exe in dist-desktop/win-unpacked" }
+          $server = Join-Path $exe.DirectoryName "resources/server"
+          $home2 = Join-Path $env:RUNNER_TEMP "smoke"
+          New-Item -ItemType Directory -Force $home2 | Out-Null
+          $env:ELECTRON_RUN_AS_NODE = "1"; $env:NODE_ENV = "production"; $env:PORT = "3299"; $env:HOSTNAME = "127.0.0.1"
+          $env:BOPS_SERVER_JS = Join-Path $server "server.js"
+          $p = Start-Process -FilePath $exe.FullName -ArgumentList '-e', 'require(process.env.BOPS_SERVER_JS)' -WorkingDirectory $server -PassThru -RedirectStandardOutput "$home2/out.log" -RedirectStandardError "$home2/err.log"
+          $ok = $false
+          for ($i = 0; $i -lt 90; $i++) {
+            try { if ((Invoke-WebRequest -UseBasicParsing -TimeoutSec 2 http://127.0.0.1:3299/api/health).StatusCode -eq 200) { $ok = $true; break } } catch {}
+            Start-Sleep 1
+          }
+          if ($ok) {
+            foreach ($route in "/", "/api/state") {
+              $code = try { (Invoke-WebRequest -UseBasicParsing -TimeoutSec 30 "http://127.0.0.1:3299$route").StatusCode } catch { $_.Exception.Response.StatusCode.value__ }
+              if ($code -ne 200) { Write-Host "$route answered $code"; $ok = $false }
+            }
+          }
+          Stop-Process -Id $p.Id -Force -ErrorAction SilentlyContinue
+          Get-Content "$home2/out.log", "$home2/err.log" -ErrorAction SilentlyContinue | Select-Object -First 60
+          if (-not $ok) { throw "The bundled server failed its smoke test." }
+          Write-Host "Bundled server smoke test passed."
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OshyOps-windows
+          path: |
+            dist-desktop/OshyOps-*-x64.exe
+            dist-desktop/OshyOps-*-x64.zip
+          if-no-files-found: error
+          retention-days: 30

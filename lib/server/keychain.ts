@@ -2,18 +2,22 @@ import "server-only";
 import { execFile, spawn } from "node:child_process";
 import { onRunner } from "./persist";
 import { stateUser } from "./store";
+import { winDeleteSecret, winGetSecret, winSetSecret } from "./win-vault";
 
 /**
  * Secrets in the Mac's Keychain, under "Bops Vault". Values go to `security` on stdin, hex-encoded,
  * so they never show up in the process list; reading one back only names the item. A computer's runner
  * has no Keychain: nothing is there to read (a saved login, a Telegram token), and nothing is kept.
+ * On Windows the same three calls go to DPAPI-encrypted files instead (win-vault.ts).
  */
+const onWindows = process.platform === "win32";
 const SERVICE = "Bops Vault";
 const q = (s: string) => `"${s.replace(/["\\]/g, "")}"`;
-const NOT_HERE = "This is kept only in the Bops app on your Mac.";
+const NOT_HERE = "This is kept only in the app on your computer.";
 
 export function setSecret(account: string, value: string) {
   if (onRunner()) return Promise.reject(new Error(NOT_HERE));
+  if (onWindows) return winSetSecret(SERVICE, account, value);
   return new Promise<void>((resolve, reject) => {
     const p = spawn("security", ["-i"], { stdio: ["pipe", "ignore", "pipe"] });
     let err = "";
@@ -25,6 +29,7 @@ export function setSecret(account: string, value: string) {
 
 export function getSecret(account: string) {
   if (onRunner()) return Promise.resolve(null);
+  if (onWindows) return winGetSecret(SERVICE, account);
   return new Promise<string | null>((resolve) =>
     execFile("security", ["find-generic-password", "-s", SERVICE, "-a", account, "-w"], (e, out) => resolve(e ? null : out.replace(/\n$/, ""))),
   );
@@ -32,6 +37,7 @@ export function getSecret(account: string) {
 
 export function deleteSecret(account: string) {
   if (onRunner()) return Promise.resolve();
+  if (onWindows) return winDeleteSecret(SERVICE, account);
   return new Promise<void>((resolve) => execFile("security", ["delete-generic-password", "-s", SERVICE, "-a", account], () => resolve()));
 }
 
