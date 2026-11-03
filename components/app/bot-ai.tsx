@@ -50,7 +50,7 @@ async function change(botId: string, body: Record<string, unknown>): Promise<{ e
     const j = (await res.json().catch(() => ({}))) as { error?: string; added?: string };
     return res.ok ? { error: null, ...(j.added ? { added: j.added } : {}) } : { error: undash(j.error ?? "That didn't change. Try again.") };
   } catch {
-    return { error: "Couldn't reach Bops. Try again." };
+    return { error: "Couldn't reach Oshy Ops. Try again." };
   }
 }
 
@@ -470,7 +470,7 @@ function SharedWarning({ bot: b, words, ro }: { bot: Bot; words: string; ro: boo
       setError(res.ok ? null : undash(j.error ?? "That didn't change. Try again."));
       if (res.ok) setAsking(false);
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     }
     setBusy(false);
   };
@@ -632,7 +632,7 @@ export function BotAiSection({
                     if (res.ok && j.botId && typeof j.display === "number") onShowScreen(j.botId, j.display);
                     else setError(undash(j.error ?? "Its terminal didn't open. Try again."));
                   } catch {
-                    setError("Couldn't reach Bops. Try again.");
+                    setError("Couldn't reach Oshy Ops. Try again.");
                   }
                   setTermBusy(false);
                 }}
@@ -650,7 +650,7 @@ export function BotAiSection({
           {shared && <SharedWarning bot={b} words={shared} ro={ro || workBot(b, state.bots).id === b.id} />}
           <span className={quiet}>
             {BRAINS_ON ? `Each thread runs on the agent you pick, with ${b.name}'s own accounts. Chat, memory and calls stay on credit.` : "Chat, threads, memory and calls run on credit."}
-            {BRAINS_ON && where === "some" ? " Threads on your Mac use Bops agent." : ""}
+            {BRAINS_ON && where === "some" ? " Threads on your Mac use Oshy Ops agent." : ""}
           </span>
           {ro && (
             <span className={quiet}>

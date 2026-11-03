@@ -140,7 +140,7 @@ const chatApp = (app: "slack" | "discord", name: string): RoutineTemplate[] => [
     goal: [
       `Read the new messages and threads in my ${name} channels since the last run (find_app_actions, then use_app).`,
       "Tag each new thread Customer, Bug, Outage or FYI.",
-      "For a question someone is still waiting on, offer a short draft answer in my voice with draft_reply, in its thread, for me to send from Bops.",
+      "For a question someone is still waiting on, offer a short draft answer in my voice with draft_reply, in its thread, for me to send from Oshy Ops.",
       // The channel and where in it, so the issue's page can show the thread itself (lib/server/issue-source.ts).
       ISSUE(app, "each thread tagged Customer, Bug or Outage (not FYI)", app === "slack" ? "the thread's id in Slack (its channel's id and its first message's ts, as C0123ABCD/1700000000.000100)" : "the thread's id in Discord (its channel's id, then the message's id after a slash)"),
       "Put anything tagged Outage first.",
@@ -191,7 +191,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
       "Check my Gmail for mail since the last run, or the last 24 hours (find_app_actions, then use_app).",
       `${SORT} Give each email one tag.`,
       "Look people up in Knowledge (orbit_read) and memory (recall) when it helps to know who they are.",
-      "For each email that needs an answer from me, offer a short draft reply in my voice with draft_reply, for me to send from Bops.",
+      "For each email that needs an answer from me, offer a short draft reply in my voice with draft_reply, for me to send from Oshy Ops.",
       ISSUE("gmail", "each email from a customer that needs me, an outage or a bug report", "the email's thread id"),
       "Answer with one short summary: what needs me first, then a line per tag that has mail.",
       `Read only in Gmail: don't send, save drafts, label, archive or delete anything. ${READS_ONLY}`,
@@ -238,7 +238,7 @@ export const ROUTINE_TEMPLATES: RoutineTemplate[] = [
       "Check my Gmail for new mail since the last run that needs a reply from me (find_app_actions, then use_app).",
       "Skip newsletters, receipts and notifications. Look the sender up in Knowledge (orbit_read) and memory (recall).",
       "For each one, offer a short draft reply in my voice with draft_reply, and say in a line who it's from and what it's about.",
-      `Don't send it or save it in Gmail: I'll send the ones I like from Bops. ${READS_ONLY}`,
+      `Don't send it or save it in Gmail: I'll send the ones I like from Oshy Ops. ${READS_ONLY}`,
       "If nothing new needs a reply, answer NOTHING.",
     ].join(" "),
     tags: ["Customer", "Bug", "Office"],

@@ -20,15 +20,15 @@ export type ChatSwitchView = { wsId: string; on: boolean; line: string; closed: 
 export const CHAT_LINES = {
   cloud: "Your bots answer from their own computers, even with every Mac closed.",
   soon: "Your bots will answer from their own computers once those are ready. Until then your Mac answers.",
-  mac: "Your bots answer from your Mac while Bops is open.",
-  closed: "Your bots answer from your Mac while Bops is open. Orgo turns this on for your workspace.",
+  mac: "Your bots answer from your Mac while Oshy Ops is open.",
+  closed: "Your bots answer from your Mac while Oshy Ops is open. Orgo turns this on for your workspace.",
 };
 /** The same, for an Admin of a workspace shared with them: the owner's bots and Mac. */
 export const CHAT_LINES_SHARED = {
   cloud: "The bots answer from their own computers, even with every Mac closed.",
   soon: "The bots will answer from their own computers once those are ready. Until then the owner's Mac answers.",
-  mac: "The bots answer from the owner's Mac while Bops is open there.",
-  closed: "The bots answer from the owner's Mac while Bops is open there. Orgo turns this on for the workspace.",
+  mac: "The bots answer from the owner's Mac while Oshy Ops is open there.",
+  closed: "The bots answer from the owner's Mac while Oshy Ops is open there. Orgo turns this on for the workspace.",
 };
 /** Asked before turning it off where it can't be turned back on here (ChatSwitchView.closed). */
 export const OFF_ASK = { title: "Turn this off?", line: "You can't turn it back on here. Orgo turns it on for your workspace." };
@@ -59,7 +59,7 @@ export async function setChat(wsId: string, on: boolean, shared = false): Promis
   const res = await (shared ? post("/api/workspaces/shared/settings", { chat }, "PATCH") : post("/api/workspaces", { id: wsId, chat }, "PATCH")).catch(() => null);
   if (res?.ok) return null;
   const j = ((await res?.json().catch(() => null)) ?? {}) as { error?: unknown };
-  return typeof j.error === "string" && j.error ? j.error : "Couldn't reach Bops. Try again.";
+  return typeof j.error === "string" && j.error ? j.error : "Couldn't reach Oshy Ops. Try again.";
 }
 
 export function ChatSwitch({ state }: { state: AppState }) {

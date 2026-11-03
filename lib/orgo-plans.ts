@@ -194,7 +194,7 @@ const upFor = (short: PlanShort, plan: OrgoPlan | null | undefined) => (short ==
  */
 export function planShortText(short: PlanShort, plan: OrgoPlan | null | undefined, opts: { bops?: number; main?: string } = {}) {
   // The Bops plan's own words, when it decides.
-  if (short === "bops") return bopsComputerShort(plan, 1)?.text ?? `Max includes up to ${BOPS_TIERS.max_bops.computers} Bops computers.`;
+  if (short === "bops") return bopsComputerShort(plan, 1)?.text ?? `Max includes up to ${BOPS_TIERS.max_bops.computers} Oshy Ops computers.`;
   // Always "Orgo" by name: an Orgo plan is never the user's Bops plan (Free, Pro or Max).
   const name = plan?.name ? `Orgo ${plan.name}` : "Orgo";
   const main = opts.main ?? "the main bot";
@@ -203,7 +203,7 @@ export function planShortText(short: PlanShort, plan: OrgoPlan | null | undefine
   const ask = plan?.deal ? "ask Orgo to change your plan" : undefined;
   // With the free Bops computer, "none" is about any more than that one.
   if (short === "none")
-    return `Your ${name} plan doesn't include ${plan?.freeComputerId !== undefined ? "computers besides your free Bops one" : "cloud computers"}.${up ? ` Orgo ${up.name} includes ${up.computers}.` : ""}`;
+    return `Your ${name} plan doesn't include ${plan?.freeComputerId !== undefined ? "computers besides your free Oshy Ops one" : "cloud computers"}.${up ? ` Orgo ${up.name} includes ${up.computers}.` : ""}`;
   if (short === "memory") return `Your ${name} plan doesn't have the memory left for another computer.${up ? ` Orgo ${up.name} has more.` : ` Delete a computer, or ${ask ?? "add memory on Orgo"}.`}`;
   // Only a copy can be too big: the main bot's computer is made to fit the plan (computerRam). Not its disk, though.
   if (short === "size") return `Your ${name} plan doesn't allow another computer as big as ${main}'s.`;
@@ -213,7 +213,7 @@ export function planShortText(short: PlanShort, plan: OrgoPlan | null | undefine
   const n = plan.computers;
   const u = plan.inUse;
   const outside = opts.bops === undefined ? 0 : Math.max(0, u - opts.bops);
-  const where = !outside ? "" : outside >= u ? " outside Bops" : `, ${outside} of them outside Bops`;
+  const where = !outside ? "" : outside >= u ? " outside Oshy Ops" : `, ${outside} of them outside Oshy Ops`;
   const all = n === 1 ? "it's" : n === 2 ? "both are" : `all ${n} are`;
   const used =
     u === n

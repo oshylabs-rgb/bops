@@ -176,7 +176,7 @@ function read(s: Shared) {
         fail(s, asked, typeof said === "string" && said ? said : "Couldn't load Knowledge.");
       }
     })
-    .catch(() => fail(s, asked, "Couldn't reach Bops."))
+    .catch(() => fail(s, asked, "Couldn't reach Oshy Ops."))
     .finally(() => {
       s.reading--;
     });
@@ -272,7 +272,7 @@ async function change(user: string, ws: string, body: MemoryAction): Promise<str
     const note = (j as { note?: unknown }).note;
     return typeof note === "string" ? { note } : null;
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -306,7 +306,7 @@ async function sendForget(s: Shared, ids: string[], keepalive = false) {
     const said = (j as { error?: unknown } | null)?.error;
     failForget(s, ids, typeof said === "string" && said ? said : "Couldn't forget that. Try again.");
   } catch {
-    failForget(s, ids, "Couldn't reach Bops, so nothing was forgotten. Try again.");
+    failForget(s, ids, "Couldn't reach Oshy Ops, so nothing was forgotten. Try again.");
   }
 }
 
@@ -379,7 +379,7 @@ async function previewDelete(ws: string, id: string): Promise<DeleteSession[] | 
         alsoFor: names(x.alsoFor ?? x.sharedWith),
       }));
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -746,7 +746,7 @@ function KnowledgeView({
   onClose: () => void;
 }) {
   // A workspace shared with the user: its Knowledge is kept on the owner's Bops, so none is read here (view-only.ts would refuse it).
-  const owners = state?.shared ? `Knowledge in ${state.shared.name} is kept on the owner's Bops, so it doesn't show here. To find something out, ask a bot in its chat.` : undefined;
+  const owners = state?.shared ? `Knowledge in ${state.shared.name} is kept on the owner's Oshy Ops, so it doesn't show here. To find something out, ask a bot in its chat.` : undefined;
   const { snap, act, failed, retry } = useMemoryCategories(ws, user, !owners);
   const { list } = useIssues(ws, user, !owners);
   const forgetting = useForget(ws, user, !owners);
@@ -774,7 +774,7 @@ function KnowledgeView({
   const ask = useCallback(async (question: string): Promise<Answer | string> => {
     const r = await fetch("/api/memory", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "ask", ws, question }) })
       .then((x) => x.json() as Promise<Answer & { error?: string }>)
-      .catch(() => ({ error: "Couldn't reach Bops." }) as Answer & { error?: string });
+      .catch(() => ({ error: "Couldn't reach Oshy Ops." }) as Answer & { error?: string });
     return r.error ?? r;
   }, [ws]);
   if (owners) return <MemoryPage snap={null} owners={owners} act={act} forgetting={forgetting} category="all" onCategory={onCategory} onClose={onClose} />;
@@ -1794,8 +1794,8 @@ function DeleteEverywhere({ sessions, busy, onConfirm, onCancel }: { sessions: D
     >
       <span className="text-[12.5px] font-medium leading-[17px] text-[#3A3A38]">
         {sessions.length
-          ? `Delete everywhere? Bops forgets this and deletes ${sessions.length === 1 ? "this chat" : `these ${sessions.length} chats`} from memory:`
-          : "Delete everywhere? No Bops chat in memory taught Knowledge this, so Bops only forgets it."}
+          ? `Delete everywhere? Oshy Ops forgets this and deletes ${sessions.length === 1 ? "this chat" : `these ${sessions.length} chats`} from memory:`
+          : "Delete everywhere? No Oshy Ops chat in memory taught Knowledge this, so Oshy Ops only forgets it."}
       </span>
       {sessions.length > 0 && (
         <ul className="flex flex-col gap-1">
@@ -1812,7 +1812,7 @@ function DeleteEverywhere({ sessions, busy, onConfirm, onCancel }: { sessions: D
           ))}
         </ul>
       )}
-      {sessions.length > 0 && <span className="text-[11.5px] leading-4 text-[#6B6B6B]">These chats stay in your Bops chat history; their memory copy is deleted</span>}
+      {sessions.length > 0 && <span className="text-[11.5px] leading-4 text-[#6B6B6B]">These chats stay in your Oshy Ops chat history; their memory copy is deleted</span>}
       <span className="flex items-center gap-1">
         <button onClick={onConfirm} disabled={busy} className="rounded-full bg-[#B42318] px-3 py-1 text-[12px] font-semibold leading-4 text-white disabled:opacity-60">
           {busy ? "Deleting…" : "Delete everywhere"}

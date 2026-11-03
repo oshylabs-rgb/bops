@@ -194,7 +194,7 @@ function issueLine(i: Issue) {
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
 
 async function runIssueTool(b: Bot, name: string, args: Record<string, unknown>, ctx: OrbitContext): Promise<string> {
-  if (!issuesOn()) return `${GROUP_NAME}'s issues aren't available here (they need Bops signed in, with memory on).`;
+  if (!issuesOn()) return `${GROUP_NAME}'s issues aren't available here (they need Oshy Ops signed in, with memory on).`;
   const ws = workspaceOf(b);
   const by = { botId: b.id, ...(ctx.routineId ? { routineId: ctx.routineId } : {}) };
   if (name === "orbit_issue_open") {
@@ -249,7 +249,7 @@ export async function runOrbitTool(botId: string, name: string, args: Record<str
   const may = knowledgeOf(b);
   if (may === "none" || (may === "read" && !ORBIT_READ_ONLY.has(name))) return `${name} isn't a tool you have here.`;
   if (name.startsWith("orbit_issue_")) return runIssueTool(b, name, args, ctx);
-  if (!categoriesOn()) return `${GROUP_NAME} isn't available here (it needs Bops signed in, with memory on).`;
+  if (!categoriesOn()) return `${GROUP_NAME} isn't available here (it needs Oshy Ops signed in, with memory on).`;
   const ws = workspaceOf(b);
   if (name === "orbit_read") {
     const category = typeof args.category === "string" ? args.category : null;
@@ -311,11 +311,11 @@ export function orbitNote(b: Bot) {
   const items = categoriesOn()
     ? read
       ? [
-          `${GROUP_NAME}: Bops keeps ${owner}'s ${CATEGORIES.map((c) => c.label.toLowerCase()).join(", ")} on the ${GROUP_NAME} page (beside the chat), filled from the team's memory.`,
+          `${GROUP_NAME}: Oshy Ops keeps ${owner}'s ${CATEGORIES.map((c) => c.label.toLowerCase()).join(", ")} on the ${GROUP_NAME} page (beside the chat), filled from the team's memory.`,
           `orbit_read lists what's there: use it when ${owner} asks about their people, tasks, events, promises or plans, or what's coming up. Your memory is your own, so you only read ${GROUP_NAME}: what you remember stays with you and never shows there, and you don't change or forget what's in it.`,
         ]
       : [
-          `${GROUP_NAME}: Bops keeps ${owner}'s ${CATEGORIES.map((c) => c.label.toLowerCase()).join(", ")} on the ${GROUP_NAME} page (beside the chat), filled from memory as they chat.`,
+          `${GROUP_NAME}: Oshy Ops keeps ${owner}'s ${CATEGORIES.map((c) => c.label.toLowerCase()).join(", ")} on the ${GROUP_NAME} page (beside the chat), filled from memory as they chat.`,
           `orbit_read lists what's there: use it when ${owner} asks about their people, tasks, events, promises or plans, or what's coming up. To add something, remember it as a fact ("${owner} has to send Priya the receipts by Thursday"): it shows in ${GROUP_NAME} within seconds.`,
           `orbit_update marks a task or promise done, renames or hides an item, only when ${owner} asks. When ${owner} asks to forget something ("forget that about Dana"), orbit_forget: ask them first, naming the item.`,
         ]

@@ -174,7 +174,7 @@ export function BotBrowser({ bot, project = "", hidden = false, inset = false }:
   const act = (body: { act: "take" | "release" | "input"; method?: BrowserMethod; params?: unknown }) => {
     const run = sending.current.then(async () => {
       const res = await fetch("/api/browser", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ bot: bot.id, ...(project ? { project } : {}), ...body }) }).catch(() => null);
-      if (!res) return setNote("Couldn't reach Bops. Try again.");
+      if (!res) return setNote("Couldn't reach Oshy Ops. Try again.");
       if (!res.ok) setNote(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "That didn't go through.");
     });
     sending.current = run.catch(() => {});

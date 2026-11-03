@@ -269,7 +269,7 @@ export function RoutineWeek({
       const j = (await res.json().catch(() => null)) as { error?: unknown } | null;
       if (!res.ok || typeof j?.error === "string") setError({ key, text: typeof j?.error === "string" ? undash(j.error) : "That didn't work. Try again." });
     } catch {
-      setError({ key, text: "Couldn't reach Bops. Try again." });
+      setError({ key, text: "Couldn't reach Oshy Ops. Try again." });
     }
     setBusy(null);
   };
@@ -297,7 +297,7 @@ export function RoutineWeek({
       const j = (await res.json().catch(() => null)) as { error?: unknown } | null;
       if (!res.ok || typeof j?.error === "string") failed = typeof j?.error === "string" ? undash(j.error) : "That didn't work. Try again.";
     } catch {
-      failed = "Couldn't reach Bops. Try again.";
+      failed = "Couldn't reach Oshy Ops. Try again.";
     }
     if (failed) {
       setError({ key, text: failed });

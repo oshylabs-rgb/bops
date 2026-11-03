@@ -281,7 +281,7 @@ export function RoutineSuggest({
       }
       onClose();
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
       setBusy(false);
     }
   };

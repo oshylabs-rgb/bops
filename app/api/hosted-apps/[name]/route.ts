@@ -22,7 +22,7 @@ export const dynamic = "force-dynamic";
  * open). Answers { app }. A deploy makes the site public, so it's done only from the Bops window (ui-token.ts): never
  * from a page a bot's browser reached this server with.
  */
-const notFromWindow = (request: Request, words = "Apps can only be deployed in the Bops app.") => (fromBopsWindow(request) ? null : Response.json({ error: words }, { status: 403 }));
+const notFromWindow = (request: Request, words = "Apps can only be deployed in the Oshy Ops app.") => (fromBopsWindow(request) ? null : Response.json({ error: words }, { status: 403 }));
 
 const str = (v: unknown) => (typeof v === "string" && v.trim() ? v.trim() : undefined);
 
@@ -92,7 +92,7 @@ export async function POST(request: Request, ctx: { params: Promise<{ name: stri
  * asked once more first. Answers RemoveAppAnswer.
  */
 export async function DELETE(request: Request, ctx: { params: Promise<{ name: string }> }) {
-  const unready = notReady() ?? notFromWindow(request, "Apps can only be removed in the Bops app.");
+  const unready = notReady() ?? notFromWindow(request, "Apps can only be removed in the Oshy Ops app.");
   if (unready) return unready;
   if (!appsOpen(getState())) return Response.json({ error: "Not found" }, { status: 404 });
   const { name } = await ctx.params;

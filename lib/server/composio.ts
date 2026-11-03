@@ -218,11 +218,11 @@ async function authConfigFor(app: string) {
   const ready = items.filter((a) => a.status === "ENABLED").sort((a, b) => Number(!!a.isComposioManaged) - Number(!!b.isComposioManaged))[0];
   if (ready) return ready.id;
   const tk = await cx().toolkits.get(app);
-  if (tk.composioManagedAuthSchemes?.length) return (await cx().authConfigs.create(app, { type: "use_composio_managed_auth", name: `${tk.name} (Bops)` })).id;
+  if (tk.composioManagedAuthSchemes?.length) return (await cx().authConfigs.create(app, { type: "use_composio_managed_auth", name: `${tk.name} (Oshy Ops)` })).id;
   // Through Bops Cloud, a setup of our own can only ask each person for their own key (see ownKeyScheme).
   const mode = cloudOn() ? tk.authConfigDetails?.find((d) => ownKeyScheme(d.mode))?.mode : tk.authConfigDetails?.[0]?.mode;
-  if (!mode) throw new Error(`${tk.name} can't be connected from Bops yet`);
-  return (await cx().authConfigs.create(app, { type: "use_custom_auth", authScheme: mode as never, name: `${tk.name} (Bops)`, credentials: {} })).id;
+  if (!mode) throw new Error(`${tk.name} can't be connected from Oshy Ops yet`);
+  return (await cx().authConfigs.create(app, { type: "use_custom_auth", authScheme: mode as never, name: `${tk.name} (Oshy Ops)`, credentials: {} })).id;
 }
 
 /**
@@ -618,7 +618,7 @@ export const APP_TOOLS = (b: Bot, opts: { forMember?: boolean } = {}) => {
     {
       type: "function" as const,
       name: "use_app",
-      description: `Run one action in ${owner}'s apps (${list}): an exact name from find_app_actions, with its inputs. Reading runs at once. ${b.autoApprove && !opts.forMember ? `Everything else runs at once too (${owner} set you to "Just do it"), except anything that could move money: that still asks them first.` : `Anything that sends, creates, changes or pays asks ${owner} first; Bops shows them the details.`}`,
+      description: `Run one action in ${owner}'s apps (${list}): an exact name from find_app_actions, with its inputs. Reading runs at once. ${b.autoApprove && !opts.forMember ? `Everything else runs at once too (${owner} set you to "Just do it"), except anything that could move money: that still asks them first.` : `Anything that sends, creates, changes or pays asks ${owner} first; Oshy Ops shows them the details.`}`,
       parameters: {
         type: "object",
         additionalProperties: false,
@@ -643,7 +643,7 @@ const clip = (s: string, n = 14_000) => (s.length > n ? `${s.slice(0, n)}… (cu
  * asks the owner (forMember). Asked as each call comes.
  */
 const fromOutside = (sessionId?: string) => !!sessionId && outsideThread(threadOf(sessionId), threadOf);
-const NOT_FOR_OUTSIDE = () => `Not on this task: someone outside Bops asked for it, and ${ownerName()}'s apps are only for the people ${ownerName()} works with.`;
+const NOT_FOR_OUTSIDE = () => `Not on this task: someone outside Oshy Ops asked for it, and ${ownerName()}'s apps are only for the people ${ownerName()} works with.`;
 
 /** find_app_actions: Composio's search, cut down to what the model needs. */
 export async function findAppActions(botId: string, query: string, where: { sessionId?: string } = {}) {

@@ -19,7 +19,7 @@ const answer = (e: unknown) =>
  */
 const refusedHere = (request: Request) =>
   notReady() ??
-  (fromBopsWindow(request) ? null : Response.json({ error: "A preview's password can only be seen in the Bops app." }, { status: 403 })) ??
+  (fromBopsWindow(request) ? null : Response.json({ error: "A preview's password can only be seen in the Oshy Ops app." }, { status: 403 })) ??
   (sharedOpen() ? Response.json({ error: "Only the owner can do this." }, { status: 403 }) : null);
 
 /** A site's Preview password and the cookie that opens its link (PreviewPassword in lib/hosted-apps.ts): ?ws=&site= */

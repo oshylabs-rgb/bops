@@ -218,7 +218,7 @@ function Inline({ text }: { text: string }) {
     setFailed(null);
     const res = await fetch("/api/files", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ botId, href }) }).catch(() => null);
     const r = ((await res?.json().catch(() => ({}))) ?? {}) as { url?: string; error?: string };
-    if (!r.url) return setFailed(res ? (r.error ?? "Couldn't open that file.") : "Couldn't reach Bops.");
+    if (!r.url) return setFailed(res ? (r.error ?? "Couldn't open that file.") : "Couldn't reach Oshy Ops.");
     const url = new URL(r.url, window.location.href).href;
     if (browser || !openLink) window.open(url, "_blank");
     else openLink(url, label);
@@ -1336,7 +1336,7 @@ const DIDNT_COMPACT = "That didn't compact. Try again.";
 /** A Compact's answer from the app's own route: ok, or what it said went wrong. */
 async function answered(res: Promise<Response>): Promise<{ ok: boolean; error?: string }> {
   const r = await res.catch(() => null);
-  if (!r) return { ok: false, error: "Couldn't reach Bops. Try again." };
+  if (!r) return { ok: false, error: "Couldn't reach Oshy Ops. Try again." };
   if (r.ok) return { ok: true };
   return { ok: false, error: ((await r.json().catch(() => ({}))) as { error?: string }).error || DIDNT_COMPACT };
 }
@@ -1485,7 +1485,7 @@ function lasts(all: Message[]) {
 function MemberSendLine({ send, retry }: { send: NonNullable<Message["memberSend"]>; retry: (key: string) => void }) {
   return (
     <span className={`px-1 text-[11.5px] leading-4 ${send.state === "failed" ? "text-[#B42318]" : "text-[#9A9A98]"}`}>
-      {send.state === "sending" ? "Sending…" : send.state === "waiting" ? "Waiting for the owner's Bops to open." : (send.error ?? "That didn't go.")}
+      {send.state === "sending" ? "Sending…" : send.state === "waiting" ? "Waiting for the owner's Oshy Ops to open." : (send.error ?? "That didn't go.")}
       {send.state === "failed" && (
         <button onClick={() => retry(send.key)} className="ml-1.5 font-medium underline-offset-2 hover:underline">
           Try again

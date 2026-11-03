@@ -24,7 +24,7 @@ const LIGHT = "whitespace-nowrap rounded-full px-3 py-1.5 text-[12.5px] font-med
 const QUIET = "whitespace-nowrap rounded-full px-2.5 py-1.5 text-[12.5px] font-medium leading-4 text-[#6B6B6B] hover:bg-[#F2F2F0] disabled:opacity-40";
 
 /** What a Bops without a route says (it isn't in this version yet). */
-const NOT_HERE = "Going back isn't in this version of Bops yet.";
+const NOT_HERE = "Going back isn't in this version of Oshy Ops yet.";
 const missing = (status?: number) => status === 404 || status === 405;
 /** When, from a time a computer said (its seconds, or milliseconds). */
 const msOf = (when: number) => (when < 1e12 ? when * 1000 : when);
@@ -103,7 +103,7 @@ export function FixPanel({
     const r = await fetch(`${at}?ws=${encodeURIComponent(ws)}&restore=${encodeURIComponent(back.at)}`, { cache: "no-store" }).catch(() => null);
     const j = (await r?.json().catch(() => null)) as { error?: string } | null;
     setBusy(null);
-    if (!r || missing(r.status)) return setError(r ? NOT_HERE : "Couldn't reach Bops. Try again.");
+    if (!r || missing(r.status)) return setError(r ? NOT_HERE : "Couldn't reach Oshy Ops. Try again.");
     const p = r.ok ? restorePlanOf(j) : null;
     if (!p) return setError(undash(j?.error || "Couldn't read what going back undoes. Try again."));
     setPlan(p);

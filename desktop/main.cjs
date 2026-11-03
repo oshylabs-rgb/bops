@@ -214,7 +214,7 @@ async function whoAnswers() {
   const build = ourBuild();
   const why =
     health.proof === undefined
-      ? "a Bops from before 0.0.27"
+      ? "an Oshy Ops from before 0.0.27"
       : !proven
         ? "started for another window"
         : build && health.build !== build
@@ -337,7 +337,7 @@ function packagedServer() {
   const logFile = path.join(app.getPath("logs"), "server.log");
   const big = (fs.statSync(logFile, { throwIfNoEntry: false })?.size ?? 0) > 5 * 1024 * 1024;
   const log = fs.openSync(logFile, big ? "w" : "a");
-  fs.writeSync(log, `\n--- Bops ${app.getVersion()} starting, ${new Date().toISOString()}\n`);
+  fs.writeSync(log, `\n--- Oshy Ops ${app.getVersion()} starting, ${new Date().toISOString()}\n`);
   // WebRTC stays off in the shipped app until every Orgo host's WebRTC gateway streams a 1280x960 screen
   // at its real size (ORGO_RTC_HEIGHT=960; otherwise it shrinks the bot's screen, lib/server/orgo.ts
   // webrtcWanted). Then this default goes. A Mac's .env.local can still say BOPS_WEBRTC=1.
@@ -472,7 +472,7 @@ async function startOrFind() {
   let stopped = false;
   let silentSince = 0;
   for (;;) {
-    if (leaving) return { ok: false, reason: "error", detail: "Bops is quitting" };
+    if (leaving) return { ok: false, reason: "error", detail: "Oshy Ops is quitting" };
     const who = await whoAnswers();
     if (who.up && who.mine) {
       // One found running: watched, and stopped on quit, only when it's ours to stop.
@@ -485,10 +485,10 @@ async function startOrFind() {
       const l = await listener();
       if (!stopped && stoppable(l)) {
         stopped = true;
-        mainLog(`an old Bops server (pid ${l.pid}, ${who.why ?? "not Bops"}) holds the port: stopping it`);
+        mainLog(`an old Oshy Ops server (pid ${l.pid}, ${who.why ?? "not Oshy Ops"}) holds the port: stopping it`);
         if (await stopProcess(l.pid)) continue;
       }
-      mainLog(`port ${PORT} answered by ${who.bops ? `another Bops (${who.why})` : "something else"}: ${named(l) ?? "unknown"}`);
+      mainLog(`port ${PORT} answered by ${who.bops ? `another Oshy Ops (${who.why})` : "something else"}: ${named(l) ?? "unknown"}`);
       return { ok: false, reason: who.bops ? "other-bops" : "port-taken", detail: named(l) };
     }
     if (!(await portTaken())) {
@@ -505,21 +505,21 @@ async function startOrFind() {
       // ours to stop, or say so if it isn't. (Our own server starting is just waited on.)
       const l = await listener();
       if (l && !looksLikeBops(l)) {
-        mainLog(`port ${PORT} held by ${named(l)}, which isn't Bops${who.stopping ? " (it answers as a Bops on its way out)" : " and doesn't answer"}`);
+        mainLog(`port ${PORT} held by ${named(l)}, which isn't Oshy Ops${who.stopping ? " (it answers as an Oshy Ops on its way out)" : " and doesn't answer"}`);
         return { ok: false, reason: "port-taken", detail: named(l) };
       }
       if (!silentSince) {
         silentSince = started;
-        mainLog(`port ${PORT} held by ${named(l) ?? "a program Bops can't see"}${who.stopping ? ", a Bops on its way out" : ", not answering"}: waiting`);
+        mainLog(`port ${PORT} held by ${named(l) ?? "a program Oshy Ops can't see"}${who.stopping ? ", an Oshy Ops on its way out" : ", not answering"}: waiting`);
       }
       if (!stopped && l && Date.now() - silentSince > SILENT_MS) {
         if (!stoppable(l)) {
-          const why = l.uid !== process.getuid() ? "another user's" : realpath(l.home ?? "") !== realpath(serverHome()) ? `it runs in ${l.home ?? "a folder Bops can't see"}` : `its parent is pid ${l.ppid}`;
+          const why = l.uid !== process.getuid() ? "another user's" : realpath(l.home ?? "") !== realpath(serverHome()) ? `it runs in ${l.home ?? "a folder Oshy Ops can't see"}` : `its parent is pid ${l.ppid}`;
           mainLog(`${named(l)} hasn't answered in ${SILENT_MS / 1000}s and isn't ours to stop (${why})`);
           return { ok: false, reason: "other-bops", detail: named(l) };
         }
         stopped = true;
-        mainLog(`the Bops server (pid ${l.pid}) holds the port but hasn't answered in ${SILENT_MS / 1000}s: stopping it`);
+        mainLog(`the Oshy Ops server (pid ${l.pid}) holds the port but hasn't answered in ${SILENT_MS / 1000}s: stopping it`);
         await stopProcess(l.pid);
         continue;
       }
@@ -527,7 +527,7 @@ async function startOrFind() {
     if (Date.now() - started > START_MS) {
       if (!server && (await portTaken())) {
         const l = await listener();
-        mainLog(`no server after ${START_MS / 1000}s, port held by ${named(l) ?? "a program Bops can't see"}`);
+        mainLog(`no server after ${START_MS / 1000}s, port held by ${named(l) ?? "a program Oshy Ops can't see"}`);
         return { ok: false, reason: looksLikeBops(l) || !l ? "other-bops" : "port-taken", detail: named(l) };
       }
       mainLog(`no server after ${START_MS / 1000}s${serverEnded ? ` (it ${serverEnded})` : ""}`);
@@ -662,7 +662,7 @@ async function serverGone(what = "server") {
       // The trouble page itself crashed: the same words again, a few times; then a dialog, which needs no page.
       if (failures.length <= 8) return showTrouble(win, lastTrouble ?? { reason: "page-crashed", detail: lastPageGone });
       mainLog("the trouble page keeps crashing: asking in a dialog");
-      const { response } = await dialog.showMessageBox(win, { type: "warning", message: "Bops' window keeps crashing", detail: `Try again, and if it happens again, send us the logs (${app.getPath("logs")}).`, buttons: ["Try again", "Quit"], defaultId: 0, cancelId: 1 });
+      const { response } = await dialog.showMessageBox(win, { type: "warning", message: "Oshy Ops' window keeps crashing", detail: `Try again, and if it happens again, send us the logs (${app.getPath("logs")}).`, buttons: ["Try again", "Quit"], defaultId: 0, cancelId: 1 });
       mainLog(`dialog: ${response === 1 ? "Quit" : "Try again"}`);
       if (response === 1) return app.quit();
       failures = [];
@@ -701,7 +701,7 @@ async function createWindow() {
     height: 860,
     minWidth: 1180,
     minHeight: 640,
-    title: "Bops",
+    title: "Oshy Ops",
     titleBarStyle: "hiddenInset",
     trafficLightPosition: { x: 14, y: 14 },
     backgroundColor: "#FFFFFF",
@@ -944,7 +944,7 @@ function askNotify() {
       }
       resolve(status);
     };
-    const n = new Notification({ title: "Bops", body: "Your bots can tell you when something needs you.", silent: true });
+    const n = new Notification({ title: "Oshy Ops", body: "Your bots can tell you when something needs you.", silent: true });
     n.once("show", () => done("granted"));
     n.once("failed", () => done("denied"));
     const timer = setTimeout(() => done(notifyKnown() ?? "not-determined"), 30_000);
@@ -1116,7 +1116,7 @@ ipcMain.handle("perm-screen-restart", () => mac && screenAtLaunch !== "granted" 
  */
 let restarting;
 /** The clean stop a restart starts with (and a quit with a new version staged): the server let go and stopped, its port free. */
-async function stopForRestart(why = "Restart Bops") {
+async function stopForRestart(why = "Restart Oshy Ops") {
   mainLog(why);
   let pid;
   // A server that doesn't answer isn't asked (that only waited out the 20s).
@@ -1128,7 +1128,7 @@ async function stopForRestart(why = "Restart Bops") {
     } catch (e) {
       mainLog(`restart: the server didn't let go cleanly: ${e?.message ?? e}`);
     }
-  else mainLog(`restart: ${who.up ? "the server answering isn't this Bops'" : "the server isn't answering"}`);
+  else mainLog(`restart: ${who.up ? "the server answering isn't this Oshy Ops'" : "the server isn't answering"}`);
   leaving = true;
   // Wait for the port to close (its last save gets up to 5s), so the new Bops starts its own server
   // instead of finding the old one still answering and then losing it. One that won't let go is
@@ -1155,7 +1155,7 @@ function restart() {
     // A new version staged: macOS puts it in place of this one and opens it (Squirrel.Mac's ShipIt),
     // once the server above is gone. Otherwise this same app opens again.
     if (updates?.ready()) {
-      mainLog(`restart: installing Bops ${updates.state().version}`);
+      mainLog(`restart: installing Oshy Ops ${updates.state().version}`);
       // Squirrel can still fail to install it (its staged copy gone, say): it then says so ("error") and
       // Bops stays open with no server. So this same app opens again instead, when it hasn't quit within
       // 15s or says it can't.
@@ -1168,7 +1168,7 @@ function restart() {
         app.exit(0);
       };
       autoUpdater.once("error", (e) => fallBack(e?.message ?? e));
-      setTimeout(() => fallBack("Bops was still open after 15s"), 15_000).unref?.();
+      setTimeout(() => fallBack("Oshy Ops was still open after 15s"), 15_000).unref?.();
       try {
         autoUpdater.quitAndInstall();
       } catch (e) {
@@ -1319,7 +1319,7 @@ async function checkForUpdate() {
     const version = String(latest?.version ?? "");
     if (!versionParts(version)) return updateNote(`couldn't check: no version in ${feed}`);
     const found = isNewer(version, app.getVersion()) ? { version, notes: releaseNotes(latest.notes) } : undefined;
-    updateNote(found ? `Bops ${version} is out (this is ${app.getVersion()})` : `up to date (${app.getVersion()}, bops.bot has ${version})`);
+    updateNote(found ? `Oshy Ops ${version} is out (this is ${app.getVersion()})` : `up to date (${app.getVersion()}, bops.bot has ${version})`);
     newer = found;
     if (!found || !updates) return;
     // The zip it names must be this version's, on bops.bot: otherwise nothing's fetched and the notice
@@ -1353,7 +1353,7 @@ ipcMain.handle("update-install", () => restart());
 ipcMain.handle("update-auto", () => (updates ? { auto: updates.auto(), canSelfUpdate: updates.canSelfUpdate() } : null));
 ipcMain.handle("update-set-auto", (_, on) => updates?.setAuto(!!on) ?? null);
 
-app.setName("Bops");
+app.setName("Oshy Ops");
 /*
  * One Bops at a time. Every copy shares the same Application Support folder and server, so a second
  * one (another copy opened from a download, say) brings the first to the front and closes, instead
@@ -1362,13 +1362,13 @@ app.setName("Bops");
 const first = app.requestSingleInstanceLock();
 if (!first) {
   // `npm run app` shares the installed app's folder: say why it closed.
-  if (!app.isPackaged) console.error("Bops is already open (the installed app, or another npm run app). Quit it to run this one.");
+  if (!app.isPackaged) console.error("Oshy Ops is already open (the installed app, or another npm run app). Quit it to run this one.");
   app.quit();
 }
 app.on("second-instance", () => app.isReady() && showMain());
 app.whenReady().then(() => {
   if (!first) return;
-  mainLog(`Bops ${app.getVersion()} opening (pid ${process.pid})`);
+  mainLog(`Oshy Ops ${app.getVersion()} opening (pid ${process.pid})`);
   if (process.platform === "darwin" && fs.existsSync(ICON)) app.dock.setIcon(nativeImage.createFromPath(ICON));
   // Release builds only: not `npm run app`, nor a build that runs the source folder (desktop/repo.json).
   if (isRelease()) {
@@ -1413,7 +1413,7 @@ app.on("before-quit", (e) => {
   if (quitStopped || restarting || systemQuit || !updates?.ready()) return;
   quitStopped = true;
   e.preventDefault();
-  void Promise.race([stopForRestart(`Quit: installing Bops ${updates.state().version}`), sleep(10_000)]).finally(() => app.quit());
+  void Promise.race([stopForRestart(`Quit: installing Oshy Ops ${updates.state().version}`), sleep(10_000)]).finally(() => app.quit());
 });
 
 /** Stops the server Bops started or uses (and the bots' browsers). Says whether there was one. */

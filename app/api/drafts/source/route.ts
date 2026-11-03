@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  */
 export async function GET(request: Request) {
   const no = (status: number, code: string, error: string) => Response.json({ error, code }, { status, headers: { "Cache-Control": "no-store" } });
-  if (!fromBopsWindow(request)) return no(403, "window", "Only the Bops app can show the original.");
+  if (!fromBopsWindow(request)) return no(403, "window", "Only the Oshy Ops app can show the original.");
   if (sharedOpen()) return no(403, "shared", "Only the workspace's owner can see the original.");
   const u = new URL(request.url).searchParams;
   const messageId = u.get("messageId");

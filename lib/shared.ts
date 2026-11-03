@@ -217,7 +217,7 @@ export const OWNER_ONLY_LINE = "Only the owner can answer this.";
 /** The same, once an Admin can answer it too (SharedOpen.adminActs). */
 export const OWNER_OR_ADMIN_LINE = "Only the owner or an Admin can answer this.";
 /** For an Admin, while the owner's Bops is too old to take their answer (SharedOpen.ownerOld). */
-export const OWNER_UPDATE_LINE = "The owner's Bops needs an update before you can answer this.";
+export const OWNER_UPDATE_LINE = "The owner's Oshy Ops needs an update before you can answer this.";
 /** An OK to give on the owner's own phone. */
 export const OWNER_PHONE_LINE = "Only the owner can approve this on their phone.";
 /** A payment at the screen: it spends the owner's money. */
@@ -233,9 +233,9 @@ export { OWNERS_KEY_LINE } from "@/cloud/protocol";
 /** In a shared workspace, for someone without Keys (cloud/protocol.ts MEMBER_NO_KEYS): who gives it. */
 export const KEYS_GIVEN_LINE = "The owner or an Admin can give you Keys.";
 /** Under an answer on its way while the owner's Bops is shut: it goes when it opens (as long as the ask waits). */
-export const ANSWER_WAITS_LINE = "The owner's Bops is closed. Your answer goes when it opens.";
+export const ANSWER_WAITS_LINE = "The owner's Oshy Ops is closed. Your answer goes when it opens.";
 /** Under a reply or Dismiss on its way while it's shut: those wait only a while (cloud/protocol.ts MEMBER_ACT_MS), then say they didn't go. */
-export const REPLY_WAITS_LINE = "Waiting for the owner's Bops to open.";
+export const REPLY_WAITS_LINE = "Waiting for the owner's Oshy Ops to open.";
 /** The owner's app work (a thread on an app), for someone without Your Apps at Write (cloud/members.ts APP_WORK). */
 export const APP_WORK_LINE = "This is app work. Ask the owner for Write on Your Apps to answer it.";
 

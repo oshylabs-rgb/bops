@@ -139,9 +139,9 @@ export function OwnerEmail({ info, onInfo }: { info: OwnerEmailInfo; onInfo: (i:
 
   const canAdd = info.codes;
   const line = rows.length
-    ? "Emails you send from these addresses count as you. Bops checks that each one really came from you. Your bots can email you here without asking first."
+    ? "Emails you send from these addresses count as you. Oshy Ops checks that each one really came from you. Your bots can email you here without asking first."
     : offer
-      ? "Count an email you write from, and emails you send from it count as you. Bops checks that each one really came from you."
+      ? "Count an email you write from, and emails you send from it count as you. Oshy Ops checks that each one really came from you."
       : canAdd || waiting
         ? "Add the email you write from, so emails from it count as you."
         : "Connect Gmail or Outlook in Logins, and emails you send from it count as you.";

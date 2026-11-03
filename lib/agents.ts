@@ -15,11 +15,11 @@ export type AgentRoute = "anthropic" | "openai" | "deepinfra";
 
 /** What each kind of agent is. `soon`: shown, dimmed, with why it isn't in Bops yet. */
 export const AGENTS: Record<AgentKind, { name: string; maker: string; pays: AgentPays[]; soon?: string }> = {
-  bops: { name: "Bops agent", maker: "OpenAI", pays: ["credit"] },
+  bops: { name: "Oshy Ops agent", maker: "OpenAI", pays: ["credit"] },
   claude: { name: "Claude Code", maker: "Anthropic", pays: ["plan", "key"] },
   codex: { name: "Codex", maker: "OpenAI", pays: ["key"] },
   opencode: { name: "OpenCode", maker: "Any model", pays: ["key"] },
-  agy: { name: "agy", maker: "Google Antigravity", pays: [], soon: "agy signs in with a Google account, which Bops can't use for you yet." },
+  agy: { name: "agy", maker: "Google Antigravity", pays: [], soon: "agy signs in with a Google account, which Oshy Ops can't use for you yet." },
 };
 
 /** Ways to pay that show in an agent's Pays with, disabled, and why. */
@@ -259,10 +259,10 @@ export function agentState(x: BotAgent, b: Bot, state: Pick<AppState, "bots" | "
   const soon = AGENTS[x.kind].soon;
   if (soon) return { ready: false, line: AGENTS[x.kind].maker, soon };
   if (x.kind === "bops") return { ready: true, line: `${x.model ? modelShort("bops", x.model) : "OpenAI"} · Credit` };
-  if (!BRAINS_ON) return { ready: false, line: "Not in this version of Bops" };
+  if (!BRAINS_ON) return { ready: false, line: "Not in this version of Oshy Ops" };
   const name = AGENTS[x.kind].name;
   if (state.host === "mac") return { ready: false, line: `${name} runs on a cloud computer. Your bots work on this Mac.` };
-  if (b.runsOn === "mac") return { ready: false, line: `${b.name} works on your Mac, so its threads use Bops agent.` };
+  if (b.runsOn === "mac") return { ready: false, line: `${b.name} works on your Mac, so its threads use Oshy Ops agent.` };
   if (x.pays === "key") {
     const want = x.kind === "opencode" ? agentKeyName(x) : (accountOf(x, state)?.keyName ?? agentKeyName(x));
     if (keys && want && !keys.has(want)) return { ready: false, line: `No ${keyVendor(x)} key in your Vault yet.`, button: "add_key" };
@@ -325,7 +325,7 @@ const bopsRun = (b: Pick<Bot, "id" | "ai" | "brain" | "workspaceId">, state: Pic
     agent: x,
     kind: "bops",
     ...(x.model ? { model: x.model } : {}),
-    ...(gone ? { gone: `Stopped: ${gone.what} ${gone.why}. Reply and it carries on with Bops agent.`, goneNote: `${gone.what} ${gone.why}, so Bops agent does this, on your credit.` } : {}),
+    ...(gone ? { gone: `Stopped: ${gone.what} ${gone.why}. Reply and it carries on with Oshy Ops agent.`, goneNote: `${gone.what} ${gone.why}, so Oshy Ops agent does this, on your credit.` } : {}),
   };
 };
 

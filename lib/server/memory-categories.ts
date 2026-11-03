@@ -76,7 +76,7 @@ const SWEEP_MS = 6 * 60 * 60_000;
 const PURGE_RETRY_MS = [5_000, 30_000, 2 * 60_000, 10 * 60_000, 30 * 60_000];
 /** Said once deleting has failed this many times in a row. */
 const PURGE_SAY_AFTER = 3;
-const PURGE_ERROR = "Some of what you forgot is still in memory. Bops keeps trying to delete it.";
+const PURGE_ERROR = "Some of what you forgot is still in memory. Oshy Ops keeps trying to delete it.";
 /** Forgotten items and facts kept (hashes), the newest. */
 const TOMB_ITEMS = 2000;
 const TOMB_FACTS = 10_000;
@@ -982,13 +982,13 @@ async function run(ws: string, bank: string, index: Index, opts: SyncOpts, ours:
       return void (stopped = true);
     }
     if (got === "down") {
-      index.error = "Couldn't sort new things just now. Bops tries again on its own.";
+      index.error = "Couldn't sort new things just now. Oshy Ops tries again on its own.";
       return void (stopped = true);
     }
     // Refused with nothing answered this look, down to a single fact: a wrong setting (every request is
     // refused), not the fact. Stopped, nothing counted against it, tried again later.
     if (got === "refused" && batch.length === 1 && !answered) {
-      index.error = "Couldn't sort new things just now. Bops tries again on its own.";
+      index.error = "Couldn't sort new things just now. Oshy Ops tries again on its own.";
       return void (stopped = true);
     }
     if (got === "unusable" || got === "refused") {

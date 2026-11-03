@@ -15,7 +15,7 @@ export const pagesDir = () => {
 
 export function savePage(title: string, html: string) {
   const DIR = pagesDir();
-  if (!DIR) throw new Error("Sign in to Bops first.");
+  if (!DIR) throw new Error("Sign in to Oshy Ops first.");
   mkdirSync(DIR, { recursive: true });
   const pageId = id("page");
   const doc = /<html[\s>]/i.test(html) ? html : `<!doctype html><html><head><meta charset="utf-8"><title>${title.replace(/[<>&"]/g, "")}</title></head><body>${html}</body></html>`;

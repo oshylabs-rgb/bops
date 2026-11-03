@@ -194,7 +194,7 @@ function LabelChecklist({ state, bot: b }: { state: AppState; bot: Bot }) {
       const res = await post("/api/skills", { ws, botId: b.id, ...body });
       if (!res.ok) setError(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? "That didn't work. Try again.");
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     }
     setBusy(false);
   };

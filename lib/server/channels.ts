@@ -194,7 +194,7 @@ async function messageIn(linkId: string, m: Incoming, pool?: ChannelLink[]) {
       place,
       l.owner
         ? `Hi, I'm ${b.name}, ${ownerName()}'s assistant. I only take requests from ${ownerName()}.`
-        : `Hi, I'm ${b.name}. To pair with me, send me the code shown in Bops (on my profile, under "Where to find ${b.name}"), and nothing else.`,
+        : `Hi, I'm ${b.name}. To pair with me, send me the code shown in Oshy Ops (on my profile, under "Where to find ${b.name}"), and nothing else.`,
     );
     return;
   }
@@ -250,7 +250,7 @@ async function paired(l: ChannelLink, m: Incoming) {
   live.toldOff.delete(`${l.id}:${m.fromId}`);
   addMessage({ chatId: botChatId(b.id), role: "system", text: `${b.name} is paired with ${m.fromName} on ${KIND_NAME[l.kind]}. It takes requests from that account there now.` });
   const place: ChannelPlace = { linkId: l.id, chat: m.chat, messageId: m.messageId, thread: m.thread, from: m.fromId };
-  await send(linkOf(l.id) ?? l, place, `Hi ${m.fromName.split(" ")[0]}, it's ${b.name}. We're paired: talk to me here like you do in Bops.${m.direct ? "" : " In a group, mention me or reply to me."}`);
+  await send(linkOf(l.id) ?? l, place, `Hi ${m.fromName.split(" ")[0]}, it's ${b.name}. We're paired: talk to me here like you do in Oshy Ops.${m.direct ? "" : " In a group, mention me or reply to me."}`);
 }
 
 /** A wrong code: counted on each link it could have been for (PAIR_CODE_TRIES of them and the code stops working). */
@@ -295,7 +295,7 @@ async function pictureFile(path: string): Promise<Buffer | null> {
 /** Telegram: the bot account takes the bot's name and picture (best effort: the link works without). */
 async function dressTelegram(token: string, b: Bot) {
   await tg(token, "setMyName", { name: b.name }).catch(() => {});
-  await tg(token, "setMyShortDescription", { short_description: `${b.name}, ${ownerName()}'s assistant on Bops.` }).catch(() => {});
+  await tg(token, "setMyShortDescription", { short_description: `${b.name}, ${ownerName()}'s assistant on Oshy Ops.` }).catch(() => {});
   // Telegram takes a JPEG; the logo has none, so a bot without a picture keeps Telegram's.
   const name = pictureName(b);
   const pic = name ? await pictureFile(`mascot/${name}.jpg`) : null;
@@ -384,7 +384,7 @@ export async function postTo(linkId: string, text: string, chat?: string): Promi
   if (!l) throw new Error("That Slack, Telegram or Discord link isn't there anymore");
   const name = KIND_NAME[l.kind];
   if (l.status !== "live") throw new Error(`${name} isn't working right now${l.error ? `: ${l.error}` : ""}`);
-  if (!l.owner) throw new Error(`Nobody is paired with the bot in ${name} yet. Send it the pairing code from Bops first`);
+  if (!l.owner) throw new Error(`Nobody is paired with the bot in ${name} yet. Send it the pairing code from Oshy Ops first`);
   if (!text.trim()) throw new Error("There's nothing to post");
   let place = chat?.trim();
   if (!place && l.kind === "telegram") place = l.owner;
@@ -393,7 +393,7 @@ export async function postTo(linkId: string, text: string, chat?: string): Promi
     if (!place) throw new Error("Write to the bot in Slack once first, so it can message you there");
   }
   if (!place && l.kind === "discord") place = (await dc<{ id: string }>(await tokenOf(l), "POST", "/users/@me/channels", { recipient_id: l.owner })).id;
-  if (!place) throw new Error(`Bops doesn't know where to post in ${name}`);
+  if (!place) throw new Error(`Oshy Ops doesn't know where to post in ${name}`);
   await send(l, { linkId, chat: place }, text);
 }
 
@@ -475,7 +475,7 @@ function typing(l: ChannelLink, chat: string) {
 
 async function tokenOf(l: ChannelLink) {
   // Its token is in the Mac's Keychain, which a computer's runner hasn't.
-  if (onRunner()) throw new Error(`${KIND_NAME[l.kind]} works from the Bops app on your Mac, not from a bot's computer`);
+  if (onRunner()) throw new Error(`${KIND_NAME[l.kind]} works from the Oshy Ops app on your Mac, not from a bot's computer`);
   const t = await getUserSecret(secretOf(l.id));
   if (!t) throw new Error(`${KIND_NAME[l.kind]} token is missing from the Keychain`);
   return t;
@@ -558,7 +558,7 @@ async function pollTelegram(linkId: string) {
       }
       // 409: another Bops (or app) is reading this bot's messages. Back off and try again.
       wait = Math.min(60_000, (wait || 2000) * 2);
-      if (code === 409) patchLink(linkId, { status: "error", error: "Something else is reading this bot's messages (another Bops?)." });
+      if (code === 409) patchLink(linkId, { status: "error", error: "Something else is reading this bot's messages (another Oshy Ops?)." });
       await new Promise((r) => setTimeout(r, wait));
     }
   }
@@ -756,7 +756,7 @@ async function slackIdentity(accountId: string) {
       throw new Error(`Couldn't ask Slack which workspace this is: ${e.message}`);
     })) as unknown as { data?: { ok?: boolean; error?: string; user_id?: string; team?: string; team_id?: string; bot_id?: string } };
   const d = r.data ?? {};
-  if (d.ok !== true || !d.team_id) throw new Error(`Slack wouldn't say which workspace this is${d.error ? ` (${d.error})` : ""}. Add Bops to Slack again.`);
+  if (d.ok !== true || !d.team_id) throw new Error(`Slack wouldn't say which workspace this is${d.error ? ` (${d.error})` : ""}. Add Oshy Ops to Slack again.`);
   // Only a bot token's answer names the bot (it has bot_id); a person's token would name the person,
   // and then mentioning them would count as mentioning the bot.
   return { team: d.team, team_id: d.team_id, user_id: d.bot_id ? d.user_id : undefined };
@@ -768,7 +768,7 @@ export async function linkSlack(botId: string, accountId: string, channels: { id
   const account = getState().accounts?.find((a) => a.id === accountId && a.app === "slackbot");
   if (!b || !account) throw new Error("Connect Slack first");
   // Signed in with Orgo, Slack's events reach Bops only through Bops Cloud's Slack app.
-  if (cloudOn() && !(await cloudSession()).slack) throw new Error("Slack isn't available in Bops yet. Try again later.");
+  if (cloudOn() && !(await cloudSession()).slack) throw new Error("Slack isn't available in Oshy Ops yet. Try again later.");
   const existing = linksOf("slack").find((l) => l.botId === botId && l.slack?.accountId === accountId);
   // Which workspace it is comes first: without it the bot could never be found there, so a failure saves nothing.
   const who = existing?.slack?.teamId ? null : await slackIdentity(accountId);

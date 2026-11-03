@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  * the routines are: a page a bot's Chrome reached this server with mustn't read what they found.
  */
 export async function GET(request: Request, ctx: { params: Promise<{ id: string }> }) {
-  if (!fromBopsWindow(request)) return Response.json({ error: "Routines can only be read in the Bops app." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ error: "Routines can only be read in the Oshy Ops app." }, { status: 403 });
   const unready = notReady();
   if (unready) return unready;
   const { id } = await ctx.params;

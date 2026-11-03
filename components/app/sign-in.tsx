@@ -88,7 +88,7 @@ export function CloudUnreachable({ onRetry }: { onRetry: () => void }) {
       <div className="flex flex-1 flex-col items-center justify-center px-6 pb-16">
         <div className="flex w-[400px] animate-[call-in_220ms_ease-out] flex-col items-center rounded-[22px] bg-white px-8 pb-7 pt-9 shadow-[0_0_0_1px_#0000000F,0_30px_70px_-28px_#00000038]">
           <Mascot botId="boppy" color="#0A0A0A" size={56} />
-          <Heading title="Can't reach Bops Cloud" line="Bops can't reach Bops Cloud to load your chats. Check your internet connection." />
+          <Heading title="Can't reach Bops Cloud" line="Oshy Ops can't reach Bops Cloud to load your chats. Check your internet connection." />
           <button
             disabled={busy}
             onClick={() => {
@@ -256,7 +256,7 @@ export function SignIn({ onSignedIn }: { onSignedIn: () => void }) {
           </a>
           .
         </span>
-        {telemetryHere && <span className="pt-1.5 text-[12px] leading-4 text-pencil">Bops shares usage counts and error reports with Orgo, never your content. You can turn this off in Settings.</span>}
+        {telemetryHere && <span className="pt-1.5 text-[12px] leading-4 text-pencil">Oshy Ops shares usage counts and error reports with Orgo, never your content. You can turn this off in Settings.</span>}
       </div>
     </div>
   );
@@ -276,7 +276,7 @@ function Welcome({ starting, onStart }: { starting: Way | null; onStart: (way: W
   const busy = starting !== null;
   return (
     <>
-      <Heading title="Welcome to Bops" line="Sign in or make an account to get started. It's free." />
+      <Heading title="Welcome to Oshy Ops" line="Sign in or make an account to get started. It's free." />
       <div className="flex w-full flex-col gap-2">
         <button disabled={busy} onClick={() => onStart("google")} className={primary}>
           {starting === "google" ? <Spinner size={13} color="#FFFFFF" /> : <GoogleMark />}
@@ -301,8 +301,8 @@ function Welcome({ starting, onStart }: { starting: Way | null; onStart: (way: W
 const PROBLEMS: Record<Problem, { title: string; line: string; action: string }> = {
   offline: { title: "Couldn't connect", line: "Check your internet connection, then try again.", action: "Try again" },
   orgo: { title: "Something went wrong", line: "Signing in isn't working right now. Try again in a moment.", action: "Try again" },
-  keychain: { title: "Couldn't save your sign-in", line: "Your Mac didn't let Bops keep it in the keychain. Unlock your Mac, then try again.", action: "Try again" },
-  cloud: { title: "Couldn't load your Bops", line: "Couldn't load your Bops from Bops Cloud. Try again.", action: "Try again" },
+  keychain: { title: "Couldn't save your sign-in", line: "Your Mac didn't let Oshy Ops keep it in the keychain. Unlock your Mac, then try again.", action: "Try again" },
+  cloud: { title: "Couldn't load your Oshy Ops", line: "Couldn't load your Oshy Ops from Bops Cloud. Try again.", action: "Try again" },
 };
 
 /** Where expired, declined and failed attempts come back to: again the same way, or back to pick another. */
@@ -342,9 +342,9 @@ function Retry({
 
 /** What to do in the browser, by the way picked. Every way lands on Orgo's page shown as Bops; Google and email go straight to that sign-in. */
 const FINISH: Record<Way, string> = {
-  google: "Sign in with Google, check that the page shows this code, then allow Bops.",
-  email: "Sign in with your email, check that the page shows this code, then allow Bops.",
-  orgo: "Your browser is open at orgo.ai. Check that it shows this code, then allow Bops.",
+  google: "Sign in with Google, check that the page shows this code, then allow Oshy Ops.",
+  email: "Sign in with your email, check that the page shows this code, then allow Oshy Ops.",
+  orgo: "Your browser is open at orgo.ai. Check that it shows this code, then allow Oshy Ops.",
 };
 
 function Waiting({ step, way, onReopen, onCancel }: { step: Extract<Step, { kind: "waiting" }>; way: Way; onReopen: () => void; onCancel: () => void }) {
@@ -409,7 +409,7 @@ function Approved({ who }: { who: string }) {
         </svg>
         You&apos;re in
       </span>
-      <span className="text-[13.5px] leading-[19px] text-pencil">{who ? `Signed in as ${who}. Opening Bops.` : "Opening Bops."}</span>
+      <span className="text-[13.5px] leading-[19px] text-pencil">{who ? `Signed in as ${who}. Opening Oshy Ops.` : "Opening Oshy Ops."}</span>
     </div>
   );
 }

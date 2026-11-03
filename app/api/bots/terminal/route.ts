@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
  * Default CLI agent, where claude, codex and opencode are the bot's. Only from the Bops window. Returns the screen.
  */
 export async function POST(request: Request) {
-  const unready = brainsOff() ?? notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "A bot's terminal can only be opened in the Bops app." }, { status: 403 }));
+  const unready = brainsOff() ?? notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "A bot's terminal can only be opened in the Oshy Ops app." }, { status: 403 }));
   if (unready) return unready;
   const b = (await request.json().catch(() => ({}))) as { botId?: unknown };
   if (typeof b.botId !== "string") return Response.json({ error: "which bot?" }, { status: 400 });

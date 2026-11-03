@@ -695,7 +695,7 @@ export function ComputerView({
                     asleep && creditOut
                       ? "Your Orgo credit ran out, so your computer stays asleep"
                       : asleep && hoursOut
-                        ? "Your Bops computer has used its free hours"
+                        ? "Your Oshy Ops computer has used its free hours"
                         : asleep
                           ? "Wake the computer and drive this screen yourself"
                           : "Pause the bot here and drive the screen yourself"
@@ -839,7 +839,7 @@ export function ComputerView({
           </span>
           <span className="flex-1" />
           {follow?.on ? (
-            <span className="flex shrink-0 items-center gap-1.5" title={`Bops shows the screen being worked on, and cuts to one that needs ${you}. Pick one to stay on it.`}>
+            <span className="flex shrink-0 items-center gap-1.5" title={`Oshy Ops shows the screen being worked on, and cuts to one that needs ${you}. Pick one to stay on it.`}>
               {/* It pulses while there's action to follow; a still dot otherwise (a pulse redraws the window all the time). */}
               <span className={`size-1.5 rounded-full ${working.length ? "animate-pulse" : ""}`} style={{ background: botBezel(b) }} />
               {grid ? `Watching ${working.length} things at once` : "Following the action"}
@@ -1263,11 +1263,11 @@ function NoComputer({ state, bot: b, host }: { state: AppState; bot: Bot; /** Th
       <Mascot botId={b.id} color={b.color} size={44} />
       <span className="max-w-[300px] text-[14px] leading-5">
         {b.isMain
-          ? `${b.name} doesn't have a computer yet. ${free ? `Your free Bops computer starts the first time ${b.name} needs it` : `It starts the first time ${b.name} needs one`}, or set it up now. The bots you add work on it too, unless you give one its own.`
+          ? `${b.name} doesn't have a computer yet. ${free ? `Your free Oshy Ops computer starts the first time ${b.name} needs it` : `It starts the first time ${b.name} needs one`}, or set it up now. The bots you add work on it too, unless you give one its own.`
           : host.id !== b.id
             ? `${b.name} works on ${host.name}'s computer, which isn't set up yet. It starts the first time either of them needs it.`
             : plan?.plan?.bops
-              ? `${b.name} doesn't have a computer yet. It gets ${ownIsBops(plan.plan, b) ? "a Bops computer of its own" : "a computer of its own on your Orgo plan"}, fresh from the Bops template.`
+              ? `${b.name} doesn't have a computer yet. It gets ${ownIsBops(plan.plan, b) ? "an Oshy Ops computer of its own" : "a computer of its own on your Orgo plan"}, fresh from the Oshy Ops template.`
               : `${b.name} doesn't have a computer yet. It gets a copy of the main bot's computer: apps, logins and open screens.`}
       </span>
       {plan && noRoom ? (

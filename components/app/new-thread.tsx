@@ -144,7 +144,7 @@ export function NewThread({
       if (res.ok && j.id) onStarted(j);
       else setError(undash(j.error ?? "It didn't start. Try again."));
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     }
     setBusy(false);
   };

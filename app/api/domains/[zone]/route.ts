@@ -5,11 +5,11 @@ export const dynamic = "force-dynamic";
 
 type Ctx = { params: Promise<{ zone: string }> };
 
-const WORDS = "Domains can only be changed in the Bops app.";
+const WORDS = "Domains can only be changed in the Oshy Ops app.";
 
 /** GET ?ws= : one of the workspace's domains (its id at Orgo): its zone, renewal, and what points at it (WorkspaceZoneAnswer). */
 export async function GET(request: Request, ctx: Ctx) {
-  const gate = domainsGate(request, "Domains can only be seen in the Bops app.");
+  const gate = domainsGate(request, "Domains can only be seen in the Oshy Ops app.");
   if (gate) return gate;
   const { zone } = await ctx.params;
   try {

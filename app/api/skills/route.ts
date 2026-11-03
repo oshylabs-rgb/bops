@@ -42,7 +42,7 @@ export const dynamic = "force-dynamic";
  * (skill-proposals.ts: accept, reject, or its diff on what the skill is now) are the owner's too: never while a
  * workspace shared with the user is open.
  */
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Skills can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Skills can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 const str = (v: unknown) => (typeof v === "string" ? v : undefined);
 const kindOf = (v: unknown): SkillKind => (v === "app" ? "app" : "skill");

@@ -20,7 +20,7 @@ export async function POST(request: Request) {
     const ok = grant && Array.isArray(grant.bots) && (grant.level === "read" || grant.level === "act") ? { bots: grant.bots.map(String), level: grant.level } : undefined;
     const check = ok && grant?.check ? normalizeSchedule(grant.check) : undefined;
     if (check && "error" in check) throw new Error(check.error);
-    if (check && !fromBopsWindow(request)) return Response.json({ error: "Routines can only be changed in the Bops app." }, { status: 403 });
+    if (check && !fromBopsWindow(request)) return Response.json({ error: "Routines can only be changed in the Oshy Ops app." }, { status: 403 });
     return Response.json(await connectApp(app, label, replaces, ok && check ? { ...ok, check: check.schedule as Schedule } : ok));
   } catch (e) {
     return fail(e);

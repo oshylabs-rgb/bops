@@ -14,7 +14,7 @@ export const dynamic = "force-dynamic";
  * and phone): the Bops window only.
  */
 export async function GET(request: Request) {
-  const gate = domainsGate(request, "Domains can only be seen in the Bops app.");
+  const gate = domainsGate(request, "Domains can only be seen in the Oshy Ops app.");
   if (gate) return gate;
   try {
     return Response.json(await workspaceDomains(wsFrom(new URL(request.url).searchParams.get("ws"))));
@@ -29,7 +29,7 @@ export async function GET(request: Request) {
  * field?, price?, renewal?, years?, available?, topUp? }).
  */
 export async function POST(request: Request) {
-  const gate = domainsGate(request, "Domains can only be bought in the Bops app.");
+  const gate = domainsGate(request, "Domains can only be bought in the Oshy Ops app.");
   if (gate) return gate;
   const b = await askedOf(request);
   try {

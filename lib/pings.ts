@@ -13,9 +13,9 @@ export type Ping = { key: string; title: string; body: string };
 export function duePings(state: Pick<AppState, "watches" | "messages" | "bots" | "appApprovals">): Ping[] {
   return [
     ...(state.watches ?? []).filter((w) => w.alert?.level === "now").map((w) => ({ key: `w:${w.id}:${w.alert!.at}`, title: w.mac?.title ?? w.site, body: w.alert!.text })),
-    ...state.messages.filter((m) => m.ping).map((m) => ({ key: `m:${m.id}`, title: state.bots.find((b) => b.id === m.botId)?.name ?? "Bops", body: m.text.replace(/\*\*|\[|\]\([^)]*\)/g, "").slice(0, 140) })),
+    ...state.messages.filter((m) => m.ping).map((m) => ({ key: `m:${m.id}`, title: state.bots.find((b) => b.id === m.botId)?.name ?? "Oshy Ops", body: m.text.replace(/\*\*|\[|\]\([^)]*\)/g, "").slice(0, 140) })),
     ...(state.appApprovals ?? [])
       .filter((a) => !a.reply)
-      .map((a) => ({ key: `a:${a.id}`, title: state.bots.find((b) => b.id === a.botId)?.name ?? "Bops", body: `Waiting for your OK: ${a.action}`.slice(0, 140) })),
+      .map((a) => ({ key: `a:${a.id}`, title: state.bots.find((b) => b.id === a.botId)?.name ?? "Oshy Ops", body: `Waiting for your OK: ${a.action}`.slice(0, 140) })),
   ];
 }

@@ -1726,7 +1726,7 @@ function DomainLine({
       {removing && (
         <div className="px-2 pb-1" onKeyDown={(e) => e.key === "Escape" && e.stopPropagation()}>
           <InlineConfirm
-            text={d.cloudflare ? `Remove ${d.domain} from this app? Bops also takes off the records it set for it in Cloudflare.` : `Remove ${d.domain} from this app?${d.managed ? " The domain stays yours." : ""}`}
+            text={d.cloudflare ? `Remove ${d.domain} from this app? Oshy Ops also takes off the records it set for it in Cloudflare.` : `Remove ${d.domain} from this app?${d.managed ? " The domain stays yours." : ""}`}
             action="Remove"
             doing="Removing…"
             busy={busy === "remove"}
@@ -1822,7 +1822,7 @@ function OutsideDns({
         : "Orgo doesn't change its DNS. This is what's set at Cloudflare."
       : allFound
         ? "These are set in Cloudflare. Orgo turns it on once they answer."
-        : "Its DNS is at Cloudflare, in your account. Bops can set these for you."
+        : "Its DNS is at Cloudflare, in your account. Oshy Ops can set these for you."
     : live
       ? `Orgo doesn't change its DNS.${d.publish.length ? ` This is what's set ${there}.` : ""}`
       : `Orgo can't set these. Add them ${there}, then Verify.`;

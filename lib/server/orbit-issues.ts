@@ -280,7 +280,7 @@ async function historyOf(session: HonchoSession): Promise<IssueEvent[]> {
   const out: IssueEvent[] = [];
   for await (const m of page) {
     const md = m.metadata ?? {};
-    out.push({ at: Date.parse(m.createdAt) || 0, who: typeof md.by === "string" ? md.by : "Bops", text: m.content, kind: (typeof md.event === "string" ? md.event : "note") as IssueEvent["kind"] });
+    out.push({ at: Date.parse(m.createdAt) || 0, who: typeof md.by === "string" ? md.by : "Oshy Ops", text: m.content, kind: (typeof md.event === "string" ? md.event : "note") as IssueEvent["kind"] });
     if (out.length >= 500) break;
   }
   return out.sort((a, b) => a.at - b.at);

@@ -38,7 +38,7 @@ export async function GET(request: Request, ctx: { params: Promise<{ name: strin
  * window (ui-token.ts). Answers LocalAnswer; a preview this Mac can't open, { error, fallback: "screen" }.
  */
 export async function POST(request: Request, ctx: { params: Promise<{ name: string }> }) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "An app's Local can only be started in the Bops app." }, { status: 403 }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "An app's Local can only be started in the Oshy Ops app." }, { status: 403 }));
   if (unready) return unready;
   if (!appsOpen(getState())) return Response.json({ error: "Not found" }, { status: 404 });
   const { name } = await ctx.params;

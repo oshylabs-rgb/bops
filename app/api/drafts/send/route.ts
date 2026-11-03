@@ -13,7 +13,7 @@ import { fromBopsWindow } from "@/lib/server/ui-token";
 export async function POST(request: Request) {
   const unready = notReady();
   if (unready) return unready;
-  if (!fromBopsWindow(request)) return Response.json({ ok: false, error: "Replies can only be sent from the Bops app." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ ok: false, error: "Replies can only be sent from the Oshy Ops app." }, { status: 403 });
   if (sharedOpen()) return Response.json({ ok: false, error: "In a shared workspace, only its owner sends replies." }, { status: 403 });
   const body = (await request.json().catch(() => ({}))) as { messageId?: unknown; draftId?: unknown; text?: unknown };
   if (typeof body.messageId !== "string" || typeof body.draftId !== "string" || typeof body.text !== "string")

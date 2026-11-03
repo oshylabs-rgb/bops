@@ -246,7 +246,7 @@ type Loaded = { got: CloudState | null; version: number; rows: CloudMessageRow[]
 /** The user's blob and every message they have, from the cloud. */
 async function fetchAll(who: Who): Promise<Loaded> {
   const r = await call<CloudState & { version?: number }>(who, "/v1/state");
-  if (r.status !== 200 && r.status !== 404) refused("Loading your Bops", r);
+  if (r.status !== 200 && r.status !== 404) refused("Loading your Oshy Ops", r);
   const got = r.status === 200 ? r.body : null;
   const rows: CloudMessageRow[] = [];
   let after = 0;
@@ -399,7 +399,7 @@ function buildKept(who: Who, loaded: Loaded, kept: Kept) {
   // A runner's held to what its computer may change over the cloud's, as mergeIn holds it.
   const scope = runnerScope(who);
   const allowed = cloud && scope ? keepAllowed(cloud, all, scope).blob : all;
-  if (older) console.info(`[store] the changes kept on this Mac are from an older Bops than the one that wrote ${who.user}'s state since: only what they add goes in`);
+  if (older) console.info(`[store] the changes kept on this Mac are from an older Oshy Ops than the one that wrote ${who.user}'s state since: only what they add goes in`);
   const refused = older ? refusedWork(kept, cloud) : null;
   const blob = refused?.threads.size && Array.isArray(allowed.sessions) ? { ...allowed, sessions: (allowed.sessions as Blob[]).filter((x) => !refused.threads.has(x.id as string)) } : allowed;
   const synced = new Map(kept.msgHashes);
@@ -636,7 +636,7 @@ export function cloudStore({ get, replace, touch, went }: StateAccess): Persiste
         for (const x of no.paths) if (typeof x === "string") box.refused.add(x);
         if (box.refused.size > had) continue;
       }
-      if (r.status !== 409 || conflict?.code !== STATE_CONFLICT) refused("Saving your Bops", r);
+      if (r.status !== 409 || conflict?.code !== STATE_CONFLICT) refused("Saving your Oshy Ops", r);
       // Another Mac wrote first: theirs and this Mac's together, then written over theirs.
       const target = state();
       if (!target) return 0;
@@ -748,7 +748,7 @@ export function cloudStore({ get, replace, touch, went }: StateAccess): Persiste
   async function pullOnce(sync: Sync) {
     if (box.sync !== sync) return;
     const h = await call<CloudStateHead>(sync, "/v1/state/head");
-    if (h.status !== 200) refused("Reading your Bops", h);
+    if (h.status !== 200) refused("Reading your Oshy Ops", h);
     let changed = false;
     const gone: Went = { messages: [], sessions: [] };
     if (h.body.version !== sync.version) {
@@ -758,7 +758,7 @@ export function cloudStore({ get, replace, touch, went }: StateAccess): Persiste
         const theirs = heldFromComputer(sync, r.body);
         gone.sessions.push(...mergeIn(sync, get(), theirs, theirs === r.body ? undefined : r.body.state));
         changed = true;
-      } else if (r.status !== 200 && r.status !== 404) refused("Reading your Bops", r);
+      } else if (r.status !== 200 && r.status !== 404) refused("Reading your Oshy Ops", r);
     }
     // Away too long to have heard of every removal, or never read past the start (an account with no messages at
     // sign in): a read from the start leaves removed rows out (cloud/state.ts), so what went is what isn't there.
@@ -876,7 +876,7 @@ export function cloudStore({ get, replace, touch, went }: StateAccess): Persiste
         box.sync = a.sync;
         box.tooNew = false;
         replace(a.state as unknown as Record<string, unknown>);
-        console.info(`[store] ${userId}'s Bops, with changes still to send to Bops Cloud`);
+        console.info(`[store] ${userId}'s Oshy Ops, with changes still to send to Bops Cloud`);
         schedule(0);
         return;
       }
@@ -910,7 +910,7 @@ export function cloudStore({ get, replace, touch, went }: StateAccess): Persiste
       const now = shared(get(), sync.device);
       sync.blobHash = same(JSON.parse(now), sync.base) ? fp(now) : "";
     }
-    console.info(`[store] loaded ${userId}'s Bops from Bops Cloud (v${sync.version}, ${get().messages.length} messages)`);
+    console.info(`[store] loaded ${userId}'s Oshy Ops from Bops Cloud (v${sync.version}, ${get().messages.length} messages)`);
     // A new user's first state, the file from before, or what was kept on this Mac: up now.
     schedule(loaded.got && !legacy && !kept ? SAVE_MS : 0);
   }

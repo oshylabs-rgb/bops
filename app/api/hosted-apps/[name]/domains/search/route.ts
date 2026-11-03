@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  * credits. Each search is one of the few a minute Orgo allows the user: the Bops window only.
  */
 export async function GET(request: Request, ctx: { params: Promise<{ name: string }> }) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be searched in the Bops app." }, { status: 403 }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be searched in the Oshy Ops app." }, { status: 403 }));
   if (unready) return unready;
   // Only an @orgo.ai account has apps on the web for now (lib/apps-access.ts).
   if (!appsOpen(getState())) return Response.json({ error: "Not found" }, { status: 404 });

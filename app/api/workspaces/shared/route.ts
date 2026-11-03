@@ -29,7 +29,7 @@ export async function GET() {
 export async function POST(request: Request) {
   const unready = notReady();
   if (unready) return unready;
-  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Bops window." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Oshy Ops window." }, { status: 403 });
   const body = (await request.json().catch(() => ({}))) as { open?: unknown; leave?: unknown; older?: unknown; act?: unknown; key?: unknown };
   if (body.leave === true) {
     closeShared();

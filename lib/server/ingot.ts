@@ -136,7 +136,7 @@ const READY_MS = 60_000;
  */
 export function authorOf(botId: string | undefined): string {
   const b = botId ? bot(botId) : undefined;
-  const name = (b?.name ?? "Bops").replace(/[\u0000-\u001f\u007f;]+/g, " ").trim() || "Bops";
+  const name = (b?.name ?? "Oshy Ops").replace(/[\u0000-\u001f\u007f;]+/g, " ").trim() || "Oshy Ops";
   return `${b?.id ?? "bops"}; ${name}`;
 }
 
@@ -401,7 +401,7 @@ async function tokenName(computerId: string, wsId: string, botId?: string): Prom
       .slice(0, most)
       .join("")
       .trim();
-  const who = plain(b?.name, 30) || "Bops";
+  const who = plain(b?.name, 30) || "Oshy Ops";
   return `${who} on ${plain(c?.name, 60 - Array.from(who).length) || plain(computerId, 60 - Array.from(who).length)}`;
 }
 
@@ -538,7 +538,7 @@ async function setUp(computerId: string, wsId: string, workspace: string, o: { s
   if (arch !== "amd64" && arch !== "arm64") throw new IngotError(`Ingot runs on Linux on amd64 or arm64, and this computer is ${arch || "something else"}.`);
   const has = m.get("INGOT_BIN") ?? "none";
   const bin = vendored(arch);
-  if (!bin && has === "none") throw new IngotError(`This Bops has no Ingot for the computer to run (${binaryPath(arch)} is missing), so its apps can't be set up there.`);
+  if (!bin && has === "none") throw new IngotError(`This Oshy Ops has no Ingot for the computer to run (${binaryPath(arch)} is missing), so its apps can't be set up there.`);
   if (bin && has !== bin.sha256) {
     await sendBinary(computerId, bin, o.ours, o.signal);
     stillOurs(o.ours);
@@ -733,7 +733,7 @@ export const ingot = {
     if (r.status === 404) return null;
     if (r.status !== 200 || !Array.isArray(r.json.files)) throw refusal(`Couldn't read ${name}'s files`, r);
     const files = r.json.files.map(fileOf);
-    if (files.some((f) => !f)) throw new IngotError(`Ingot listed ${name}'s files in a way this Bops doesn't know.`);
+    if (files.some((f) => !f)) throw new IngotError(`Ingot listed ${name}'s files in a way this Oshy Ops doesn't know.`);
     return files as IngotFile[];
   },
   /**

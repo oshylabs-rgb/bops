@@ -218,7 +218,7 @@ export async function startOwnerPhone(number: string, consent: boolean) {
     if (!user || !table) return { ok: false as const, error: "Sign in first." };
     const taken = await table.takenByOther(user, e164).catch((e: Error) => (console.warn(`[phone] owner_phones: ${e.message}`), null));
     if (taken === null) return { ok: false as const, error: "Couldn't check that number right now. Try again in a minute." };
-    if (taken) return { ok: false as const, error: "That number is already verified on another Bops account." };
+    if (taken) return { ok: false as const, error: "That number is already verified on another Oshy Ops account." };
   }
   return startVerification("sms", e164, verifier(), consent ? Date.now() : prior!);
 }
@@ -239,7 +239,7 @@ export async function checkOwnerPhone(number: string, code: string) {
     if (!user || !table) return { ok: false as const, error: "Sign in first.", restart: true };
     const claimed = await table.claim(user, e164, r.consentAt, r.ref).catch((e: Error) => (console.warn(`[phone] owner_phones: ${e.message}`), null));
     if (!claimed) return { ok: false as const, error: "Couldn't save the number right now. Send a new code and try again.", restart: true };
-    if (!claimed.ok) return { ok: false as const, error: "That number is already verified on another Bops account.", restart: true };
+    if (!claimed.ok) return { ok: false as const, error: "That number is already verified on another Oshy Ops account.", restart: true };
   }
   const verifiedAt = Date.now();
   const userId = getState().account?.user.id;
@@ -331,7 +331,7 @@ export async function ensurePhone(botId: string, areaCode?: string) {
   let number = numbers.data.find((n) => n.externalId === tag);
   let agentId = number?.agentId ?? undefined;
   const madeAgent = !agentId;
-  if (!agentId) agentId = (await ap<{ id: string }>("POST", "/agents", { name: `${b.name} (Bops)`, description: tag, voiceMode: "webhook", enableMessaging: true })).id;
+  if (!agentId) agentId = (await ap<{ id: string }>("POST", "/agents", { name: `${b.name} (Oshy Ops)`, description: tag, voiceMode: "webhook", enableMessaging: true })).id;
   if (!number) {
     number = await ap<ApNumber>("POST", "/numbers", { country: "US", areaCode: area, type: "sms", externalId: tag, agentId }).catch((e: Error) => {
       if (/no numbers available/i.test(e.message)) e.message = `No ${area} numbers are left. Search again and pick another area code.`;
@@ -488,7 +488,7 @@ export async function syncLineVoices(botId?: string) {
 /** A bot's text, plain: links written out (a web source as one line at the end), no markdown (a text shows it raw). */
 const plain = (t: string) =>
   plainLinks(t.replace(/\n*Open: \[[^\]]*\]\(\/api\/pages\/[^)]*\)/g, ""))
-    .replace(/\[([^\]]+)\]\((?:\/|~\/|file:)[^)]*\)/g, "$1 (in Bops)")
+    .replace(/\[([^\]]+)\]\((?:\/|~\/|file:)[^)]*\)/g, "$1 (in Oshy Ops)")
     .replace(/\*\*([^*]+)\*\*/g, "$1")
     .trim();
 
@@ -768,7 +768,7 @@ const START_WORDS = new Set(["start", "unstop"]);
 const HELP_WORDS = new Set(["help", "info"]);
 /** The HELP reply carriers require; the contact is BOPS_SUPPORT_EMAIL. */
 const helpText = () =>
-  `Bops by Orgo: texts from your Bops assistants. Msg & data rates may apply. Reply STOP to opt out.${process.env.BOPS_SUPPORT_EMAIL ? ` Help: ${process.env.BOPS_SUPPORT_EMAIL}` : ""}`;
+  `Bops by Orgo: texts from your Oshy Ops assistants. Msg & data rates may apply. Reply STOP to opt out.${process.env.BOPS_SUPPORT_EMAIL ? ` Help: ${process.env.BOPS_SUPPORT_EMAIL}` : ""}`;
 
 /** STOP: no more texts to that number (one confirmation); START: texts again; HELP: what this is and how to stop. */
 async function keywordIn(b: Bot, from: string, keyword: string) {
@@ -1082,9 +1082,9 @@ function callTurns(transcript: string | undefined) {
 export async function renameAgents(botId: string) {
   const b = bot(botId);
   if (!b || !phoneOn()) return;
-  if (b.phoneLine?.agentId) await ap("PATCH", `/agents/${b.phoneLine.agentId}`, { name: `${b.name} (Bops)` });
+  if (b.phoneLine?.agentId) await ap("PATCH", `/agents/${b.phoneLine.agentId}`, { name: `${b.name} (Oshy Ops)` });
   const ws = getState().workspaces?.find((w) => w.id === workspaceOf(b));
-  if (b.isMain && ws?.line?.agentId) await ap("PATCH", `/agents/${ws.line.agentId}`, { name: `Bops · ${ws.name} (${b.name})` }, ws.line.scope);
+  if (b.isMain && ws?.line?.agentId) await ap("PATCH", `/agents/${ws.line.agentId}`, { name: `Oshy Ops · ${ws.name} (${b.name})` }, ws.line.scope);
   await syncLineVoices(botId);
 }
 
@@ -1114,7 +1114,7 @@ export async function assignWorkspaceLine(workspaceId: string, phoneNumber: stri
   const previousHook = previousId ? await ap<{ url?: string } | null>("GET", `/agents/${previousId}/webhook`, undefined, scope).catch(() => null) : null;
   let agent = agents.find((a) => a.description === tag);
   const madeAgent = !agent;
-  if (!agent) agent = await ap<ApAgent>("POST", "/agents", { name: `Bops · ${ws.name} (${main.name})`, description: tag, voiceMode: "webhook", enableMessaging: true }, scope);
+  if (!agent) agent = await ap<ApAgent>("POST", "/agents", { name: `Oshy Ops · ${ws.name} (${main.name})`, description: tag, voiceMode: "webhook", enableMessaging: true }, scope);
   if (previousId && previousId !== agent.id) await ap("DELETE", `/agents/${previousId}/numbers/${number.id}`, undefined, scope);
   if (previousId !== agent.id) await ap("POST", `/agents/${agent.id}/numbers`, { numberId: number.id }, scope);
   const hook = await ap<{ secret?: string; url?: string }>("POST", `/agents/${agent.id}/webhook`, { url, contextLimit: 10, timeout: 30 }, scope);

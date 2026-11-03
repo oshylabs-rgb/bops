@@ -385,7 +385,7 @@ export function parseSkillMd(text: string): ParsedSkillMd {
   const yaml = m[1] ?? "";
   if (byteLength(yaml) > BUNDLE_LIMITS.frontmatter) return { ok: false, reason: `frontmatter is over ${BUNDLE_LIMITS.frontmatter / 1024} KB` };
   const fm = yaml.trim() ? parseYaml(yaml) : {};
-  if (!fm) return { ok: false, reason: "frontmatter is not YAML Bops can read" };
+  if (!fm) return { ok: false, reason: "frontmatter is not YAML Oshy Ops can read" };
   return { ok: true, frontmatter: fm, body: text.slice(m[0].length) };
 }
 

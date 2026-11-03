@@ -536,7 +536,7 @@ export function LocalSection({ ws, app, site, local, onLocal }: { ws: string; ap
   const start = async () => {
     const p = portShown.trim();
     if (p && (!/^\d{1,5}$/.test(p) || Number(p) < 1024 || Number(p) > 65535)) return setError({ words: "Use a port from 1024 to 65535.", field: "port" });
-    if (p === "3210") return setError({ words: "Bops uses 3210 on this Mac. Pick another.", field: "port" });
+    if (p === "3210") return setError({ words: "Oshy Ops uses 3210 on this Mac. Pick another.", field: "port" });
     setBusy("start");
     setError(null);
     const r = await localAct(ws, app.name, {

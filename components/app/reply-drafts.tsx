@@ -68,7 +68,7 @@ function DraftCard({ messageId, draft: d, readOnly, from }: { messageId: string;
       // Being sent, or sent already (a second click, another window): the card shows that from the state.
       else if (res.status !== 409) setAnswered(((await res.json().catch(() => null)) as { error?: string } | null)?.error ?? "It didn't send.");
     } catch {
-      setAnswered("Bops couldn't be reached. Try again.");
+      setAnswered("Oshy Ops couldn't be reached. Try again.");
     }
     setBusy(false);
   };

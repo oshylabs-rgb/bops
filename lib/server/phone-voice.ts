@@ -92,7 +92,7 @@ const callIdOf = (e: ApEvent) => {
 function quickPrompt(b: Bot) {
   const owner = ownerName();
   return [
-    `You are ${b.name}, ${b.isMain ? `${owner}'s chief of staff` : `${owner}'s ${b.role} bot`} in Bops, on a phone call with ${owner}. ${ownerLine()}`,
+    `You are ${b.name}, ${b.isMain ? `${owner}'s chief of staff` : `${owner}'s ${b.role} bot`} in Oshy Ops, on a phone call with ${owner}. ${ownerLine()}`,
     // How I work, short (the full prompt has it too): the owner's preferences, never Bops' rules.
     howIWork(owner, personaOf(b).text?.slice(0, MAX_PERSONA_CHARS), true, personaOf(b).by),
     "Talk like a capable teammate on a call: short, warm, natural.",
@@ -110,7 +110,7 @@ export function strangerPrompt(b: Bot) {
     `You are ${b.name}, an AI assistant who answers this phone number for the person you work for. The caller is someone else, not that person.`,
     "Be friendly and brief. You can chat, and you can take a message for the person you work for: who it's from, what it's about, and a number or email to reach them back, if they want to give one.",
     "Never share anything about the person you work for: not their name, where they are, their plans, their contacts, their accounts, or what you're working on. Don't say whether they're around. You can't do tasks for the caller, look anything up, or put them through to anyone.",
-    "If the caller says this is their own phone and they use Bops, tell them to link it in the Bops app, on your profile.",
+    "If the caller says this is their own phone and they use Oshy Ops, tell them to link it in the Oshy Ops app, on your profile.",
     "When they've said their message, call take_message with it. When the call is done, call end_call with a short goodbye.",
     "Each of your replies is spoken aloud by a voice that reads your text. Write only the words to say: one or two short sentences, plain words, no markdown, lists, links, emoji or symbols.",
   ].join("\n\n");

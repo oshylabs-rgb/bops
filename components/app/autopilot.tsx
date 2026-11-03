@@ -188,7 +188,7 @@ function deliveryName(d: Delivery, state: AppState) {
 
 /** Every place a schedule's results go: the bot's chat in Bops always, then what it delivers to. */
 function destinations(r: Routine, state: AppState) {
-  const to = ["Bops chat"];
+  const to = ["Oshy Ops chat"];
   if (r.deliverTo) to.push(deliveryName(r.deliverTo, state));
   if (r.textTo && r.deliverTo?.kind !== "text") to.push("Text");
   return to.join(", ");
@@ -233,7 +233,7 @@ async function send(url: string, body: unknown, method: string, answered?: (json
     if (r.ok && !said) return answered?.(j) ?? null;
     return typeof said === "string" && said ? undash(said) : "That didn't work. Try again.";
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -1515,7 +1515,7 @@ export function MonitorRow({
         sure && (
           <>
             <InlineConfirm
-              text="Stop watching this? Bops stops checking it."
+              text="Stop watching this? Oshy Ops stops checking it."
               action="Stop"
               doing="Stopping…"
               busy={busy === "remove"}

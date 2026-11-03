@@ -383,7 +383,7 @@ export function cloudKey(): string | null {
 export const signedInUser = (): OrgoUser | null => getState().account?.user ?? null;
 
 export async function signIn(apiKey: string, user: OrgoUser) {
-  if (onRunner()) throw new Error("Sign in from the Bops app on your Mac.");
+  if (onRunner()) throw new Error("Sign in from the Oshy Ops app on your Mac.");
   const before = signedInUser();
   const was = keyNow();
   // First this user's own state is loaded (from Bops Cloud, their file, or Postgres): the sign-in is refused if it can't be.
@@ -433,7 +433,7 @@ async function giveBack(before: OrgoUser | null, was: ReturnType<typeof keyNow>)
 }
 
 export async function signOut() {
-  if (onRunner()) throw new Error("Sign out from the Bops app on your Mac.");
+  if (onRunner()) throw new Error("Sign out from the Oshy Ops app on your Mac.");
   await releaseSignOut();
   await deleteSecret(KEY_ACCOUNT);
   setKey(null);

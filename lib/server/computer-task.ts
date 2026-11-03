@@ -255,7 +255,7 @@ async function steps(t: ComputerTurn, ws: { socket?: ResponsesSocket | null }): 
         });
       }
     }
-    if (notes.length) input.push({ role: "user", content: [{ type: "input_text", text: `(From Bops: ${notes.join(" ")})` }] });
+    if (notes.length) input.push({ role: "user", content: [{ type: "input_text", text: `(From Oshy Ops: ${notes.join(" ")})` }] });
   }
 }
 
@@ -301,7 +301,7 @@ async function answerPaused(t: ComputerTurn, a: AppApproval, call: { name: strin
     keep(declined(a));
     return { type: "function_call_output", call_id: callId, output: declined(a) };
   }
-  keep("Not known: Bops stopped while doing it, so it may or may not have happened. Check before doing it again.");
+  keep("Not known: Oshy Ops stopped while doing it, so it may or may not have happened. Check before doing it again.");
   const answered = await runFunction(t, { type: "function_call", call_id: callId, name: call.name, arguments: call.arguments }, guard, { approved: true });
   const output = "pause" in answered ? "Failed: it still needs the user's OK." : answered.output;
   keep(typeof output === "string" ? output : (output.find((c) => c.type === "input_text")?.text ?? ""));
@@ -585,7 +585,7 @@ const VAULT_TOOL = {
   type: "function",
   name: "sign_in_from_vault",
   description:
-    "Sign in on a sign-in or verification code page with a login the user saved in Logins: Bops finds the page on your screen, fills the saved username, password or 2FA code straight into it and submits; you never see them. Call it whenever a page asks you to sign in, and never type a password yourself. It says whether that worked.",
+    "Sign in on a sign-in or verification code page with a login the user saved in Logins: Oshy Ops finds the page on your screen, fills the saved username, password or 2FA code straight into it and submits; you never see them. Call it whenever a page asks you to sign in, and never type a password yourself. It says whether that worked.",
   parameters: { type: "object", additionalProperties: false, required: [], properties: {} },
   strict: true,
 };

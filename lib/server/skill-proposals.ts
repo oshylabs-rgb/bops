@@ -75,7 +75,7 @@ export function offerProposal(b: Bot, a: ProposeArgs, from: ProposeFrom, had: Sk
   const r = findSkill(b.id, name);
   if (!r) {
     const own = builtinSkills(true).some((s) => s.slug === name || s.name.toLowerCase() === name.toLowerCase());
-    return no(own ? "that's one of Bops' own skills, which come with Bops and can't be changed." : `you have no skill called "${name.slice(0, 80)}".`);
+    return no(own ? "that's one of Oshy Ops' own skills, which come with Oshy Ops and can't be changed." : `you have no skill called "${name.slice(0, 80)}".`);
   }
   const rawFile = typeof a.file === "string" ? a.file.trim() : "";
   const n = rawFile === "SKILL.md" ? { path: "SKILL.md" } : normalizePath(rawFile);
@@ -236,7 +236,7 @@ const going = new Set<string>();
  * rejected, on a computer's runner, and while another Accept of it goes.
  */
 export function acceptProposal(messageId: string, proposalId: string, seen?: string): ProposalAnswer {
-  if (onRunner()) return { ok: false, status: 409, error: "Accept it in Bops on your Mac." };
+  if (onRunner()) return { ok: false, status: 409, error: "Accept it in Oshy Ops on your Mac." };
   const f = find(messageId, proposalId);
   if (!f) return { ok: false, status: 404, error: "That proposal isn't here anymore." };
   const { p } = f;
@@ -274,7 +274,7 @@ export function acceptProposal(messageId: string, proposalId: string, seen?: str
 
 /** The owner's Reject: dropped, nothing changed. */
 export function rejectProposal(messageId: string, proposalId: string): ProposalAnswer {
-  if (onRunner()) return { ok: false, status: 409, error: "Reject it in Bops on your Mac." };
+  if (onRunner()) return { ok: false, status: 409, error: "Reject it in Oshy Ops on your Mac." };
   const f = find(messageId, proposalId);
   if (!f) return { ok: false, status: 404, error: "That proposal isn't here anymore." };
   if (f.p.status) return { ok: false, status: 409, error: f.p.status === "accepted" ? "It was accepted already." : "It was rejected already." };

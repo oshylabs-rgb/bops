@@ -176,7 +176,7 @@ function read(s: Shared) {
       else if (!s.list && asked >= s.shown) show(s, { issues: [], tags: [] }, asked);
     })
     // Bops itself out of reach: said too.
-    .catch(() => fail(s, asked, "Couldn't reach Bops."))
+    .catch(() => fail(s, asked, "Couldn't reach Oshy Ops."))
     .finally(() => {
       s.reading--;
     });
@@ -276,7 +276,7 @@ async function update(user: string, ws: string, id: string, patch: IssuePatch): 
     return null;
   } catch {
     if (before) patchHere(s, (all) => all.map((i) => (i.id === id ? before : i)));
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -301,7 +301,7 @@ async function remove(user: string, ws: string, id: string): Promise<string | nu
     patchHere(s, (all) => all.filter((i) => i.id !== id));
     return null;
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 

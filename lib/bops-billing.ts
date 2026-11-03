@@ -206,7 +206,7 @@ export const dayText = (ms: number) => new Date(ms).toLocaleDateString("en-US", 
 export const extensionLine = (endsAt: number) => `Your current plan stays as it is until ${dayText(endsAt)}, then you pay only for what you use.`;
 
 /** What a computer that can't wake for want of Orgo credit says (its asleep screen, a task that couldn't start). */
-export const OUT_OF_CREDIT_WAKE = "Your Bops computer is asleep because your Orgo credit ran out. Add credit on Orgo to wake it.";
+export const OUT_OF_CREDIT_WAKE = "Your Oshy Ops computer is asleep because your Orgo credit ran out. Add credit on Orgo to wake it.";
 
 /**
  * Orgo's codes when a wake or a start is turned down for want of credit (orgo-web: lib/billing

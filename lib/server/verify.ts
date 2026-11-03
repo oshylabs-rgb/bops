@@ -325,7 +325,7 @@ export async function startVerification(channel: Channel, to: string, install: s
       return { ok: false, error: `Too many codes were sent to this ${words.recipient}. Try again in ${minutes(wait * 1000)} min.`, retryInSec: wait };
     }
     // Bops Cloud keeps one verified owner per number or address across all its users.
-    if (s === 409) return { ok: false, error: `That ${words.recipient} is already verified on another Bops account.` };
+    if (s === 409) return { ok: false, error: `That ${words.recipient} is already verified on another Oshy Ops account.` };
     if (channel === "email") {
       if (UNMAILABLE.has(errCode(e) ?? 0)) return { ok: false, error: "That doesn't look like an email address." };
       if (s && s >= 400 && s < 500) {
@@ -383,7 +383,7 @@ export async function checkVerification(channel: Channel, to: string, install: s
     }
     if (s === 409) {
       box.pending.delete(key);
-      return { ok: false, error: `That ${words.recipient} is already verified on another Bops account.`, restart: true };
+      return { ok: false, error: `That ${words.recipient} is already verified on another Oshy Ops account.`, restart: true };
     }
     if (errCode(e) === 60202) {
       box.pending.delete(key);

@@ -155,11 +155,11 @@ export function UsageSection() {
   if (info) return <Usage info={info} />;
   if (failed && !loading)
     return (
-      <Section title="Bops usage">
+      <Section title="Oshy Ops usage">
         <LoadFailed onRetry={load} />
       </Section>
     );
-  return <Placeholder title="Bops usage" />;
+  return <Placeholder title="Oshy Ops usage" />;
 }
 
 export function Section({ title, aside, children }: { title: string; aside?: React.ReactNode; children: React.ReactNode }) {
@@ -939,7 +939,7 @@ function Usage({ info }: { info: AccountInfo }) {
     ["Inboxes", t.inboxes, "added"],
   ];
   return (
-    <Section title="Bops usage" aside={tabs}>
+    <Section title="Oshy Ops usage" aside={tabs}>
       <div className="grid grid-cols-5 gap-2">
         {tiles.map(([label, n, unit]) => (
           <div key={label} className="flex flex-col gap-1 rounded-[14px] px-3.5 py-3 shadow-[0_0_0_1px_#E6E6E3]">

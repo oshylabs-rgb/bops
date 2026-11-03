@@ -209,10 +209,10 @@ export function startRunsOn() {
 /** Settings: where the user's bots work from now on. Never from a runner. */
 export async function setRunsOn(to: RunsOn): Promise<{ error?: string; missing?: true }> {
   const user = userNow();
-  if (onRunner() || !user) return { error: "Sign in to Bops first." };
+  if (onRunner() || !user) return { error: "Sign in to Oshy Ops first." };
   const { apiKey, callOrgo } = await import("./orgo");
   const key = await apiKey().catch(() => "");
-  if (!key) return { error: "Sign in to Bops first." };
+  if (!key) return { error: "Sign in to Oshy Ops first." };
   const res = await callOrgo(key, SETTINGS, { method: "PUT", body: { runsOn: to }, timeoutMs: TIMEOUT_MS });
   if (res?.status === 404 || res?.status === 405) {
     hear(user, "mac", Date.now() + MISSING_RETRY_MS);

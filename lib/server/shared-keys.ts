@@ -36,10 +36,10 @@ export const OWNERS_KEY = "That's the owner's key. Only they can see, replace or
  */
 const SAID: Record<string, { status: number; words: string }> = {
   KEY_NOT_FOUND: { status: 404, words: "That key isn't in this workspace anymore." },
-  invalid_name: { status: 400, words: "Bops can't call that service yet. Pick one from the list." },
+  invalid_name: { status: 400, words: "Oshy Ops can't call that service yet. Pick one from the list." },
   value_required: { status: 400, words: "Paste the key first." },
   value_too_long: { status: 400, words: "That key is too long." },
-  app_key_required: { status: 403, words: "Orgo shows a key only to a Bops signed in with Orgo. Sign out, then sign in again." },
+  app_key_required: { status: 403, words: "Orgo shows a key only to an Oshy Ops signed in with Orgo. Sign out, then sign in again." },
   audit_unavailable: { status: 503, words: "Orgo couldn't note who looked just now, so it didn't send the key. Try again in a minute." },
 };
 
@@ -61,7 +61,7 @@ async function projectKeys<T>(projectId: string, method: "GET" | "POST" | "DELET
       signal: AbortSignal.timeout(15_000),
     });
   } catch {
-    throw new KeysError("Bops couldn't reach Orgo. Check the internet and try again.", 502);
+    throw new KeysError("Oshy Ops couldn't reach Orgo. Check the internet and try again.", 502);
   }
   const json = (await res.json().catch(() => null)) as (T & { error?: unknown; code?: unknown }) | null;
   if (res.ok && json) return json;
@@ -176,7 +176,7 @@ export async function sharedGrant(name: string, botId: string, on: boolean, o: {
  */
 export async function sharedSave(name: string, value: string, botIds: string[]): Promise<{ name: string; note?: string }> {
   const n = keyName(name);
-  if (!keyProvider(n)) throw new KeysError("Bops can't call that service yet. Pick one from the list.", 400);
+  if (!keyProvider(n)) throw new KeysError("Oshy Ops can't call that service yet. Pick one from the list.", 400);
   const v = value.trim();
   if (!v) throw new KeysError("Paste the key first.", 400);
   if (v.length > 8192) throw new KeysError("That key is too long.", 400);

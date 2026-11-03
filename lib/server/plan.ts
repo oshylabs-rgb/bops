@@ -187,7 +187,7 @@ export async function bopsBillingLink(key: string, what: { tier: "pro_bops" | "m
 export function usageRefusal(): Response | null {
   if (cloudSessionNow()?.plan?.billing !== "usage") return null;
   return Response.json(
-    { error: "Bops plans aren't sold any more. You pay only for what you use, from your Orgo credit. Add credit on Orgo.", code: "bops_usage_billing", url: orgoTopUpPage(orgoOrigin()) },
+    { error: "Oshy Ops plans aren't sold any more. You pay only for what you use, from your Orgo credit. Add credit on Orgo.", code: "bops_usage_billing", url: orgoTopUpPage(orgoOrigin()) },
     { status: 409 },
   );
 }
@@ -519,7 +519,7 @@ async function freeKnown(main: Bot, epoch: number) {
   sameUser(epoch);
   const again = await orgoPlan({ fresh: true });
   if (again && !again.limitsUnread) return again;
-  throw new Error("Orgo didn't say whether your free Bops computer is made yet");
+  throw new Error("Orgo didn't say whether your free Oshy Ops computer is made yet");
 }
 
 /**
@@ -674,7 +674,7 @@ function shareFree(main: Bot, holder: Bot, why: PlanLimit, epoch: number) {
     chatId: botChatId(main.id),
     role: "bot",
     botId: main.id,
-    text: `I'll work on your free Bops computer, which ${holder.name} has, instead of one of my own. ${limitText(why)} Once your ${why.link ? "Orgo plan" : "plan"} has room, you can switch me to Its own under Computer in my Details.`,
+    text: `I'll work on your free Oshy Ops computer, which ${holder.name} has, instead of one of my own. ${limitText(why)} Once your ${why.link ? "Orgo plan" : "plan"} has room, you can switch me to Its own under Computer in my Details.`,
     bops: true,
   });
   return null;

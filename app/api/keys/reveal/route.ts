@@ -13,7 +13,7 @@ const NO_STORE = { "Cache-Control": "no-store" };
  * Chrome reached this server with mustn't read one. Nothing here logs the body, and it isn't cached.
  */
 export async function POST(request: Request) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Keys can only be seen in the Bops app." }, { status: 403, headers: NO_STORE }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Keys can only be seen in the Oshy Ops app." }, { status: 403, headers: NO_STORE }));
   if (unready) return unready;
   const b = (await request.json().catch(() => ({}))) as { name?: unknown; scope?: unknown };
   if (typeof b.name !== "string" || !b.name.trim()) return Response.json({ error: "Which key?" }, { status: 400, headers: NO_STORE });

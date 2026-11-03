@@ -22,7 +22,7 @@ export function saveUpload(dataUrl: string) {
   const buf = Buffer.from(m[2], "base64");
   if (buf.length > MAX_BYTES) throw new Error("that image is too big (12 MB at most)");
   const DIR = uploadsDir();
-  if (!DIR) throw new Error("sign in to Bops first");
+  if (!DIR) throw new Error("sign in to Oshy Ops first");
   mkdirSync(DIR, { recursive: true });
   const upId = id("img");
   writeFileSync(join(/*turbopackIgnore: true*/ DIR, `${upId}.${TYPES[m[1].toLowerCase()]}`), buf);

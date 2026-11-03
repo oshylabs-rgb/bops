@@ -18,7 +18,7 @@ import { PERSONA_CHANGED } from "@/cloud/protocol";
  * with mustn't be able to give a bot more say.
  */
 const notFromWindow = (request: Request) =>
-  fromBopsWindow(request) ? null : Response.json({ error: "A bot's settings can only be changed in the Bops app." }, { status: 403 });
+  fromBopsWindow(request) ? null : Response.json({ error: "A bot's settings can only be changed in the Oshy Ops app." }, { status: 403 });
 
 /**
  * Create a bot. It works on the main bot's computer, or (`ownComputer`) on a copy of it made on its first

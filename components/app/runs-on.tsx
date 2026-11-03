@@ -15,7 +15,7 @@ export type RunsOnInfo = { runsOn: "cloud" | "mac" | null; missing: boolean; asl
 
 const CHOICES = [
   { id: "cloud", name: "Cloud", line: "Tasks keep running when your Mac is closed." },
-  { id: "mac", name: "This Mac", line: "Only while Bops is open on this Mac." },
+  { id: "mac", name: "This Mac", line: "Only while Oshy Ops is open on this Mac." },
 ] as const;
 
 /**

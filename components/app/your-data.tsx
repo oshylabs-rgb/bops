@@ -121,7 +121,7 @@ function WhereKept({ info }: { info: PrivacyInfo }) {
       where: "Kept in this Mac's Keychain. A bot signing in fills them into that site's page, never into a chat or a model.",
       how: "Remove one in Logins, or disconnect its channel.",
     },
-    { kind: "Keys bots use", where: "Orgo's vault, encrypted. Bops keeps only their names.", how: "Delete one in Logins." },
+    { kind: "Keys bots use", where: "Orgo's vault, encrypted. Oshy Ops keeps only their names.", how: "Delete one in Logins." },
     {
       kind: "Chats, routines and settings",
       where: "Bops Cloud, Orgo's database, so your Macs and iPhone match.",
@@ -283,7 +283,7 @@ export function YourData() {
     <div className="flex flex-col gap-2 px-[22px] pt-4">
       <div className="flex flex-col gap-0.5">
         <span className="text-[13px] font-semibold">Your data</span>
-        <span className={sub}>Where Bops keeps your things, how long, and what a delete leaves behind.</span>
+        <span className={sub}>Where Oshy Ops keeps your things, how long, and what a delete leaves behind.</span>
       </div>
 
       <WhereKept info={info} />

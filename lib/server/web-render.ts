@@ -202,8 +202,8 @@ function ask(payload: Record<string, unknown>, ms: number): Promise<Record<strin
         finish(new Error("The browser's answer couldn't be read."));
       }
     });
-    sock.on("error", () => finish(new Error("Bops' browser isn't available.")));
-    sock.on("close", () => finish(new Error("Bops' browser closed the connection.")));
+    sock.on("error", () => finish(new Error("Oshy Ops' browser isn't available.")));
+    sock.on("close", () => finish(new Error("Oshy Ops' browser closed the connection.")));
   });
 }
 
@@ -227,7 +227,7 @@ export const lastGuardRefusals = () => [...lastRefused];
  * time, or it never got past a "checking your browser" page.
  */
 export async function renderPage(url: string, opts: { limitMs?: number } = {}): Promise<Rendered> {
-  if (!browserAvailable()) throw new Error("Bops' browser isn't available.");
+  if (!browserAvailable()) throw new Error("Oshy Ops' browser isn't available.");
   if (queued >= MAX_QUEUED) throw new Error("Too many pages are waiting for the browser.");
   const limit = Math.min(Math.max(1_000, opts.limitMs ?? RENDER_LIMIT_MS), RENDER_LIMIT_MS);
   queued++;

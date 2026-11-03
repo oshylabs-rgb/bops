@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
  * this server with mustn't add one, move a bot onto one, or sign one in. A build without brains has none of
  * these routes (brainsOff).
  */
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Brains can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Brains can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 const failed = (e: unknown) => Response.json({ error: (e as Error).message }, { status: e instanceof BrainError ? e.status : 500 });
 

@@ -46,7 +46,7 @@ export async function POST(request: Request) {
       const e = read.email;
       if (!e?.send) return Response.json({ error: "couldn't find the Send button; take over to send it" }, { status: 409 });
       // Into the tab the draft was read on, while it's still on that site (lib/server/sign-in.ts does the same).
-      if (!read.targetId) return Response.json({ error: "Bops needs to look at the draft again. Try in a few seconds." }, { status: 409 });
+      if (!read.targetId) return Response.json({ error: "Oshy Ops needs to look at the draft again. Try in a few seconds." }, { status: 409 });
       const host = new URL(read.url).hostname;
       const send = e.send;
       await onTab(endpoint, read.targetId, async () => {

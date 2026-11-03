@@ -519,7 +519,7 @@ export function readReposAhead(botId: string) {
 /** Why deploying can't work from this Bops before Orgo is asked (undefined: it can, as far as Bops knows). */
 export async function closedHere(): Promise<string | undefined> {
   if (await loadOrgoKey().catch(() => null)) return undefined;
-  return selfHosted() ? "This Bops runs on its own Orgo key. Sign in with Orgo to put apps on the web." : "Sign in with Orgo to put apps on the web.";
+  return selfHosted() ? "This Oshy Ops runs on its own Orgo key. Sign in with Orgo to put apps on the web." : "Sign in with Orgo to put apps on the web.";
 }
 
 /** Orgo's answer to a probe of the workspace's main computer, kept a minute: whether hosting is open to this account. */
@@ -3474,7 +3474,7 @@ function cfLeftWords(lefts: CfLeft[]): string | undefined {
   const zone = zones.size === 1 ? [...zones][0] : null;
   const w = rs.map((r) => `${r.type} ${zone ? hostIn(r.name, zone) : r.name}`);
   const list = w.length < 2 ? w[0] : `${w.slice(0, -1).join(", ")} and ${w.at(-1)}`;
-  return lefts.every((l) => l.sure) ? `Bops couldn't reach Cloudflare, so remove ${list} there.` : `Bops couldn't reach Cloudflare. If it set ${list} there, remove ${rs.length === 1 ? "it" : "them"}.`;
+  return lefts.every((l) => l.sure) ? `Oshy Ops couldn't reach Cloudflare, so remove ${list} there.` : `Oshy Ops couldn't reach Cloudflare. If it set ${list} there, remove ${rs.length === 1 ? "it" : "them"}.`;
 }
 
 /** The Cloudflare key a computer's domains use (cfScopeOf), read once however many of them go; null: none, or the vault not answering. */
@@ -3844,7 +3844,7 @@ async function forgetLocals(wsId: string, name: string, computerId: string, fold
 /** bops-local's refusals, in words (port-held and port-taken say their port: localFailed). */
 const LOCAL_WORDS: Record<string, string> = {
   "no-folder": "Its working folder isn't on its computer yet. Ask its bot to work on it first.",
-  "no-command": "Bops couldn't tell how to run it. Type the command that starts it.",
+  "no-command": "Oshy Ops couldn't tell how to run it. Type the command that starts it.",
   "no-port": "No port from 3000 to 3099 is free on its computer.",
   "bad-port": "Use a port from 1024 to 65535.",
   "bad-screen": "Couldn't open it on that screen.",
@@ -3853,7 +3853,7 @@ const LOCAL_WORDS: Record<string, string> = {
   "no-browser": "Couldn't open it on its computer's screen. Open its screen and go to it there.",
   "bad-env": "Couldn't save its variables there. Try again.",
   "bad-name": "There's no site by that name in this app.",
-  "bad-command": "Bops can't run that command.",
+  "bad-command": "Oshy Ops can't run that command.",
   write: "Couldn't write to its computer. Try again.",
 };
 
@@ -4135,7 +4135,7 @@ function devPortOf(v: unknown): number | "auto" | undefined {
   if (v === undefined || v === null || v === "") return undefined;
   const n = typeof v === "number" ? v : typeof v === "string" && /^\s*\d{1,5}\s*$/.test(v) ? Number(v) : NaN;
   if (!Number.isInteger(n) || n < 1024 || n > 65535) throw new HostedAppError("Use a port from 1024 to 65535.", 400, { field: "port" });
-  if (n === 3210) throw new HostedAppError("Bops uses 3210 on this Mac. Pick another.", 400, { field: "port" });
+  if (n === 3210) throw new HostedAppError("Oshy Ops uses 3210 on this Mac. Pick another.", 400, { field: "port" });
   return n;
 }
 
@@ -4374,7 +4374,7 @@ function repoNamed(wsId: string, words: string): string | undefined {
  * token, as it does its other writes).
  */
 function gitAs(botId: string): string {
-  const name = (bot(botId)?.name ?? "").replace(/[\u0000-\u001f\u007f]+/g, " ").trim() || "Bops";
+  const name = (bot(botId)?.name ?? "").replace(/[\u0000-\u001f\u007f]+/g, " ").trim() || "Oshy Ops";
   return `-c user.name='${name.replace(/'/g, `'\\''`)}' -c user.email=${botId.replace(/[^A-Za-z0-9_.]/g, "") || "bops"}@bops.invalid`;
 }
 
@@ -4430,17 +4430,17 @@ export function appWork(botId: string, a: { app: string | null; name: string | n
   const site = siteFor(botId, name) ?? name;
   const goal = [
     copy
-      ? `Work on ${owner}'s app ${name}. It's the Ingot repo ${repo} (Ingot is Orgo's source control; name it in full wherever a command takes a repo), and your working folder on this computer is ${dir}, a copy of your own: Bops cloned it there, or pulled the newest main into it (merged with what you hadn't committed), as this task started.`
-      : `Work on ${owner}'s app ${name}. It's the Ingot repo ${repo} (Ingot is Orgo's source control; name it in full wherever a command takes a repo), and its working folder on this computer is ${dir}: Bops cloned it there, or pulled the newest into it, as this task started.`,
+      ? `Work on ${owner}'s app ${name}. It's the Ingot repo ${repo} (Ingot is Orgo's source control; name it in full wherever a command takes a repo), and your working folder on this computer is ${dir}, a copy of your own: Oshy Ops cloned it there, or pulled the newest main into it (merged with what you hadn't committed), as this task started.`
+      : `Work on ${owner}'s app ${name}. It's the Ingot repo ${repo} (Ingot is Orgo's source control; name it in full wherever a command takes a repo), and its working folder on this computer is ${dir}: Oshy Ops cloned it there, or pulled the newest into it, as this task started.`,
     `What to do: ${change}`,
     WHERE_THINGS_ARE(owner),
-    "1. Make the change in that folder. An app that runs a server listens on the port in $PORT, which Orgo sets when it deploys it and bops-local sets for its Local; a plain site needs only an index.html. Keep secrets out of the folder: .env files are never committed. Read its own address from AUTH_URL (or NEXTAUTH_URL) rather than writing one in: Bops sets it to its Local's address for its Local, its preview link for its Preview, and its domain once published.",
-    `2. Run it as its Local and leave it running: bops-local start ${word} ${site} (it runs its dev script, else its start script, with hot reload, and prints a BOPS_LOCAL line whose fourth word is its port). ${owner} watches it live in Bops beside this chat while you save. Check each change with curl -i http://127.0.0.1:<that port>/. If it fails, bops-local status ${word} and /root/.bops/local/${word}--${site}.log say why. Don't run another server on that port, and don't stop its Local when you're done.`,
+    "1. Make the change in that folder. An app that runs a server listens on the port in $PORT, which Orgo sets when it deploys it and bops-local sets for its Local; a plain site needs only an index.html. Keep secrets out of the folder: .env files are never committed. Read its own address from AUTH_URL (or NEXTAUTH_URL) rather than writing one in: Oshy Ops sets it to its Local's address for its Local, its preview link for its Preview, and its domain once published.",
+    `2. Run it as its Local and leave it running: bops-local start ${word} ${site} (it runs its dev script, else its start script, with hot reload, and prints a BOPS_LOCAL line whose fourth word is its port). ${owner} watches it live in Oshy Ops beside this chat while you save. Check each change with curl -i http://127.0.0.1:<that port>/. If it fails, bops-local status ${word} and /root/.bops/local/${word}--${site}.log say why. Don't run another server on that port, and don't stop its Local when you're done.`,
     `3. Commit it from the folder: ingot commit -m "<what changed, in one clear line>" (or the Ingot tools' repo_commit). ${SYNC_WORDS}`,
     ...(others ? [OTHERS_WORDS(name)] : []),
     `Plain git works too, if you'd rather, in a clone of its own (never inside ${dir}): git clone "$(ingot git-url ${repo})" ${dir}-git, make the change and commit there (${git} commit), and git push origin HEAD:main. Ingot's credential helper is set up on this computer already, so git asks no password. A push refused as stale means someone committed first: ${git} pull --no-rebase, fix any file it lists as a conflict, ${git} commit, then push again. Both ways land on the same history.`,
     a.deploy
-      ? `4. Say what you changed. ${owner} asked for a link too: once you've committed and this task ends, Bops deploys its newest commit to its preview itself and tells them where, so don't tell them to deploy it. If you couldn't commit it, say why.`
+      ? `4. Say what you changed. ${owner} asked for a link too: once you've committed and this task ends, Oshy Ops deploys its newest commit to its preview itself and tells them where, so don't tell them to deploy it. If you couldn't commit it, say why.`
       : `4. Say what you changed. ${owner} sees it in its Local now; it goes on the web when they ask, as a preview link first.`,
   ].join("\n");
   return { goal, title: `Work on ${name}`, name, site };
@@ -4494,8 +4494,8 @@ const WHERE_THINGS_ARE = (owner: string) =>
   [
     `Where things are, in the words to use with ${owner}:`,
     "Screen: the screen of this computer this task works on (screen 1 to 4). Open pages only in your own screen's Chrome, never in another screen's.",
-    "Local: this site's dev server on this computer, with hot reload, at http://localhost:<its port>. Its address is the one bops-local prints, and it stays the same: the same on this computer's screens and in Bops beside this chat, and Bops sets AUTH_URL to it. Never start, stop or restart another site's Local, and never kill a process on a port that isn't your site's.",
-    "Preview: its fixed link, https://<12 letters and digits>.orgo.dev, to test and share (Bops deploys it there).",
+    "Local: this site's dev server on this computer, with hot reload, at http://localhost:<its port>. Its address is the one bops-local prints, and it stays the same: the same on this computer's screens and in Oshy Ops beside this chat, and Oshy Ops sets AUTH_URL to it. Never start, stop or restart another site's Local, and never kill a process on a port that isn't your site's.",
+    "Preview: its fixed link, https://<12 letters and digits>.orgo.dev, to test and share (Oshy Ops deploys it there).",
     `Published: its own domain, only when ${owner} publishes it.`,
     `When you tell ${owner} where to look, say the place and its address: its Local, http://localhost:<its port>.`,
   ].join("\n");
@@ -4870,7 +4870,7 @@ async function previewForBot(wsId: string, name: string, id: string | undefined,
   // (Whether its link asks for one, as Orgo said in the read after the deploy.)
   const pv = (x: string) => (x === name ? now.preview : now.sites?.find((y) => y.name === x)?.preview);
   const locked = deployed.some((d) => pv(d.site)?.protected === true);
-  const after = `${locked ? "It asks for a password, a new one once this deploy is live, shown beside its Preview link in Bops. " : ""}Say publish, or press Publish in Your Apps, to put it on its domain once it looks right.`;
+  const after = `${locked ? "It asks for a password, a new one once this deploy is live, shown beside its Preview link in Oshy Ops. " : ""}Say publish, or press Publish in Your Apps, to put it on its domain once it looks right.`;
   const more = said ? ` ${said}` : "";
   if (deployed.length > 1) {
     const each = deployed.map((d) => (d.url ? `${d.site} at ${d.url}` : d.site));
@@ -4950,7 +4950,7 @@ export function hostedAppsLine(botId: string): string {
   const owner = ownerName();
   const shared = apps.some(([name, h]) => !h.lost && wsId && appCoders(getState(), wsId, name).length > 1);
   const copies = shared ? ` When more bots work on one app, each works in a copy of its own with Locals of its own, and all commit to the same main: ${SYNC_WORDS} Never change another bot's copy.` : "";
-  return `Your workspace's apps on the web, each an Ingot repo (work_on_app builds or changes one, local_app runs it, deploy_app deploys it): ${apps.map(one).join("; ")}. Each runs three ways on its bot's computer: Local, the live view while you work (its working folder as a dev server with hot reload, each site at its own http://localhost:<port>, the same on its computer's screens and beside this chat, where ${owner} watches it); Preview, a fixed link of its own to share and to test sign in (deploy_app puts changes there), which asks for a password unless ${owner} turned it off (${owner} sees it beside the Preview link in Bops; you never have it, so never write one in this chat or ask for it, and check your work on Local); and Published, only on its own domain (deploy_app with where prod, only when ${owner}'s own words ask to publish it). Say the place and its address when you point ${owner} at one.${copies}${repos ? ` ${repos}` : ""}`;
+  return `Your workspace's apps on the web, each an Ingot repo (work_on_app builds or changes one, local_app runs it, deploy_app deploys it): ${apps.map(one).join("; ")}. Each runs three ways on its bot's computer: Local, the live view while you work (its working folder as a dev server with hot reload, each site at its own http://localhost:<port>, the same on its computer's screens and beside this chat, where ${owner} watches it); Preview, a fixed link of its own to share and to test sign in (deploy_app puts changes there), which asks for a password unless ${owner} turned it off (${owner} sees it beside the Preview link in Oshy Ops; you never have it, so never write one in this chat or ask for it, and check your work on Local); and Published, only on its own domain (deploy_app with where prod, only when ${owner}'s own words ask to publish it). Say the place and its address when you point ${owner} at one.${copies}${repos ? ` ${repos}` : ""}`;
 }
 
 /** The domain Orgo's public links are under: orgo.dev, or staging.orgo.dev when this Bops uses Orgo's staging. */

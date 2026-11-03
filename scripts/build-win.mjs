@@ -5,7 +5,8 @@
 //
 //   npm run app:build:win
 //
-// Unsigned: Windows SmartScreen warns the first time it's opened ("More info", then "Run anyway").
+// Signed when the Azure Artifact Signing settings are there (below); unsigned otherwise, and then Windows
+// SmartScreen warns the first time it's opened ("More info", then "Run anyway").
 // Not carried yet (Mac-only or private to Orgo): the relay agent ("Route through this Mac"), the ingot
 // command, and the runner bundle for cloud routines.
 import { execSync } from "node:child_process";
@@ -31,5 +32,17 @@ for (const name of readdirSync(sa)) {
   rmSync(join(sa, name), { recursive: true, force: true });
 }
 
-run("npx electron-builder --win --x64 --config desktop/win.builder.json --publish never", { CSC_IDENTITY_AUTO_DISCOVERY: "false" });
+// Code signing through Azure Artifact Signing (Trusted Signing), when its settings are here: the account's
+// endpoint, account and certificate profile, and the publisher name on the certificate (the company's legal
+// name). electron-builder signs with them, logging in with AZURE_TENANT_ID, AZURE_CLIENT_ID and
+// AZURE_CLIENT_SECRET. Without them the build is unsigned, as before.
+const az = { endpoint: process.env.AZURE_SIGN_ENDPOINT, account: process.env.AZURE_SIGN_ACCOUNT, profile: process.env.AZURE_SIGN_PROFILE, publisher: process.env.AZURE_SIGN_PUBLISHER };
+const signing = Object.values(az).every((v) => v?.trim()) && !!process.env.AZURE_CLIENT_SECRET;
+if (Object.values(az).some((v) => v?.trim()) && !signing) throw new Error("Code signing is half set up: AZURE_SIGN_ENDPOINT, AZURE_SIGN_ACCOUNT, AZURE_SIGN_PROFILE, AZURE_SIGN_PUBLISHER and AZURE_CLIENT_SECRET all need a value.");
+const q = (v) => JSON.stringify(v.trim());
+const signArgs = signing
+  ? ` -c.win.azureSignOptions.endpoint=${q(az.endpoint)} -c.win.azureSignOptions.codeSigningAccountName=${q(az.account)} -c.win.azureSignOptions.certificateProfileName=${q(az.profile)} -c.win.azureSignOptions.publisherName=${q(az.publisher)}`
+  : "";
+console.log(signing ? `Signing with Azure Artifact Signing as ${az.publisher.trim()}.` : "Not signing: no Azure Artifact Signing settings.");
+run(`npx electron-builder --win --x64 --config desktop/win.builder.json --publish never${signArgs}`, { CSC_IDENTITY_AUTO_DISCOVERY: "false" });
 console.log("Built: dist-desktop/ (OshyOps-*-x64.exe installer and .zip).");

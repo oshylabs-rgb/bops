@@ -53,7 +53,7 @@ const OWNERS_TIP = "The owner's own key. Only the owner can see, replace or remo
 /** In a shared workspace, without Keys. */
 const NO_KEYS_LINE = `People with Keys manage this workspace's keys. ${KEYS_GIVEN_LINE}`;
 /** In a shared workspace whose owner's Bops can't take the bots' switches yet (SharedWsSlice.keyActs). */
-const SWITCH_UPDATE_LINE = "The owner's Bops needs an update before you can switch bots for it.";
+const SWITCH_UPDATE_LINE = "The owner's Oshy Ops needs an update before you can switch bots for it.";
 
 const STRIPE_NAMES = ["STRIPE_SECRET_KEY", "STRIPE_API_KEY"];
 
@@ -105,7 +105,7 @@ function useKeys(ws: string) {
           setFailed(null);
         } else setFailed(undash(j.error ?? "Couldn't read your keys."));
       })
-      .catch(() => setFailed("Couldn't reach Bops."));
+      .catch(() => setFailed("Couldn't reach Oshy Ops."));
   }, []);
   useEffect(() => {
     read();
@@ -162,7 +162,7 @@ async function reveal(name: string, scope: Scope): Promise<{ value: string } | {
     const j = (await res.json().catch(() => ({}))) as { value?: unknown; error?: string };
     return res.ok && typeof j.value === "string" ? { value: j.value } : { error: undash(j.error ?? "Couldn't get the key. Try again.") };
   } catch {
-    return { error: "Couldn't reach Bops. Try again." };
+    return { error: "Couldn't reach Oshy Ops. Try again." };
   }
 }
 
@@ -277,7 +277,7 @@ async function grant(name: string, botId: string, allowed: boolean): Promise<str
     const j = (await res.json().catch(() => ({}))) as { error?: string };
     return res.ok ? null : undash(j.error ?? "That didn't change. Try again.");
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -546,7 +546,7 @@ function KeyLine({
       setSure(false);
       keysChanged();
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
       setBusy(false);
     }
   };
@@ -759,7 +759,7 @@ function AddKey({
       keysChanged();
       onSaved(name, j.note ? undash(j.note) : undefined);
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }

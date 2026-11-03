@@ -48,11 +48,11 @@ export function RestartAsk({ onCancel, compact = false }: { onCancel: () => void
   return (
     <AskInPlace
       compact={compact}
-      title="Restart Bops?"
+      title="Restart Oshy Ops?"
       line="Your bots pause for a few seconds."
       action="Restart"
       busy={busy}
-      error={failed ? "Couldn't restart. Quit Bops and open it again." : null}
+      error={failed ? "Couldn't restart. Quit Oshy Ops and open it again." : null}
       onConfirm={() => void restart()}
       onCancel={onCancel}
     />

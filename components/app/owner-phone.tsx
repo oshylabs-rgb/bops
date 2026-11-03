@@ -259,7 +259,7 @@ export function OwnerPhone({
       <label className="flex max-w-[560px] items-start gap-2 text-[12px] leading-[17px] text-[#6B6B6B]">
         <input type="checkbox" checked={agree} disabled={busy} onChange={(e) => phone.setAgree(e.target.checked)} className="mt-[2px] accent-[#0A0A0A]" />
         <span>
-          Yes, text me from my Bops bots (Bops by Orgo): replies to my texts, finished tasks and heads-ups. How often depends on what I ask for. Message and data rates may apply. Reply STOP to opt out, HELP for help. Texts and calls from this number count as me.{" "}
+          Yes, text me from my Oshy Ops bots (Bops by Orgo): replies to my texts, finished tasks and heads-ups. How often depends on what I ask for. Message and data rates may apply. Reply STOP to opt out, HELP for help. Texts and calls from this number count as me.{" "}
           <a href={PRIVACY} target="_blank" rel="noreferrer" className="underline">Privacy</a> ·{" "}
           <a href={TERMS} target="_blank" rel="noreferrer" className="underline">Terms</a>
         </span>

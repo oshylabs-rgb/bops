@@ -34,7 +34,7 @@ const tidy = (s: string) =>
 
 async function ask(workspaceId: string, tried: string): Promise<Check | { error: string }> {
   const r = await fetch(`/api/mail/handle?${new URLSearchParams({ workspace: workspaceId, try: tried })}`, { cache: "no-store" }).catch(() => null);
-  if (!r) return { error: "Couldn't reach Bops." };
+  if (!r) return { error: "Couldn't reach Oshy Ops." };
   const j = (await r.json().catch(() => ({}))) as Check & { error?: string };
   return r.ok ? j : { error: j.error ?? "Couldn't check that right now." };
 }
@@ -146,13 +146,13 @@ export function AddressForm({
   };
 
   const titleId = `mail-address-${place}-${workspaceId}`;
-  const bot = check?.bot ?? "Boppy";
-  const title = mode === "pick" ? "Pick your Bops address" : mode === "offer" ? "Your Bops address" : "Change your Bops address";
+  const bot = check?.bot ?? "Oshy";
+  const title = mode === "pick" ? "Pick your Oshy Ops address" : mode === "offer" ? "Your Oshy Ops address" : "Change your Oshy Ops address";
   const intro =
     mode === "pick"
       ? `Your bots get email at this address. Anyone can write to ${bot} here.`
       : mode === "offer"
-        ? `Bops picked ${current ?? "this"}.bops.bot for you. Keep it, or change your address now.`
+        ? `Oshy Ops picked ${current ?? "this"}.bops.bot for you. Keep it, or change your address now.`
         : `${bot}'s main address moves to the new one. Mail to the old addresses still arrives.`;
   const note = !value
     ? null
@@ -296,7 +296,7 @@ export function MailAddressStep({ state }: { state: AppState }) {
 export function MailAddressRail({ state, onOpen }: { state: AppState; onOpen: () => void }) {
   const { w } = useMailStep(state);
   if (!w?.mailPick) return null;
-  const tip = w.mailPick.offer ? "Your Bops address: keep it or change it" : "Pick your Bops address";
+  const tip = w.mailPick.offer ? "Your Oshy Ops address: keep it or change it" : "Pick your Oshy Ops address";
   return (
     <button
       onClick={onOpen}

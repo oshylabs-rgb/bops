@@ -143,7 +143,7 @@ async function ensurePaired(): Promise<{ deviceId: string; name: string; code: s
     update((s) => (s.relay = { ...s.relay, on: s.relay?.on ?? false, deviceId: known.id, deviceName: known.name }));
     return { deviceId: known.id, name: known.name, code: saved.code, rendezvous };
   }
-  const paired = await egress.pair(`${await macName()} (Bops)`);
+  const paired = await egress.pair(`${await macName()} (Oshy Ops)`);
   await setSecret(codeAccount(user.id), JSON.stringify({ deviceId: paired.id, code: paired.pairing_code }));
   stillTheirs();
   update((s) => (s.relay = { ...s.relay, on: s.relay?.on ?? false, deviceId: paired.id, deviceName: paired.name }));
@@ -273,14 +273,14 @@ const routed = () =>
 export async function relayStatus(fresh = false): Promise<RelayStatus> {
   const relay = getState().relay;
   const base = { on: !!relay?.on, running: running(), routedComputers: routed(), ...(relay?.deviceId ? { device: { id: relay.deviceId, name: relay.deviceName ?? "This Mac" } } : {}) };
-  if (onPostgres()) return { ...base, available: false, reason: "Routing through your Mac works in the Bops app on your Mac." };
+  if (onPostgres()) return { ...base, available: false, reason: "Routing through your Mac works in the Oshy Ops app on your Mac." };
   if (!(await loadOrgoKey())) return { ...base, available: false, reason: "Sign in to Orgo first." };
-  if (!relayBin()) return { ...base, available: false, reason: "This copy of Bops doesn't include the relay yet." };
+  if (!relayBin()) return { ...base, available: false, reason: "This copy of Oshy Ops doesn't include the relay yet." };
   const a = await availability(fresh);
   if (!a.ok) return { ...base, available: false, reason: a.reason };
   const here = await agentConnected();
   const online = here ?? a.online ?? undefined;
-  const reason = relay?.on && !running() && sup.lastError ? `The relay on this Mac stopped (${sup.lastError}). Bops is starting it again.` : undefined;
+  const reason = relay?.on && !running() && sup.lastError ? `The relay on this Mac stopped (${sup.lastError}). Oshy Ops is starting it again.` : undefined;
   return { ...base, on: !!relay?.on || !relay?.turnedOff, available: true, ...(online === undefined ? {} : { online }), ...(reason ? { reason } : {}) };
 }
 
@@ -363,7 +363,7 @@ const maybeGone = (computerId: string, e: unknown) =>
 /** The HTTP status in an Orgo error (0: not an answer from Orgo). */
 const statusOf = (e: unknown) => Number(/ → (\d{3}):/.exec((e as Error)?.message ?? "")?.[1] ?? 0);
 const MAX_TRIES = 6;
-const SCREENS_DOWN = "Its screens' browsers didn't come back. Bops is starting them again.";
+const SCREENS_DOWN = "Its screens' browsers didn't come back. Oshy Ops is starting them again.";
 
 /**
  * A route after a try that went wrong: it waits longer before each next try (20s, 40s, ... up to

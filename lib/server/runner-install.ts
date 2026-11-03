@@ -242,7 +242,7 @@ export const probeScript = (dirName: string, { ident = false }: { ident?: boolea
 export function wrapperScript(o: { computerId: string; timeZone?: string; orgo: string; cloud: string }): string {
   return [
     "#!/bin/sh",
-    "# The Bops runner on this computer, set up by the Bops app on the user's Mac (lib/server/runner-install.ts).",
+    "# The Oshy Ops runner on this computer, set up by the Oshy Ops app on the user's Mac (lib/server/runner-install.ts).",
     "# Its window token is made fresh each start and kept nowhere: nothing on this computer needs it.",
     "BOPS_UI_TOKEN=$(od -An -N32 -tx1 /dev/urandom | tr -d ' \\n')",
     "export BOPS_UI_TOKEN",

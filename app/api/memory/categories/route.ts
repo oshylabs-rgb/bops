@@ -80,7 +80,7 @@ export async function POST(request: Request) {
         forgetItems(ws, ids as string[]);
         break;
       case "deleteEverywhere": {
-        if (b.preview === true) return Response.json({ sessions: await deletePreview(ws, b.id ?? ""), note: "These chats stay in your Bops chat history; their memory copy is deleted." });
+        if (b.preview === true) return Response.json({ sessions: await deletePreview(ws, b.id ?? ""), note: "These chats stay in your Oshy Ops chat history; their memory copy is deleted." });
         const gone = await deleteEverywhere(ws, b.id ?? "", b.sessions);
         return Response.json({ ...snapshot(ws), deleted: gone.map((x) => x.name) });
       }

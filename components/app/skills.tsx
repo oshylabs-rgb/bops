@@ -154,7 +154,7 @@ async function call<T>(body: Record<string, unknown>): Promise<{ ok: true; json:
     const json = (await res.json().catch(() => ({}))) as T & { error?: string; problems?: Problem[] };
     return res.ok ? { ok: true, json } : { ok: false, error: json.error ?? "That didn't work. Try again.", problems: json.problems };
   } catch {
-    return { ok: false, error: "Couldn't reach Bops. Try again." };
+    return { ok: false, error: "Couldn't reach Oshy Ops. Try again." };
   }
 }
 
@@ -337,7 +337,7 @@ function SkillRow({ name, description, draft, auto, onOpen }: { name: string; de
     >
       <span className="max-w-[45%] shrink-0 truncate text-[13px] font-medium leading-[18px]">{name}</span>
       <span className="min-w-0 flex-1 truncate text-[12.5px] leading-[18px] text-[#6B6B6B]">{description}</span>
-      {auto && <span className={`${CHIP} shrink-0`} data-tip="Label picked by Bops. Open it to confirm or change it">auto</span>}
+      {auto && <span className={`${CHIP} shrink-0`} data-tip="Label picked by Oshy Ops. Open it to confirm or change it">auto</span>}
       {draft && <span className={DRAFT}>Draft</span>}
     </button>
   );
@@ -359,7 +359,7 @@ function BuiltinView({ skill: s, onBack }: { skill: BuiltinSkill; onBack: () => 
           <span className={CHIP}>{cleanLabel(s.label)}</span>
         </span>
         <span className="text-[13px] leading-[19px] text-[#3A3A38]">{s.description}</span>
-        <span className="text-[12px] leading-4 text-[#9A9A98]">Every bot has it. It comes with Bops, so it can&apos;t be changed here.</span>
+        <span className="text-[12px] leading-4 text-[#9A9A98]">Every bot has it. It comes with Oshy Ops, so it can&apos;t be changed here.</span>
       </div>
       {files.length > 0 && (
         <Group title="Files">
@@ -414,7 +414,7 @@ function LabelChip({ label, labels, busy, auto, onPick }: { label: string; label
       </button>
       {auto && (
         <>
-          <span className={CHIP} data-tip="Bops picked this label. It stays on this Mac until you confirm it">
+          <span className={CHIP} data-tip="Oshy Ops picked this label. It stays on this Mac until you confirm it">
             auto
           </span>
           <button type="button" disabled={busy} data-label-confirm onClick={() => onPick(label)} className="text-[12px] font-medium leading-4 text-ink disabled:opacity-50">

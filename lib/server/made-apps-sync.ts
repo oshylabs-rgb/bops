@@ -104,7 +104,7 @@ function storable(text: string, max: number) {
 /** An app's own folder on this Mac. */
 export function appFolder(appId: string) {
   const dir = userDir();
-  if (!dir) throw new Error("Sign in to Bops first.");
+  if (!dir) throw new Error("Sign in to Oshy Ops first.");
   if (!APP_ID.test(appId)) throw new Error("No such app.");
   return join(/*turbopackIgnore: true*/ dir, "made-apps", appId);
 }
@@ -170,7 +170,7 @@ export function loadLocalApps() {
     const taken: MadeApp = { ...a, ...(now?.building ? { building: now.building } : {}) };
     if (taken.building && !builds?.has(taken.id)) {
       delete taken.building;
-      taken.error = "Bops closed before it was done. Ask again.";
+      taken.error = "Oshy Ops closed before it was done. Ask again.";
     }
     byId.set(a.id, taken);
     changed = true;

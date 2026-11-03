@@ -7,5 +7,5 @@ import { stateReady } from "./store";
  * when the route can go on.
  */
 export function notReady(): Response | null {
-  return stateReady() ? null : Response.json({ error: "Bops is still loading your account. Try again in a moment." }, { status: 409 });
+  return stateReady() ? null : Response.json({ error: "Oshy Ops is still loading your account. Try again in a moment." }, { status: 409 });
 }

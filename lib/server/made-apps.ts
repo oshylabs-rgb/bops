@@ -77,7 +77,7 @@ const chars = (s: string, n: number) => Array.from(s).slice(0, n).join("");
 
 const RULES = (owner: string, maker: string, reach: string) =>
   [
-    `You write small apps for ${owner} that run inside Bops, the app where their AI team works. Each app is one TypeScript React file (TSX).`,
+    `You write small apps for ${owner} that run inside Oshy Ops, the app where their AI team works. Each app is one TypeScript React file (TSX).`,
     "",
     "The file:",
     '- `export default function App()`. React 19: import hooks from "react" (`import { useState, useEffect } from "react"`). No other imports: npm packages, the network, fonts and images from the web are all blocked. Draw icons and charts in inline SVG.',
@@ -85,7 +85,7 @@ const RULES = (owner: string, maker: string, reach: string) =>
     "- Plain, short words in the UI. An empty state says what to do first.",
     "",
     "`window.bops` is all it can reach (every call is async):",
-    "- bops.data.get(key) → the value or null; bops.data.set(key, value) keeps any JSON value; bops.data.delete(key); bops.data.list(prefix?) → keys. Keep everything the user enters or the app works out here (localStorage and cookies are blocked); load it on start. It's the app's own, kept with their Bops on every Mac, and it stays when the app changes.",
+    "- bops.data.get(key) → the value or null; bops.data.set(key, value) keeps any JSON value; bops.data.delete(key); bops.data.list(prefix?) → keys. Keep everything the user enters or the app works out here (localStorage and cookies are blocked); load it on start. It's the app's own, kept with their Oshy Ops on every Mac, and it stays when the app changes.",
     "- bops.ask(prompt, { json?: boolean }) → a quick answer from an AI model (a string, or parsed JSON with json: true): for summarizing, sorting, drafting, extracting. It has no tools and can't browse.",
     `- bops.bot(question, { json?: boolean }) → ${maker}, the bot that made the app, finds it out and answers: it can read ${reach}, ${owner}'s memory and the web. For anything from ${owner}'s own accounts or the live web ("the people who replied to my emails this week, as {\"people\":[{\"name\",\"email\",\"said\"}]}"). Ask for the result, not how to get it: it searches and reads on its own, and can't call APIs or fetch URLs you name. Say exactly what to return; with json: true ask for one JSON object. It's slow (10 to 60 seconds) and costs: call it when the user presses a button (Refresh) or when the kept result is a day old, never on every render; show that it's working, keep the result with bops.data and show the kept one at once. The first time (and again after each change to the app), ${owner} is asked to allow it; if they don't, it throws: show that plainly with a way to try again.`,
     "",
@@ -399,7 +399,7 @@ async function ask(app: MadeApp, prompt: string, json: boolean) {
   const r = await client.responses.create(
     {
       model: LIGHT(),
-      instructions: `You answer for "${app.title}", an app in Bops. Be brief and exact.${json ? " Answer with JSON only." : ""}`,
+      instructions: `You answer for "${app.title}", an app in Oshy Ops. Be brief and exact.${json ? " Answer with JSON only." : ""}`,
       input: prompt.slice(0, 20_000),
       ...(json ? { text: { format: { type: "json_object" as const } } } : {}),
     },

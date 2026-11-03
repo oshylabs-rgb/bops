@@ -15,7 +15,7 @@ export const dynamic = "force-dynamic";
  */
 type Ctx = { params: Promise<{ name: string; recordId: string }> };
 
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "DNS can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "DNS can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 /** What the window sent: the body, else (a DELETE without one) the query. */
 async function asked(request: Request): Promise<Record<string, unknown>> {

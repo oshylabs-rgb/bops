@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
  */
 type Ctx = { params: Promise<{ zone: string; recordId: string }> };
 
-const WORDS = "DNS can only be changed in the Bops app.";
+const WORDS = "DNS can only be changed in the Oshy Ops app.";
 
 export async function PATCH(request: Request, ctx: Ctx) {
   const gate = domainsGate(request, WORDS);

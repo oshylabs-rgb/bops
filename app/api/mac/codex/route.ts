@@ -12,7 +12,7 @@ export async function GET() {
 }
 
 /** What the sign-in actions answer now: Bops doesn't sign in to ChatGPT or Codex (lib/server/mac.ts). */
-const SIGN_IN_GONE = "Bops doesn't sign in to Codex anymore. Bots use your credit for all their work, on your Mac too.";
+const SIGN_IN_GONE = "Oshy Ops doesn't sign in to Codex anymore. Bots use your credit for all their work, on your Mac too.";
 
 /**
  * { action: "install" } installs the Codex CLI again if it's still missing (Retry), from the app on
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
   if (action === "sign-in" || action === "reopen" || action === "cancel" || action === "open") return Response.json({ ok: false, error: SIGN_IN_GONE }, { status: 410 });
   const unready = notReady();
   if (unready) return unready;
-  if (!fromThisMac(request)) return Response.json({ ok: false, error: "This works in the Bops app on your Mac." }, { status: 403 });
+  if (!fromThisMac(request)) return Response.json({ ok: false, error: "This works in the Oshy Ops app on your Mac." }, { status: 403 });
   if (action !== "install") return Response.json({ ok: false, error: "action: install" }, { status: 400 });
   try {
     await retryCodex();

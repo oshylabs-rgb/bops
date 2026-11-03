@@ -7,7 +7,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Bops</title>
+<title>Oshy Ops</title>
 <style>
   html, body { margin: 0; height: 100%; background: #fff; }
   [hidden] { display: none !important; }
@@ -29,7 +29,7 @@
 <body>
   <div class="card">
     <svg class="boppy" viewBox="0 0 40 40" aria-hidden="true"><g transform="translate(20 23) scale(.8) translate(-20 -21)"><path d="M20 4c7.5 0 13.5 4.5 15.5 11 2.8 2.4 3.8 6 2.8 9.6C36.6 32.5 29.6 37 20 37S3.4 32.5 1.7 24.6C.7 21 1.7 17.4 4.5 15 6.5 8.5 12.5 4 20 4z" fill="#0A0A0A"/><ellipse cx="15.5" cy="22.3" rx="1.9" ry="2.6" fill="#fff"/><ellipse cx="24.5" cy="22.3" rx="1.9" ry="2.6" fill="#fff"/><path d="M16.5 30q3.5-2 7 0" fill="none" stroke="#fff" stroke-width="1.4" stroke-linecap="round"/></g><path d="M6.3 21.5C6.3 8.9 12.4 3.6 20 3.6s13.7 5.3 13.7 17.9" fill="none" stroke="#E9FF3B" stroke-width="2.1" stroke-linecap="round" transform="translate(0 -2) rotate(-14 20 20)"/><rect x="2.4" y="17" width="6.4" height="11" rx="3" fill="#E9FF3B" transform="translate(0 -2) rotate(-14 20 20)"/><rect x="31.2" y="17" width="6.4" height="11" rx="3" fill="#E9FF3B" transform="translate(0 -2) rotate(-14 20 20)"/></svg>
-    <h1 id="title">Bops couldn't start</h1>
+    <h1 id="title">Oshy Ops couldn't start</h1>
     <p id="line"></p>
     <div class="detail" id="detail" hidden></div>
     <div class="actions">
@@ -44,14 +44,14 @@
     const detail = q.get("detail") || "";
     // What happened, and what the person can do about it. No jargon past the detail line.
     const lines = {
-      "port-taken": ["Another app is using Bops' spot", "Bops needs port 3210 on this Mac, and another app has it. Quit that app, then try again."],
-      "other-bops": ["Bops is already open somewhere else", "Another copy of Bops, maybe in another account on this Mac, is using its spot. Quit it there, then try again."],
-      "server-ended": ["Bops stopped while starting", "Its background part closed right away. Security software sometimes stops it; the logs say why."],
-      "page-failed": ["Bops' window can't load", "Its page didn't load several times in the last two minutes. Try again, and if it happens again, send us the logs."],
-      "page-crashed": ["Bops' window keeps crashing", "Its page stopped several times in the last two minutes. Try again, and if it happens again, send us the logs."],
-      "server-crashed": ["Bops keeps stopping", "Its background part stopped several times in the last two minutes. Try again, and if it happens again, send us the logs."],
-      "server-slow": ["Bops is taking too long to start", "Its background part didn't answer in time. Try again, and if it happens again, send us the logs."],
-      error: ["Bops couldn't start", "Something went wrong getting ready. Try again, and if it happens again, send us the logs."],
+      "port-taken": ["Another app is using Oshy Ops' spot", "Oshy Ops needs port 3210 on this Mac, and another app has it. Quit that app, then try again."],
+      "other-bops": ["Oshy Ops is already open somewhere else", "Another copy of Oshy Ops, maybe in another account on this Mac, is using its spot. Quit it there, then try again."],
+      "server-ended": ["Oshy Ops stopped while starting", "Its background part closed right away. Security software sometimes stops it; the logs say why."],
+      "page-failed": ["Oshy Ops' window can't load", "Its page didn't load several times in the last two minutes. Try again, and if it happens again, send us the logs."],
+      "page-crashed": ["Oshy Ops' window keeps crashing", "Its page stopped several times in the last two minutes. Try again, and if it happens again, send us the logs."],
+      "server-crashed": ["Oshy Ops keeps stopping", "Its background part stopped several times in the last two minutes. Try again, and if it happens again, send us the logs."],
+      "server-slow": ["Oshy Ops is taking too long to start", "Its background part didn't answer in time. Try again, and if it happens again, send us the logs."],
+      error: ["Oshy Ops couldn't start", "Something went wrong getting ready. Try again, and if it happens again, send us the logs."],
     };
     const [title, line] = Object.hasOwn(lines, reason) ? lines[reason] : lines.error;
     document.getElementById("title").textContent = title;

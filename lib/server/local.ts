@@ -34,7 +34,7 @@ export const CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chr
  */
 export function tasksRoot() {
   const home = userHome();
-  if (!home) throw new Error("Sign in to Bops first.");
+  if (!home) throw new Error("Sign in to Oshy Ops first.");
   return join(home, "tasks");
 }
 /**
@@ -120,7 +120,7 @@ export async function ensureChrome(botId: string, port: number) {
   // The bot's id names a folder below: only a plain id (letters, digits, _ and -) ever does.
   if (!/^[\w-]{1,80}$/.test(botId)) throw new Error("That isn't one of your bots.");
   const dir = userChrome();
-  if (!dir) throw new Error("Sign in to Bops first.");
+  if (!dir) throw new Error("Sign in to Oshy Ops first.");
   const closes = quits();
   if (await cdpUp(port)) {
     if (runningFor() === dir) return;
@@ -128,7 +128,7 @@ export async function ensureChrome(botId: string, port: number) {
   }
   // The Chromes were closed meanwhile (a sign-out, or another account signing in): one started now
   // for this user would keep running, with their cookies, into the next account's.
-  if (closes !== quits() || userChrome() !== dir) throw new Error("Bops is switching accounts.");
+  if (closes !== quits() || userChrome() !== dir) throw new Error("Oshy Ops is switching accounts.");
   mkdirSync(dir, { recursive: true });
   writeFileSync(RUNNING_FOR(), dir);
   const profile = join(dir, `${botId}-${port}`);

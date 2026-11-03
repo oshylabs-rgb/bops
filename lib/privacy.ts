@@ -227,7 +227,7 @@ const ageOf = (keepDays: KeepDays) => `older than ${keepDays === 365 ? "a year" 
  */
 export function goesLine(keepDays: KeepDays, goes: KeepGoes | null) {
   const age = ageOf(keepDays);
-  if (!goes) return `Bops couldn't check what this deletes now. Everything ${age} goes from Bops Cloud and all your Macs. It can't be undone.`;
+  if (!goes) return `Oshy Ops couldn't check what this deletes now. Everything ${age} goes from Bops Cloud and all your Macs. It can't be undone.`;
   const all = listed([goes.messages ? many(goes.messages, "message") : "", goes.threads ? many(goes.threads, "thread") : ""].filter(Boolean));
   const mine = listed(
     [goes.files ? many(goes.files, "file") : "", goes.lines ? many(goes.lines, "line of notes", "lines of notes") : "", goes.copies ? `${many(goes.copies, "copy", "copies")} in Recently deleted` : ""].filter(Boolean),
@@ -260,7 +260,7 @@ export function deletedGoesLine(deletedDays: DeletedDays, goes: DeletedGoes | nu
  */
 export function clearLine(goes: ClearGoes | null, deletedDays: DeletedDays, bot?: string) {
   const knowledge = " Knowledge keeps what it learned from them.";
-  if (!goes) return `Bops couldn't check what this deletes. It deletes ${bot ? `${bot}'s messages and threads` : "your messages and threads"} from Bops Cloud and all your Macs.${knowledge}`;
+  if (!goes) return `Oshy Ops couldn't check what this deletes. It deletes ${bot ? `${bot}'s messages and threads` : "your messages and threads"} from Bops Cloud and all your Macs.${knowledge}`;
   const age = goes.olderThan === null ? "" : ` ${ageOf(goes.olderThan)}`;
   const all = listed([goes.messages ? many(goes.messages, "message") : "", goes.threads ? many(goes.threads, "thread") : ""].filter(Boolean));
   const mine = listed([goes.files ? many(goes.files, "file") : "", goes.lines ? many(goes.lines, "line of notes", "lines of notes") : ""].filter(Boolean));

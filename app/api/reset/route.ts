@@ -19,7 +19,7 @@ import { notReady } from "@/lib/server/ready";
 export async function POST() {
   const unready = notReady();
   if (unready) return unready;
-  stopAllSessions("Stopped: Bops was reset");
+  stopAllSessions("Stopped: Oshy Ops was reset");
   update((state) => (state.takeover = undefined));
   const ours = new Set(getState().bots.flatMap((b) => (b.computerId ? [b.computerId] : [])));
   const computers = await orgo.bopsComputers();

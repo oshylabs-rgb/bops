@@ -72,7 +72,7 @@ export function acceptStarters(app: string, botId: string, picks: { id: string; 
   const b = bot(botId);
   if (!b) return { created: [], error: "No such bot." };
   const offered = templatesFor(app);
-  if (!offered.length) return { created: [], error: "Bops has no routines for that app yet." };
+  if (!offered.length) return { created: [], error: "Oshy Ops has no routines for that app yet." };
   const created: string[] = [];
   const errors: string[] = [];
   const seen = new Set<string>();

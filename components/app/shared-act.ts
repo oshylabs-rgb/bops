@@ -12,7 +12,7 @@ import { post } from "./ui";
  */
 export async function memberAct(act: MemberAct, key = crypto.randomUUID().replace(/-/g, "")): Promise<{ ok: boolean; error?: string }> {
   const res = await post("/api/workspaces/shared", { act, key }).catch(() => null);
-  if (!res) return { ok: false, error: "Couldn't reach Bops. Try again." };
+  if (!res) return { ok: false, error: "Couldn't reach Oshy Ops. Try again." };
   if (res.ok) return { ok: true };
   const body = (await res.json().catch(() => ({}))) as { error?: string };
   return { ok: false, error: body.error || "That didn't go. Try again." };

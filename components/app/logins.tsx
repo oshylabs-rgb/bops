@@ -722,7 +722,7 @@ function LoginPanel({
       if (!res.ok) setError(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "That didn't work. Try again.");
       return res.ok;
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
       return false;
     } finally {
       setBusy(false);

@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
 export async function POST(request: Request, ctx: RouteContext<"/api/sessions/[sessionId]/terminal">) {
   const unready = brainsOff() ?? notReady();
   if (unready) return unready;
-  if (!fromBopsWindow(request)) return Response.json({ error: "A thread opens in a terminal only from the Bops app." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ error: "A thread opens in a terminal only from the Oshy Ops app." }, { status: 403 });
   const { sessionId } = await ctx.params;
   try {
     return Response.json({ ok: true, ...openInTerminal(sessionId) });

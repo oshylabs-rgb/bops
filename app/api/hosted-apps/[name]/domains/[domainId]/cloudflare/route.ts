@@ -8,7 +8,7 @@ import { MAIN_WORKSPACE } from "@/lib/types";
 export const dynamic = "force-dynamic";
 
 /** A domain's records in the user's Cloudflare are read and set only from the Bops window (ui-token.ts), never a page a bot's browser reached. */
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 const answer = (e: unknown) =>
   e instanceof HostedAppError ? Response.json({ error: e.message, ...e.extra }, { status: e.status }) : Response.json({ error: (e as Error).message }, { status: 500 });

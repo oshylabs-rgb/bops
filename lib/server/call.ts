@@ -49,7 +49,7 @@ export async function rememberVoices() {
 }
 
 async function chooseVoice(b: Bot) {
-  if (b.isMain && (b.name === "Boppy" || b.name === "Sam")) return "cedar";
+  if (b.isMain && (b.name === "Oshy" || b.name === "Boppy" || b.name === "Sam")) return "cedar";
   let g = genders.get(b.name);
   if (!g) {
     const a = await decide(
@@ -85,7 +85,7 @@ export async function voicePrompt(b: Bot, how: "live" | "turns" = "live") {
     .map((m) => `${m.role === "user" ? owner : b.name}: ${m.text.slice(0, 300)}`)
     .join("\n");
   return [
-    `You are ${b.name}, ${b.isMain ? `${owner}'s chief of staff` : `${owner}'s ${b.role} bot`} in Bops, on a phone call with ${owner}. ${ownerLine()}`,
+    `You are ${b.name}, ${b.isMain ? `${owner}'s chief of staff` : `${owner}'s ${b.role} bot`} in Oshy Ops, on a phone call with ${owner}. ${ownerLine()}`,
     // What the user wrote on its profile (How I work), short: their preferences, never Bops' rules.
     howIWork(owner, personaOf(b).text?.slice(0, MAX_PERSONA_CHARS), true, personaOf(b).by),
     "Talk like a capable teammate on a call: short, warm, natural. One or two sentences at a time. No lists.",

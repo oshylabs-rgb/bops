@@ -519,7 +519,7 @@ export const nameTaken = (e: unknown) =>
   e instanceof OrgoError && e.status === 400 && (e.code === "WORKSPACE_NAME_TAKEN" || /already exists|name.*taken/i.test(e.said ?? e.message));
 
 /** The names tried for a Bops workspace whose name the user's Orgo already has: "orgo (Bops)", then "orgo (Bops 2)", and so on. */
-export const collisionNames = (name: string) => [name, `${name} (Bops)`, ...Array.from({ length: 8 }, (_, i) => `${name} (Bops ${i + 2})`)];
+export const collisionNames = (name: string) => [name, `${name} (Oshy Ops)`, ...Array.from({ length: 8 }, (_, i) => `${name} (Oshy Ops ${i + 2})`)];
 
 /**
  * A Bops workspace's own Orgo project, made now when it has none: marked product "bops" and tied to it,
@@ -552,7 +552,7 @@ export async function ensureProject(wsId: string, opts: { interactive?: boolean;
         // An orgo-web without the code made a plain Orgo project: it goes again, and this workspace stays on the "bops" project.
         if (g.bopsOrgoPerWorkspace) g.bopsOrgoPerWorkspace.on = null;
         await deleteProject(made.id).catch((e: Error) => console.warn(`[workspaces] deleting the plain project ${made.id.slice(0, 8)}: ${e.message}`));
-        throw new Error("Orgo didn't make it a Bops workspace");
+        throw new Error("Orgo didn't make it an Oshy Ops workspace");
       }
       await confirmPerWorkspace();
       // orgo-web's create answers created_at, not updated_at: a project just made was last changed then.
@@ -915,7 +915,7 @@ export const orgo = {
     const c = await call<{ project_id?: string; workspace_id?: string }>("GET", `/computers/${computerId}`);
     const where = c.workspace_id ?? c.project_id;
     if ((!where || !(await bopsProjects()).includes(where)) && (!where || where !== process.env.BOPS_ORGO_WORKSPACE))
-      throw new Error(`refusing to delete ${computerId}: not a Bops computer`);
+      throw new Error(`refusing to delete ${computerId}: not an Oshy Ops computer`);
     await call("DELETE", `/computers/${computerId}`);
     changed();
     recordUsage("computer.remove", {}, epoch);

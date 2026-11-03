@@ -499,7 +499,7 @@ export function rememberMessage(ws: Where, chatId: string, messageId: string, sa
   void (async () => {
     const owner = ownerName();
     const a = await decide(
-      { app: `Bops: ${owner}'s team of AI assistants` },
+      { app: `Oshy Ops: ${owner}'s team of AI assistants` },
       {
         worth: WORTH_REMEMBERING(said),
         secret: {
@@ -857,7 +857,7 @@ function sourceOf(sessionId: string | null) {
   const st = getState();
   for (const c of st.chats) if (sessionId === `bops-chat-${clean(c.id)}`) return c.kind === "bot" ? `Chat with ${bot(c.botIds[0])?.name ?? "a bot"}` : (c.title ?? "Group chat");
   for (const s of st.sessions) if (sessionId === `bops-task-${clean(s.id)}`) return `Task: ${s.title}`;
-  return sessionId.startsWith("bops-") ? "Bops" : "Your other agents";
+  return sessionId.startsWith("bops-") ? "Oshy Ops" : "Your other agents";
 }
 
 /** Facts worth showing: Jev drops what looks learned wrong (each fact asked once). If Jev can't answer, all stay. */
@@ -976,7 +976,7 @@ export const forgetFact = (ws: Where, id: string) => forget(bindingOf(ws), id);
  * (signed out) throws: nothing is brought in, and the bank stays kept apart for the next try.
  */
 export async function bringIn(botId: string): Promise<number> {
-  if (!on()) throw new Error("Memory isn't on right now, so nothing was brought in. Try again once Bops is signed in.");
+  if (!on()) throw new Error("Memory isn't on right now, so nothing was brought in. Try again once Oshy Ops is signed in.");
   const ws = wsOf(botId);
   const own = ownBankOf(botId);
   // (A list memory can't give throws, so a bank is never deleted with facts left in it.)

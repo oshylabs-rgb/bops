@@ -20,7 +20,7 @@ export const dynamic = "force-dynamic";
  */
 function refused(request: Request): Response | null {
   const no = (error: string) => Response.json({ error }, { status: 403, headers: { "Cache-Control": "no-store" } });
-  if (onRunner() || onPostgres() || !fromBopsWindow(request)) return no("Your data can only be seen in the Bops app.");
+  if (onRunner() || onPostgres() || !fromBopsWindow(request)) return no("Your data can only be seen in the Oshy Ops app.");
   if (sharedOpen()) return no("In a shared workspace, only its owner sees this.");
   return notReady();
 }

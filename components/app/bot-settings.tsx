@@ -244,8 +244,8 @@ const Note = ({ children, tone }: { children: React.ReactNode; tone?: "error" })
 /** How it works on its computer, in a line (the Computer card's, as ComputerChoice words it). */
 export function computerLine(state: AppState, b: Bot): string {
   if (!state.shared && state.host === "mac") return `Works on ${yourMac(state)}`;
-  if (sharesComputer(b)) return b.isMain ? `Works on ${your(state)} free Bops computer` : `Works on ${workBot({ ...b, computer: "shared" }, state.bots).name}'s computer`;
-  return b.freeComputer ? "Its own Bops computer" : "Its own cloud computer";
+  if (sharesComputer(b)) return b.isMain ? `Works on ${your(state)} free Oshy Ops computer` : `Works on ${workBot({ ...b, computer: "shared" }, state.bots).name}'s computer`;
+  return b.freeComputer ? "Its own Oshy Ops computer" : "Its own cloud computer";
 }
 
 /** The voice its calls are in, by name: the one picked, else the one picked for its name (Bot.voice), unknown before its first call. */
@@ -327,7 +327,7 @@ function ShareAndPause({ state, bot: b }: { state: AppState; bot: Bot }) {
   const [copied, setCopied] = useState(false);
   const running = state.sessions.filter((s) => s.botId === b.id && live(s)).length;
   const share = async () => {
-    await navigator.clipboard.writeText([`${b.name} (${b.role}, Bops)`, b.phone, b.email].filter(Boolean).join("\n"));
+    await navigator.clipboard.writeText([`${b.name} (${b.role}, Oshy Ops)`, b.phone, b.email].filter(Boolean).join("\n"));
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };

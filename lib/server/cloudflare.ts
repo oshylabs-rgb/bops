@@ -46,11 +46,11 @@ export const CF_WORDS = {
   orgoLimit: "Orgo is limiting calls to Cloudflare right now. Wait a minute, then try again.",
   cfLimit: "Cloudflare is limiting calls right now. Wait a minute, then try again.",
   signIn: "Sign in to Orgo again to use your Cloudflare key.",
-  orgoDown: "Bops couldn't reach Orgo. Check the internet and try again.",
+  orgoDown: "Oshy Ops couldn't reach Orgo. Check the internet and try again.",
   notZone: "That isn't one of your Cloudflare domains.",
   stale: "Something changed in Cloudflare since you looked. Check the changes again.",
-  needsOk: "Bops won't replace records it didn't set without your OK.",
-  unknown: "Cloudflare didn't answer, so it isn't known whether the records went in. Try again in a minute. Bops looks first, so nothing is set twice.",
+  needsOk: "Oshy Ops won't replace records it didn't set without your OK.",
+  unknown: "Cloudflare didn't answer, so it isn't known whether the records went in. Try again in a minute. Oshy Ops looks first, so nothing is set twice.",
   justSet: "Set in Cloudflare. It can take a minute or two to answer.",
   tooLong: "Cloudflare's answer was too long.",
   notIn: (domain: string) => `${domain} isn't in your Cloudflare account.`,
@@ -58,7 +58,7 @@ export const CF_WORDS = {
   noRead: (zone: string) => `Your Cloudflare key can't read the DNS of ${zone}. In Cloudflare, let it edit DNS for ${zone}.`,
   noTarget: (fqdn: string) => `Orgo didn't say where ${fqdn} should point. Try again in a minute.`,
   otherApp: (type: string, host: string, app: string | null) =>
-    app ? `Bops set the ${type} at ${host} for ${app}. Remove that domain from ${app} first.` : `Bops set the ${type} at ${host} for another domain on this computer. Remove that one first.`,
+    app ? `Oshy Ops set the ${type} at ${host} for ${app}. Remove that domain from ${app} first.` : `Oshy Ops set the ${type} at ${host} for another domain on this computer. Remove that one first.`,
   besideCname: (fqdn: string, type: string) => `${fqdn} has a ${type} record in Cloudflare, so it can't also have the CNAME Orgo needs. Pick another name.`,
   proxy: "Turns off Cloudflare's proxy. Orgo needs DNS only.",
 };
@@ -256,7 +256,7 @@ const COMMENT_MAX = 100;
 export function marker(app: string, domainId: string): string {
   const tag = `[bops:${domainId}]`;
   if (domainId.length > 50) return tag;
-  const head = "Set by Bops for ";
+  const head = "Set by Oshy Ops for ";
   const room = COMMENT_MAX - head.length - 1 - tag.length;
   return `${head}${app.slice(0, Math.max(0, room))} ${tag}`;
 }

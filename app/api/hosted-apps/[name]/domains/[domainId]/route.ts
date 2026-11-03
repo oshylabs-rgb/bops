@@ -7,7 +7,7 @@ import { MAIN_WORKSPACE } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
 
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Domains can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 const answer = (e: unknown) =>
   e instanceof HostedAppError ? Response.json({ error: e.message, ...e.extra }, { status: e.status }) : Response.json({ error: (e as Error).message }, { status: 500 });

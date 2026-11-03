@@ -253,7 +253,7 @@ const ICONS = {
 };
 
 const COPY: Record<"screen" | "microphone" | "notifications", { title: string; line: string }> = {
-  screen: { title: "Screen recording", line: "See your Mac live in Bops, and watch bots work on it." },
+  screen: { title: "Screen recording", line: "See your Mac live in Oshy Ops, and watch bots work on it." },
   microphone: { title: "Microphone", line: "Talk to your bots on a call." },
   notifications: { title: "Notifications", line: "Hear from bots when something needs you." },
 };
@@ -264,14 +264,14 @@ function PermissionCard({ id, items }: { id: "screen" | "microphone" | "notifica
   const s = perms.status?.[id];
   const copy = COPY[id];
   if (!perms.inApp)
-    return <Card icon={ICONS[id]} title={copy.title} line={copy.line} tone="none" status="Needs the Bops app for Mac" />;
+    return <Card icon={ICONS[id]} title={copy.title} line={copy.line} tone="none" status="Needs the Oshy Ops app for Mac" />;
   if (!s) return <Card icon={ICONS[id]} title={copy.title} line={copy.line} tone="none" status="Checking" />;
   // Screen Recording turned on while Bops was open: macOS applies it on the next launch.
   const restart = id === "screen" && (perms.restart || (s !== "granted" && sentToSettings.has("screen")));
   const status =
     s === "granted"
       ? id === "screen" && perms.restart
-        ? "Allowed. Restart Bops to use it"
+        ? "Allowed. Restart Oshy Ops to use it"
         : "Allowed"
       : s === "restricted"
         ? id === "notifications"
@@ -279,7 +279,7 @@ function PermissionCard({ id, items }: { id: "screen" | "microphone" | "notifica
           : "Blocked by your Mac's settings or admin"
         : s === "denied"
           ? restart
-            ? "Turn on Bops in System Settings, then restart Bops"
+            ? "Turn on Oshy Ops in System Settings, then restart Oshy Ops"
             : "Off. Turn it on in System Settings"
           : id === "notifications" && s === "unknown"
             ? "Asked. Check System Settings if none showed"
@@ -289,7 +289,7 @@ function PermissionCard({ id, items }: { id: "screen" | "microphone" | "notifica
     <Card icon={ICONS[id]} title={copy.title} line={copy.line} tone={tone} status={status} below={restarting ? <RestartAsk compact onCancel={() => setRestarting(false)} /> : undefined}>
       {restart && !restarting && (
         <button onClick={() => setRestarting(true)} className={s === "granted" ? dark : light}>
-          Restart Bops
+          Restart Oshy Ops
         </button>
       )}
       {s === "not-determined" || (id === "notifications" && s === "unknown") ? (
@@ -442,7 +442,7 @@ function FullAccessSetup({ items }: { items: Items }) {
       {row(
         disk,
         "Your files",
-        disk ? "Bops has Full Disk Access." : "Give Bops Full Disk Access in System Settings, then come back.",
+        disk ? "Oshy Ops has Full Disk Access." : "Give Oshy Ops Full Disk Access in System Settings, then come back.",
         !disk && (
           <button onClick={() => void items.openSettings("fullDisk")} className={dark}>
             Open Settings
@@ -484,7 +484,7 @@ function FullAccessCard({ items }: { items: Items }) {
       icon={ICONS.fullAccess}
       title="Full access for bots"
       chip={on ? "On" : undefined}
-      line="Bots' tasks on this Mac get a shell, your files and your apps, outside Bops' sandbox. Anything you could do here, they can."
+      line="Bots' tasks on this Mac get a shell, your files and your apps, outside Oshy Ops' sandbox. Anything you could do here, they can."
       tone={on ? (set || !items.perms.inApp ? "ok" : "todo") : "off"}
       status={on ? (set || !items.perms.inApp ? "Bots can use your files and apps" : "Two steps left, so macOS never stops a bot mid-task") : "Off: bots on this Mac only browse, in a Chrome of their own"}
       below={on && items.perms.inApp ? <FullAccessSetup items={items} /> : undefined}

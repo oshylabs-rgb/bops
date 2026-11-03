@@ -15,7 +15,7 @@ import { userBopsHome, userChromeDir, userDataDir } from "./user-paths";
  */
 
 const seedBots: Bot[] = [
-  { id: "boppy", name: "Boppy", role: "Chief of Staff", color: "#0A0A0A", isMain: true, computerStatus: "none" },
+  { id: "boppy", name: "Oshy", role: "Chief of Staff", color: "#0A0A0A", isMain: true, computerStatus: "none" },
   { id: "otto", name: "Otto", role: "Outbound", color: "#E9FF3B", isMain: false, computerStatus: "none" },
   { id: "rook", name: "Rook", role: "Recruiting", color: "#47C46B", isMain: false, computerStatus: "none" },
   { id: "iris", name: "Iris", role: "Inbox", color: "#5B8CFF", isMain: false, computerStatus: "none" },
@@ -28,7 +28,7 @@ const freshMain = (): Bot => ({ ...seedBots.find((b) => b.isMain)!, computerId: 
 const botChat = (botId: string, at = Date.now()): Chat => ({ id: botChatId(botId), kind: "bot", botIds: [botId], createdAt: at, typing: [] });
 
 /** Why a thread this Bops was running when it stopped ended (migrate): its routine records the run failed with it (routines.ts endedAtStart). */
-export const RESTARTED = "Bops restarted while this was running";
+export const RESTARTED = "Oshy Ops restarted while this was running";
 
 /** Bring older saved state up to the current shape: every bot has a chat, sessions are threads. */
 function migrate(raw: Record<string, unknown>): AppState {
@@ -44,7 +44,7 @@ function migrate(raw: Record<string, unknown>): AppState {
   for (const a of state.madeApps ?? [])
     if (a.building && !builds?.has(a.id)) {
       delete a.building;
-      a.error = "Bops closed before it was done. Ask again.";
+      a.error = "Oshy Ops closed before it was done. Ask again.";
     }
   // Workspaces: everything from before belongs to the first one, "Main". Each workspace has a main bot.
   state.workspaces ??= [{ id: MAIN_WORKSPACE, name: "Main", createdAt: Date.now() }];
@@ -472,7 +472,7 @@ export function sameState() {
 /** This install of Bops: made once, kept in state. Shared services carry it (AgentMail's pod and inboxes, Composio's user). */
 export function installId() {
   // Signed out on the Mac app the state is nobody's: nothing outside (an inbox, a pod) is made for nobody.
-  if (!store.ready()) throw new Error("Sign in to Bops first.");
+  if (!store.ready()) throw new Error("Sign in to Oshy Ops first.");
   if (!box.state.installId) update((s) => void (s.installId ??= randomBytes(4).toString("hex")));
   return box.state.installId!;
 }

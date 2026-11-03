@@ -49,7 +49,7 @@ import { sameState } from "./store";
  * @orgo.ai account reaches any of this (the routes, lib/apps-access.ts).
  */
 
-const RUNNER = "Domains are changed from the Bops app on your Mac.";
+const RUNNER = "Domains are changed from the Oshy Ops app on your Mac.";
 const NOT_ON_ORGO = "This workspace isn't on Orgo yet, so it can't have domains.";
 const NOT_OURS = "That isn't one of this workspace's domains.";
 const SIGN_IN = "Sign in with Orgo to see this workspace's domains.";

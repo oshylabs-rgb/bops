@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
  * (A static folder, so it comes before [zone], whose ids are UUIDs.)
  */
 export async function GET(request: Request) {
-  const gate = domainsGate(request, "Domains can only be searched in the Bops app.");
+  const gate = domainsGate(request, "Domains can only be searched in the Oshy Ops app.");
   if (gate) return gate;
   const q = new URL(request.url).searchParams;
   try {

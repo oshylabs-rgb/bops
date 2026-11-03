@@ -138,7 +138,7 @@ function record(routineId: string, given: RoutineRun, said?: string): RoutineRun
  */
 const runLanded = (routineId: string, at: number) => startLanded((st) => Array.isArray(st.routines) && st.routines.some((x: Partial<Routine>) => x?.id === routineId && x.last?.at === at));
 /** What a run whose start Bops Cloud didn't take says (runLanded): another Bops runs it. Nothing records it. */
-const notLanded = (at: number): RoutineRun => ({ at, status: "skipped", error: "Another Bops runs it now." });
+const notLanded = (at: number): RoutineRun => ({ at, status: "skipped", error: "Another Oshy Ops runs it now." });
 
 /** Where its result went, once it got there (or didn't), on the run it belongs to. */
 function recordDelivery(routineId: string, at: number, delivery: RoutineRun["delivery"]) {
@@ -165,7 +165,7 @@ function tidy(schedule: Schedule): { schedule?: Schedule; error?: string } {
 function checkZone(tz: string | undefined): { timeZone?: string; error?: string } {
   const t = tz?.trim();
   if (!t) return {};
-  return validTimeZone(t) ? { timeZone: t } : { error: `"${t}" isn't a time zone Bops knows. Use an IANA name, like America/New_York.` };
+  return validTimeZone(t) ? { timeZone: t } : { error: `"${t}" isn't a time zone Oshy Ops knows. Use an IANA name, like America/New_York.` };
 }
 
 /** A skill of the bot's, by slug, its id from before as a procedure, or its name (as read_skill finds one): how the routine names it. */
@@ -390,7 +390,7 @@ export function skipRoutine(routineId: string, at?: number): { error?: string; s
   const now = Date.now();
   const want = at ?? r.nextRunAt;
   if (!Number.isFinite(want) || want <= now) return { error: "That time has passed." };
-  if (want - now > SKIP_AHEAD_MS) return { error: "Bops can skip a time up to 5 weeks ahead." };
+  if (want - now > SKIP_AHEAD_MS) return { error: "Oshy Ops can skip a time up to 5 weeks ahead." };
   // Skipped already (it's before its next, or on its list): nothing to do.
   const already = r.skips?.find((x) => Math.abs(x - want) < 60_000);
   if (already !== undefined) return { skipped: already, nextRunAt: r.nextRunAt };
@@ -521,7 +521,7 @@ async function run(routineId: string, opts: RunOpts): Promise<RoutineRun> {
   const at = Date.now();
   if (!r) return { at, status: "skipped", error: "No such routine." };
   // A reminder or a chat run is never run on a computer (chat is the backend's: runner.ts needsNoComputer): Bops on the Mac runs it, and nothing here records it.
-  if (onRunner() && needsNoComputer(r)) return { at, status: "skipped", error: "Bops on your Mac runs it." };
+  if (onRunner() && needsNoComputer(r)) return { at, status: "skipped", error: "Oshy Ops on your Mac runs it." };
   const b = bot(r.botId);
   if (!b) return record(r.id, { at, status: "skipped", error: "Its bot isn't there anymore." });
   if (opts.manual) update(() => (r.lastRunAt = at));
@@ -842,7 +842,7 @@ function forText(text: string) {
   if (t.length <= TEXT_MAX) return t;
   const cut = t.slice(0, TEXT_MAX - 30);
   const at = Math.max(cut.lastIndexOf("\n"), cut.lastIndexOf(". "), cut.lastIndexOf(" "));
-  return `${(at > TEXT_MAX / 2 ? cut.slice(0, at) : cut).trimEnd()}… (the rest is in Bops)`;
+  return `${(at > TEXT_MAX / 2 ? cut.slice(0, at) : cut).trimEnd()}… (the rest is in Oshy Ops)`;
 }
 
 /**
@@ -885,7 +885,7 @@ export async function deliver(r: Routine, text: string, at?: number): Promise<Ro
       const from = b?.mail ? b : b && getState().bots.find((x) => x.isMain && x.mail && workspaceOf(x) === workspaceOf(b));
       if (!b || !from) throw new Error(`${b?.name ?? "The bot"} has no email inbox yet`);
       const to = ownerAddresses()[0];
-      if (!to) throw new Error(`Bops doesn't know ${ownerName()}'s email address yet`);
+      if (!to) throw new Error(`Oshy Ops doesn't know ${ownerName()}'s email address yet`);
       const said = await sendEmail(from.id, { to: [to], subject: r.title, text: from.id === b.id ? text : `${b.name}:\n\n${text}` }, { chatId: botChatId(r.botId) });
       if (!/^Sent to /.test(said)) throw new Error(said.replace(/\s*Nothing was sent\.?$/, "").replace(/\.$/, ""));
       return { status: "sent", to, at: Date.now() };
@@ -1146,7 +1146,7 @@ function tick() {
       // A thread of the routine's still going (a login it waits on) stays its run: the next run waits for it, and its end is the routine's.
       const t = r.last?.sessionId ? session(r.last.sessionId) : undefined;
       const still = t && live(t) ? stillGoing(r.last, t.id) : {};
-      const missed = !onRunner() ? "Missed while Bops was off or this Mac was asleep" : sleptSince(due) ? "Missed while its computer was asleep" : "Missed while its computer's runner couldn't run routines";
+      const missed = !onRunner() ? "Missed while Oshy Ops was off or this Mac was asleep" : sleptSince(due) ? "Missed while its computer was asleep" : "Missed while its computer's runner couldn't run routines";
       record(r.id, { at: now, status: "skipped", error: `${missed} (it was due ${inSentence(whenText(due, now, tz))}); runs next ${inSentence(whenText(next!, now, tz))}`, ...still });
       continue;
     }
@@ -1211,7 +1211,7 @@ export function routinesNote(botIds: string[]) {
         ? "reminder message"
         : r.run === "chat"
           ? "chat run (tools, no computer)"
-          : `task, runs ${r.where && r.where !== "auto" ? `on ${r.where === "mac" ? `${owner}'s Mac` : "the cloud computer"}` : "where Bops picks"}`,
+          : `task, runs ${r.where && r.where !== "auto" ? `on ${r.where === "mac" ? `${owner}'s Mac` : "the cloud computer"}` : "where Oshy Ops picks"}`,
       r.quiet ? "quiet (posts only when something needs the user)" : "",
       deliverText(r),
       r.procedure ? `follows skill "${findSkill(r.botId, r.procedure)?.name ?? r.procedure}"` : "",

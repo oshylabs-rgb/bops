@@ -296,7 +296,7 @@ export function Members({
           </div>
         ) : read?.state === "ready" ? (
           <div className="px-[22px] pb-5 pt-5 text-[12px] leading-4 text-[#9A9A98]">
-            People you add sign in with the email you invite. In Bops they see everything of the bots you pick, your chats with them too. On orgo.ai they see every bot&apos;s
+            People you add sign in with the email you invite. In Oshy Ops they see everything of the bots you pick, your chats with them too. On orgo.ai they see every bot&apos;s
             computer, like an open inbox, and can ask Orgo&apos;s agent to work on it. {read.keysOnComputers ? "Never your saved logins." : "Never your saved logins or keys."}{" "}
             <a href={read.orgoUrl} target="_blank" rel="noreferrer" className="underline underline-offset-2 hover:text-ink">
               Open on orgo.ai

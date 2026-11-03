@@ -133,7 +133,7 @@ function TokenSetup({ bot: b, kind }: { bot: Bot; kind: "telegram" | "discord" }
           <>
             Under <b>Bot</b>: turn on <b>Message Content Intent</b>, then <b>Reset Token</b>.
           </>,
-          <>Paste the token. Bops then gives you the link to add it to your server.</>,
+          <>Paste the token. Oshy Ops then gives you the link to add it to your server.</>,
         ];
   return (
     <div className={card}>
@@ -175,7 +175,7 @@ function SlackSetup({ state, bot: b }: { state: AppState; bot: Bot }) {
     return (
       <div className={card}>
         <span className="text-[12.5px] leading-[18px] text-[#3A3A38]">
-          Add Bops to your Slack workspace once (Slack asks you to allow it). Then pick the channels {b.name} joins; your other bots join through the same app.
+          Add Oshy Ops to your Slack workspace once (Slack asks you to allow it). Then pick the channels {b.name} joins; your other bots join through the same app.
         </span>
         <div className="flex items-center gap-2">
           {waiting?.status === "waiting" ? (
@@ -298,7 +298,7 @@ function Linked({ bot: b, link: l }: { bot: Bot; link: ChannelLink }) {
     </>
   ) : (
     <span className="text-[12.5px] leading-[18px] text-[#3A3A38]">
-      Send {l.kind === "slack" ? "the Bops app a direct message" : `${l.handle} a direct message (or mention it in a channel)`} with just the code <Code>{l.pairCode}</Code>
+      Send {l.kind === "slack" ? "the Oshy Ops app a direct message" : `${l.handle} a direct message (or mention it in a channel)`} with just the code <Code>{l.pairCode}</Code>
     </span>
   );
   return (

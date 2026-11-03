@@ -281,7 +281,7 @@ export async function readIssueSource(ws: string, issue: Issue, opts: { fresh?: 
   const app = sourceAppOf(issue.sourceApp);
   if (onRunner()) return failure("runner", app ?? "gmail");
   const ref = refOfIssue(issue);
-  if ("code" in ref) return ref.code === "unsupported" || !ref.app ? { code: "unsupported", error: "Bops can't show where this came from.", status: 422 } : failure(ref.code, ref.app);
+  if ("code" in ref) return ref.code === "unsupported" || !ref.app ? { code: "unsupported", error: "Oshy Ops can't show where this came from.", status: 422 } : failure(ref.code, ref.app);
   const key = `issue\n${ws}\n${issue.id}\n${refKey(ref)}`;
   const hit = opts.fresh ? undefined : cached(key);
   if (hit) return { source: hit };
@@ -315,7 +315,7 @@ const tidy = (e: unknown) => (String((e as Error)?.message ?? e) || "it didn't g
 /** The action that sends a reply in this thread, and its inputs: as a drafted reply's (reply-drafts.ts sendCall), with Reply all's others for an email. */
 export function replyCall(s: IssueSource, text: string, all = false): { action: string; args: Record<string, unknown>; to: string } | { error: string } {
   if (s.app === "gmail") {
-    if (!s.reply?.to.email) return { error: "Bops can't tell who to reply to here. Reply in Gmail." };
+    if (!s.reply?.to.email) return { error: "Oshy Ops can't tell who to reply to here. Reply in Gmail." };
     const c = sendCall({ app: "gmail", threadId: s.threadId, to: s.reply.to.email }, text);
     const to = all ? s.reply.all.to.map((p) => p.email!).filter(Boolean) : [];
     const cc = all ? s.reply.all.cc.map((p) => p.email!).filter(Boolean) : [];
@@ -334,7 +334,7 @@ export function replyCall(s: IssueSource, text: string, all = false): { action: 
  * and one reply at a time per issue. Then its history says "Replied: …" (`logged` false when memory didn't take it).
  */
 export async function replyToIssue(ws: string, issue: Issue, text: string, opts: { all?: boolean; nonce: string }): Promise<ReplyResult> {
-  if (onRunner()) return { ok: false, status: 409, error: "Reply from Bops on your Mac." };
+  if (onRunner()) return { ok: false, status: 409, error: "Reply from Oshy Ops on your Mac." };
   if (!/^[A-Za-z0-9_-]{8,80}$/.test(opts.nonce)) return { ok: false, status: 400, error: "Which click was that? Try again." };
   const words = text.trim();
   if (!words) return { ok: false, status: 400, error: "There's nothing to send." };

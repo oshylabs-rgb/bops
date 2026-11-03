@@ -93,7 +93,7 @@ const READ_MOST = 256 * 1024;
 const MARK = "@@bops-agent@@ ";
 
 /** The replies a user taps when a brain stopped and waits on them (sessions.ts replyToSession). */
-export const FINISH_ON_BOPS = "Finish on Bops agent";
+export const FINISH_ON_BOPS = "Finish on Oshy Ops agent";
 export const WAIT = "Wait";
 /** Its provider wasn't answering: it starts again on its own agent, now. */
 export const TRY_AGAIN = "Try again";
@@ -180,7 +180,7 @@ export const claudeDriver: CliDriver = {
     await ensureBrainTools(computerId);
   },
   note: (owner) =>
-    `You run as Claude Code on this computer, for Bops. Your tools are Claude Code's own (Bash for the shell, Read, Edit and Write for files, WebSearch and WebFetch to look things up and read pages, TodoWrite, and Task for helpers) and Bops' (mcp__screen__* for the screen, ${owner}'s apps, signing in with their saved logins and screens for helpers; mcp__browser__* for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: web_search is WebSearch, the shell is Bash. Any other tool asks ${owner} in Bops first and waits for their answer; if they say no, don't do it another way.`,
+    `You run as Claude Code on this computer, for Oshy Ops. Your tools are Claude Code's own (Bash for the shell, Read, Edit and Write for files, WebSearch and WebFetch to look things up and read pages, TodoWrite, and Task for helpers) and Oshy Ops' (mcp__screen__* for the screen, ${owner}'s apps, signing in with their saved logins and screens for helpers; mcp__browser__* for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: web_search is WebSearch, the shell is Bash. Any other tool asks ${owner} in Oshy Ops first and waits for their answer; if they say no, don't do it another way.`,
   line: (text) => `${JSON.stringify({ type: "user", message: { role: "user", content: text } })}\n`,
   parse: (e) => {
     const parent = str(e.parent_tool_use_id);
@@ -258,7 +258,7 @@ export const codexDriver: CliDriver = {
     await ensureBrainTools(computerId);
   },
   note: (owner) =>
-    `You run as Codex on this computer, for Bops. Your tools are Codex's own (the shell, editing files, web search and your plan) and Bops' (the screen server's tools for the screen, ${owner}'s apps and signing in with their saved logins; the browser server's for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: web_search is your web search, the shell is your shell. You have no helpers here, so do every part yourself. What would change ${owner}'s apps (sending, posting, paying) asks them in Bops first and waits for their answer; if they say no, don't do it another way.`,
+    `You run as Codex on this computer, for Oshy Ops. Your tools are Codex's own (the shell, editing files, web search and your plan) and Oshy Ops' (the screen server's tools for the screen, ${owner}'s apps and signing in with their saved logins; the browser server's for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: web_search is your web search, the shell is your shell. You have no helpers here, so do every part yourself. What would change ${owner}'s apps (sending, posting, paying) asks them in Oshy Ops first and waits for their answer; if they say no, don't do it another way.`,
   line: (text) => `${JSON.stringify({ text })}\n`,
   parse: (e) => {
     if (e.type === "thread.started") return [{ type: "started", session: str(e.thread_id), failed: [] }];
@@ -355,7 +355,7 @@ export const opencodeDriver: CliDriver = {
     await ensureBrainTools(computerId);
   },
   note: (owner) =>
-    `You run as OpenCode on this computer, for Bops. Your tools are OpenCode's own (bash for the shell, read, edit and write for files, glob and grep to find things, webfetch to read a page, your to-do list) and Bops' (the screen server's tools for the screen, ${owner}'s apps and signing in with their saved logins; the browser server's for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: the shell is bash. What would change ${owner}'s apps (sending, posting, paying) asks them in Bops first and waits for their answer; if they say no, don't do it another way.`,
+    `You run as OpenCode on this computer, for Oshy Ops. Your tools are OpenCode's own (bash for the shell, read, edit and write for files, glob and grep to find things, webfetch to read a page, your to-do list) and Oshy Ops' (the screen server's tools for the screen, ${owner}'s apps and signing in with their saved logins; the browser server's for the Chrome on your screen). Where the instructions above name a tool, use the one of yours that does that: the shell is bash. What would change ${owner}'s apps (sending, posting, paying) asks them in Oshy Ops first and waits for their answer; if they say no, don't do it another way.`,
   line: (text) => `${JSON.stringify({ text })}\n`,
   parse: (e) => {
     if (e.type === "bops" && e.subtype === "started") return [{ type: "started", session: str(e.session), failed: [] }];
@@ -487,7 +487,7 @@ export async function revealAgentKey(r: AgentRun, b: Bot): Promise<string> {
 /** A file for the thread's CLI on the computer (bops-agent put), from stdin: never on a command line of its own. */
 async function put(run: Pick<CliRun, "computerId" | "sessionId">, name: "mcp.json" | "prompt.md" | "key", body: string) {
   const r = await orgo.bash(run.computerId, `echo ${b64(body)} | base64 -d | bops-agent put ${run.sessionId} ${name}`, 30);
-  if (!r.output.includes("ok")) throw new Error(`Bops couldn't set up the computer for this (${r.output.trim().slice(0, 120) || "no answer"})`);
+  if (!r.output.includes("ok")) throw new Error(`Oshy Ops couldn't set up the computer for this (${r.output.trim().slice(0, 120) || "no answer"})`);
 }
 
 /**
@@ -508,7 +508,7 @@ export async function openRun(o: { sessionId: string; computerId: string; displa
 async function startCli(run: CliRun): Promise<"resumed" | "fresh"> {
   const { run: now, bot: b } = agentNow(run);
   const cli = run.driver.cliId(run.cli);
-  if (!cli) throw new Error(`${run.name} has no session Bops can pick up`);
+  if (!cli) throw new Error(`${run.name} has no session Oshy Ops can pick up`);
   if (now.agent.pays === "key") await put(run, "key", await revealAgentKey(now, b));
   const more = (run.args ?? []).filter((a) => /^[A-Za-z0-9=_.:/-]+$/.test(a));
   const r = await orgo.bash(run.computerId, `bops-agent start ${run.sessionId} ${now.account?.id ?? "-"} ${run.driver.kind} ${run.display} ${run.computerId} '${cli}' ${agentFlags(now, b).join(" ")}${more.length ? ` -- ${more.join(" ")}` : ""}`, 30);
@@ -524,7 +524,7 @@ async function sendCli(run: CliRun, text: string) {
   const r = await orgo.bash(run.computerId, `echo ${b64(run.driver.line(text))} | base64 -d | bops-agent send ${run.sessionId}`, 30);
   if (r.output.includes("sent")) return true;
   if (r.output.includes("gone")) return false;
-  throw new Error(`Bops couldn't reach ${run.name} on the computer (${r.output.trim().slice(0, 120) || "no answer"})`);
+  throw new Error(`Oshy Ops couldn't reach ${run.name} on the computer (${r.output.trim().slice(0, 120) || "no answer"})`);
 }
 
 /** What the process said since the last read, whether there's more of it to read, and whether it still runs (when it doesn't, its last error words). */
@@ -591,7 +591,7 @@ export async function openShell(o: { botId: string; computerId: string; display:
   if (o.agent.agent.pays === "key") {
     const key = await revealAgentKey(o.agent, o.bot);
     const r = await orgo.bash(o.computerId, `echo ${b64(key)} | base64 -d | bops-agent put shell-${o.botId} key`, 30);
-    if (!r.output.includes("ok")) throw new Error(`Bops couldn't set up the computer for this (${r.output.trim().slice(0, 120) || "no answer"})`);
+    if (!r.output.includes("ok")) throw new Error(`Oshy Ops couldn't set up the computer for this (${r.output.trim().slice(0, 120) || "no answer"})`);
   }
   const r = await orgo.bash(o.computerId, `bops-agent shell ${o.botId} ${o.agent.account?.id ?? "-"} ${driver.kind} ${o.display} ${o.computerId} ${agentFlags(o.agent, o.bot).join(" ")}`, 30);
   if (!r.output.includes("terminal on")) throw new Error(`its terminal didn't open (${r.output.trim().slice(-160) || "no answer"})`);
@@ -639,7 +639,7 @@ export type CliTurn = {
 };
 
 /** Said with the messages a process that was gone mid-turn gets again. */
-const CUT_OFF = "(From Bops: you were cut off while you worked on this, and started again. Check what's already done before you carry on.)";
+const CUT_OFF = "(From Oshy Ops: you were cut off while you worked on this, and started again. Check what's already done before you carry on.)";
 
 /**
  * One turn on a thread's CLI: the message in (its process started first, when this run hasn't yet), the
@@ -787,7 +787,7 @@ const COMPACT = "/compact";
  * command wasn't taken as one) didn't compact, and says so. Stopped, stuck past `idleMs` or gone, it stops the process.
  */
 export async function cliCompact(run: CliRun, t: { signal: AbortSignal; idleMs: number; stalled: string; started: (cli: string) => void }): Promise<void> {
-  if (!run.driver.compacts) throw new Error(`${run.name} doesn't compact as Bops runs it`);
+  if (!run.driver.compacts) throw new Error(`${run.name} doesn't compact as Oshy Ops runs it`);
   const giveUp = async (why: string): Promise<never> => {
     await stopCli(run).catch(() => {});
     throw new Error(why);
@@ -922,13 +922,13 @@ export function stoppedWords(r: Pick<AgentRun, "kind" | "agent" | "model">, why:
   const vendor = keyVendor({ ...r.agent, model: r.model });
   const resets = why === "limit" ? resetsAt(said) : undefined;
   const until = resets ? ` until ${resets}` : "";
-  const finish = "I can finish this on Bops agent, on your credit";
+  const finish = "I can finish this on Oshy Ops agent, on your credit";
   if (why === "model")
     return `Your ${onPlan ? planName(plan) : `${vendor} key`} can't use ${agentLabel({ kind: r.kind, model: r.model }).replace(`${name} · `, "")}. Pick another model for new threads in ${bot ? `${bot}'s` : "the bot's"} profile. ${finish}, or wait.\n\nOptions: ${FINISH_ON_BOPS} | ${WAIT}`;
-  if (why === "vault") return `Waiting for your Vault. It allows 30 key uses an hour, so this starts again by itself in a few minutes. Or I can finish it on Bops agent, on your credit.\n\nOptions: ${FINISH_ON_BOPS} | ${WAIT}`;
+  if (why === "vault") return `Waiting for your Vault. It allows 30 key uses an hour, so this starts again by itself in a few minutes. Or I can finish it on Oshy Ops agent, on your credit.\n\nOptions: ${FINISH_ON_BOPS} | ${WAIT}`;
   if (why === "down") {
     const who = r.kind === "claude" ? "Claude" : r.kind === "codex" ? "OpenAI" : (ROUTE_NAMES[r.model?.split("/")[0] as keyof typeof ROUTE_NAMES] ?? "Its provider");
-    return `${who} isn't answering right now. I can try again, or finish this on Bops agent, on your credit.\n\nOptions: ${TRY_AGAIN} | ${FINISH_ON_BOPS}`;
+    return `${who} isn't answering right now. I can try again, or finish this on Oshy Ops agent, on your credit.\n\nOptions: ${TRY_AGAIN} | ${FINISH_ON_BOPS}`;
   }
   const what =
     why === "limit"

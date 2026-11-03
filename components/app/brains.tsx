@@ -32,7 +32,7 @@ const light = `${btn} bg-[#F2F2F0] text-ink hover:bg-[#EAEAE7]`;
 export function BrainBadge({ kind, title, className = "bg-[#F2F2F0]" }: { kind: CliKind | "agent"; title: string; className?: string }) {
   return (
     <span title={title} className={`shrink-0 rounded-full px-1.5 py-px text-[11px] leading-[14px] text-[#3A3A38] ${className}`}>
-      {kind === "agent" ? "Bops agent" : CLI_NAMES[kind]}
+      {kind === "agent" ? "Oshy Ops agent" : CLI_NAMES[kind]}
     </span>
   );
 }
@@ -48,7 +48,7 @@ export function threadBadge(s: Session, state: AppState): { kind: CliKind | "age
   if (who && who !== "agent") return { kind: who, title: `${CLI_NAMES[who]} ran this` };
   const b = state.bots.find((x) => x.id === s.botId);
   if (who !== "agent" || !b || !isCli(defaultAgent(b, state).kind) || brainRuns(b, state) === "none" || s.runsOn === "mac") return undefined;
-  return { kind: "agent", title: s.brainRun?.started ? "Bops agent took this over, so it finishes it, on your credit" : "Started on Bops agent, so it finishes there, on your credit" };
+  return { kind: "agent", title: s.brainRun?.started ? "Oshy Ops agent took this over, so it finishes it, on your credit" : "Started on Oshy Ops agent, so it finishes there, on your credit" };
 }
 
 /** "Sam's computer": the computer `b` works on (its own, or the one it shares). */
@@ -105,7 +105,7 @@ export async function brainSignIn(brainId: string, botId: string, onShowScreen: 
     onShowScreen(j.botId, j.display);
     return null;
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -121,7 +121,7 @@ export async function openInTerminal(sessionId: string, onShowScreen: Shown): Pr
     onShowScreen(j.botId, j.display);
     return null;
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -132,7 +132,7 @@ async function call(url: string, body: unknown, method = "POST"): Promise<string
     const j = (await res.json().catch(() => ({}))) as { error?: string };
     return res.ok ? null : undash(j.error ?? "That didn't change. Try again.");
   } catch {
-    return "Couldn't reach Bops. Try again.";
+    return "Couldn't reach Oshy Ops. Try again.";
   }
 }
 
@@ -170,7 +170,7 @@ export function BrainSettings({ state, onShowScreen, onOpenVault }: { state: App
       <div className="flex items-end justify-between gap-3">
         <div className="flex flex-col gap-0.5">
           <span className="text-[13px] font-semibold">Brain</span>
-          <span className="text-[12px] leading-4 text-[#6B6B6B]">What your bots work with. Bops agent runs on your credit. Claude Code and Codex run on your own plan or key.</span>
+          <span className="text-[12px] leading-4 text-[#6B6B6B]">What your bots work with. Oshy Ops agent runs on your credit. Claude Code and Codex run on your own plan or key.</span>
         </div>
         {!adding && (
           <button onClick={() => setAdding(true)} className="flex shrink-0 items-center gap-1.5 rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold leading-4 text-white hover:bg-[#2A2A28]">
@@ -184,7 +184,7 @@ export function BrainSettings({ state, onShowScreen, onOpenVault }: { state: App
       <div className="flex flex-col rounded-[14px] p-3.5 shadow-[0_0_0_1px_#E6E6E3]">
         <div className="flex flex-col gap-1.5 border-b border-[#F0F0EE] py-3 first:pt-0 last:border-0 last:pb-0">
           <div className="flex min-h-7 items-center gap-2">
-            <span className="min-w-0 truncate text-[13.5px] font-medium leading-[18px]">Bops agent</span>
+            <span className="min-w-0 truncate text-[13.5px] font-medium leading-[18px]">Oshy Ops agent</span>
             <span className="min-w-0 truncate text-[12px] leading-4 text-[#9A9A98]">Credit</span>
           </div>
           <div className="flex flex-wrap items-center gap-1">
@@ -203,7 +203,7 @@ export function BrainSettings({ state, onShowScreen, onOpenVault }: { state: App
 /** A bot on a brain's chips: it uses it, may pick it in its profile, or neither. */
 const BRAIN_CHOICES: { id: "use" | "may" | "none"; name: string; hint: string }[] = [
   { id: "use", name: "Uses it", hint: "Its tasks run on this brain." },
-  { id: "may", name: "Can pick it", hint: "Its profile offers it. Its tasks stay on Bops agent until you pick it." },
+  { id: "may", name: "Can pick it", hint: "Its profile offers it. Its tasks stay on Oshy Ops agent until you pick it." },
   { id: "none", name: "Can't use it", hint: "Its profile doesn't offer it." },
 ];
 
@@ -286,7 +286,7 @@ function BrainRow({ state, brain: x, keys, onShowScreen }: { state: AppState; br
           choices={BRAIN_CHOICES}
           level={who}
           // Picked, but its tasks all run on this Mac, where Bops agent runs them (brainRuns).
-          note={(b) => (who(b) === "may" ? "not picked" : who(b) === "use" && brainRuns(b, state) === "none" ? "on your Mac, Bops agent" : undefined)}
+          note={(b) => (who(b) === "may" ? "not picked" : who(b) === "use" && brainRuns(b, state) === "none" ? "on your Mac, Oshy Ops agent" : undefined)}
           what={x.name}
           disabled={busy}
           onSet={(b, level) => void run(() => call("/api/brains", { id: x.id, botId: b.id, level }, "PATCH"))}
@@ -307,7 +307,7 @@ function BrainRow({ state, brain: x, keys, onShowScreen }: { state: AppState; br
       {sure && (
         <div className="flex flex-wrap items-center gap-2 rounded-[10px] bg-[#FEF3F2] px-3 py-2">
           <span className="min-w-0 flex-1 text-[12.5px] leading-[18px] text-[#3A3A38]">
-            Remove {x.name}? Its bots go back to Bops agent{x.auth === "plan" ? ", and it signs out on the computers it's signed in on" : ""}.
+            Remove {x.name}? Its bots go back to Oshy Ops agent{x.auth === "plan" ? ", and it signs out on the computers it's signed in on" : ""}.
           </span>
           <button disabled={busy} onClick={() => void run(() => call("/api/brains", { id: x.id }, "DELETE"))} className={`${btn} bg-[#B42318] text-white`}>
             {busy ? "Removing…" : "Remove"}
@@ -411,7 +411,7 @@ export function AddBrain({
       }
       onDone();
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }
@@ -518,7 +518,7 @@ export function BotBrain({ state, bot: b, onShowScreen, className }: { state: Ap
   // A task on this Mac runs on Bops agent, whatever its brain (sessions.ts run).
   const where = brainRuns(b, state);
   const runs = !now
-    ? "Bops agent, on your credit"
+    ? "Oshy Ops agent, on your credit"
     : now.auth === "key"
       ? `${BRAIN_NAMES[now.kind]} on your ${now.kind === "codex" ? "OpenAI" : "Anthropic"} key`
       : going
@@ -530,17 +530,17 @@ export function BotBrain({ state, bot: b, onShowScreen, className }: { state: Ap
     ? runs
     : where === "none"
       ? state.host === "mac"
-        ? "Your bots work on this Mac, so they run on Bops agent, on your credit"
-        : `${b.name} works on your Mac, so its tasks run on Bops agent, on your credit`
+        ? "Your bots work on this Mac, so they run on Oshy Ops agent, on your credit"
+        : `${b.name} works on your Mac, so its tasks run on Oshy Ops agent, on your credit`
       : where === "some"
-        ? `${runs} · tasks on your Mac run on Bops agent`
+        ? `${runs} · tasks on your Mac run on Oshy Ops agent`
         : runs;
   const pick = async (brainId: string | null) => {
     setBusy(true);
     setError(await call("/api/brains/bot", { botId: b.id, brainId }));
     setBusy(false);
   };
-  const options: { id: string | null; name: string }[] = [{ id: null, name: "Bops agent" }, ...mine.map((x) => ({ id: x.id, name: x.name }))];
+  const options: { id: string | null; name: string }[] = [{ id: null, name: "Oshy Ops agent" }, ...mine.map((x) => ({ id: x.id, name: x.name }))];
   return (
     <div className={`flex w-full flex-col gap-2 rounded-2xl px-4 py-3 ${className}`}>
       <div className="flex items-center gap-3">

@@ -10,7 +10,7 @@ export const dynamic = "force-dynamic";
  * Keys change, and are listed, only from the Bops window (ui-token.ts): a page a bot's Chrome reached this
  * server with mustn't see which keys there are, add one, or let a bot use one.
  */
-const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Keys can only be changed in the Bops app." }, { status: 403 }));
+const notFromWindow = (request: Request) => (fromBopsWindow(request) ? null : Response.json({ error: "Keys can only be changed in the Oshy Ops app." }, { status: 403 }));
 
 const failed = (e: unknown) => Response.json({ error: (e as Error).message }, { status: e instanceof KeysError ? e.status : 500 });
 

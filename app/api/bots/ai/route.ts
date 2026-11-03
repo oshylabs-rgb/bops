@@ -18,7 +18,7 @@ const str = (v: unknown) => (typeof v === "string" ? v : undefined);
  * agent it added (`added`: the window opens its editor).
  */
 export async function POST(request: Request) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "A bot's AI can only be changed in the Bops app." }, { status: 403 }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "A bot's AI can only be changed in the Oshy Ops app." }, { status: 403 }));
   if (unready) return unready;
   const b = (await request.json().catch(() => ({}))) as Record<string, unknown>;
   const botId = str(b.botId);
@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       return Response.json({ error: "op: add, update, remove or default" }, { status: 400 });
   }
   // Without brains (a release build), only Bops agent's model: nothing else is there to change.
-  if (!BRAINS_ON && !(op.op === "update" && op.agentId === "bops" && op.pays === undefined && op.account === undefined)) return Response.json({ error: "This version of Bops runs Bops agent only." }, { status: 404 });
+  if (!BRAINS_ON && !(op.op === "update" && op.agentId === "bops" && op.pays === undefined && op.account === undefined)) return Response.json({ error: "This version of Oshy Ops runs Oshy Ops agent only." }, { status: 404 });
   try {
     const out: { added?: string } = {};
     const ai = setBotAi(botId, op, out);

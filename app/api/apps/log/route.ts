@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  * (ui-token.ts), like the keys: a page a bot's Chrome reached this server with mustn't see it.
  */
 export async function GET(request: Request) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Only the Bops app can see this." }, { status: 403 }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "Only the Oshy Ops app can see this." }, { status: 403 }));
   if (unready) return unready;
   const s = getState();
   const ws = s.workspace ?? s.workspaces?.[0]?.id ?? MAIN_WORKSPACE;

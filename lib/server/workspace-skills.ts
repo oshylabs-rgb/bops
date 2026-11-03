@@ -1221,7 +1221,7 @@ export const COMPUTER_APPS = "/workspace/capabilities/apps";
  */
 const labelLine = (g: Grouped) => {
   const own = g.builtin ? g.items.filter((x) => !x.builtin).map(titleOf) : [];
-  return `- ${cut(`${g.label} (${g.count}): ${own.length ? `${cut(own.join(", "), ABOUT_MAX)}, and Bops' own: ` : ""}${g.about}`, NOTE_LINE_MAX)}`;
+  return `- ${cut(`${g.label} (${g.count}): ${own.length ? `${cut(own.join(", "), ABOUT_MAX)}, and Oshy Ops' own: ` : ""}${g.about}`, NOTE_LINE_MAX)}`;
 };
 /** A skill's line under a label: its name and description. */
 const skillLine = (x: Listed) => cut(`${titleOf(x)}: ${x.description}`, NOTE_LINE_MAX);
@@ -1243,7 +1243,7 @@ function readBuiltin(s: BuiltinSkill, file?: string | null): string {
     return `${s.name}, ${f.path}:\n${f.content.length > FILE_CAP ? `${f.content.slice(0, FILE_CAP)}\n(cut short)` : f.content}`;
   }
   return [
-    `Skill: ${s.name} (Bops' own)`,
+    `Skill: ${s.name} (Oshy Ops' own)`,
     s.body.trim(),
     files.length ? `Its files (read one with read_skill and file; on your computer they're in ${COMPUTER_SKILLS}/${s.slug}/):\n${files.map((f) => `- ${f.path}`).join("\n")}` : "",
   ]
@@ -1374,7 +1374,7 @@ export function skillsNote(botId: string, opts: { propose?: boolean } = {}): str
   const shown = groups.slice(0, NOTE_MAX);
   const more = groups.length - shown.length;
   return [
-    `Your skills: how your workspace does jobs it was shown before, and Bops' own, under labels. When a job fits a label, open it with read_skill and label to see its skills, then read the one that fits with read_skill and name, and follow it.${small && mine ? " One listed here you can read at once." : ""} ${opts.propose ? `When a step of one was wrong, missing or out of date, propose the change with propose_skill_change: nothing changes until ${ownerName()} accepts it.` : "Tell the user if a step no longer works."}`,
+    `Your skills: how your workspace does jobs it was shown before, and Oshy Ops' own, under labels. When a job fits a label, open it with read_skill and label to see its skills, then read the one that fits with read_skill and name, and follow it.${small && mine ? " One listed here you can read at once." : ""} ${opts.propose ? `When a step of one was wrong, missing or out of date, propose the change with propose_skill_change: nothing changes until ${ownerName()} accepts it.` : "Tell the user if a step no longer works."}`,
     ...shown.flatMap((g) => {
       if (!small) return [labelLine(g)];
       // Few: each label a heading with the workspace's own skills under it (a workspace label's names say nothing more).
@@ -1396,14 +1396,14 @@ export function skillsIndexNote(botId: string, owner = "the user"): string {
   const shown = groups.slice(0, NOTE_MAX);
   const more = groups.length - shown.length;
   return [
-    `Your skills: how your workspace does jobs it was shown before, and Bops' own, as folders on your computer under labels. Before a job, read ${COMPUTER_SKILLS}/INDEX.md first, open the label that fits the job there, then read that skill's SKILL.md in its folder and follow it. Tell ${owner} if a step no longer works.`,
+    `Your skills: how your workspace does jobs it was shown before, and Oshy Ops' own, as folders on your computer under labels. Before a job, read ${COMPUTER_SKILLS}/INDEX.md first, open the label that fits the job there, then read that skill's SKILL.md in its folder and follow it. Tell ${owner} if a step no longer works.`,
     ...shown.map(labelLine),
     ...(more > 0 ? [`(${more} more labels in INDEX.md.)`] : []),
   ].join("\n");
 }
 
 /** What a script nobody approved yet holds where it would run: never its content, so approval is a real gate. */
-const WAITING = "#!/bin/sh\n# This script is waiting for approval in Bops, in Skills, in Knowledge. Its content arrives once it's approved.\necho 'Not approved yet: ask to have it approved in Skills, in Knowledge.' >&2\nexit 1\n";
+const WAITING = "#!/bin/sh\n# This script is waiting for approval in Oshy Ops, in Skills, in Knowledge. Its content arrives once it's approved.\necho 'Not approved yet: ask to have it approved in Skills, in Knowledge.' >&2\nexit 1\n";
 /** A bundle's files as they go to a task folder or a computer: scripts approved run; others are WAITING, not executable. */
 function shipped(files: BundleFile[], approved: Set<string>) {
   return files.map((f) => (isScript(f) && !approved.has(f.sha256) ? { ...f, content: WAITING, data: undefined, executable: false } : { ...f, executable: f.executable && approved.has(f.sha256) }));
@@ -1621,7 +1621,7 @@ function skillsIndex(list: Shipping[]): string {
   return [
     "# Skills, by label",
     "",
-    "How your workspace does jobs it was shown before, and Bops' own. Open the label that fits the job, then read that skill's SKILL.md in its folder and follow it. A script nobody approved yet says so when it runs: ask to have it approved in Skills, in Knowledge.",
+    "How your workspace does jobs it was shown before, and Oshy Ops' own. Open the label that fits the job, then read that skill's SKILL.md in its folder and follow it. A script nobody approved yet says so when it runs: ask to have it approved in Skills, in Knowledge.",
     ...groups.flatMap((g) => [
       "",
       `## ${g.label} (${g.count})`,
@@ -2092,7 +2092,7 @@ async function flushApprovals(wsId?: string, pushed?: Set<string>): Promise<bool
       continue;
     }
     if (code === "session_required") {
-      if (!g2.bopsApprovalsSaid) console.warn("[skills] Orgo takes script approvals only from a person signed in to Bops; this key isn't, so they stay on this Mac");
+      if (!g2.bopsApprovalsSaid) console.warn("[skills] Orgo takes script approvals only from a person signed in to Oshy Ops; this key isn't, so they stay on this Mac");
       g2.bopsApprovalsSaid = true;
       approvalsOut.done([e.id]);
       continue;

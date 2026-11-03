@@ -132,7 +132,7 @@ export async function signInWith(botId: string, display: number, loginId: string
   const b = bot(botId);
   const l = logins().find((x) => x.id === loginId);
   if (!b || !l) throw new Error("no such login");
-  if (onRunner()) throw new Error("saved logins work only from the Bops app on your Mac");
+  if (onRunner()) throw new Error("saved logins work only from the Oshy Ops app on your Mac");
   if (!mayUse(l, botId)) throw new Error(`${b.name} isn't allowed to use this login`);
   const lock = `${botId}:${display}`;
   if (signingIn.has(lock)) return { signedIn: false, busy: true, read: getState().screens?.[lock] };
@@ -209,7 +209,7 @@ export async function vaultSignIn(botId: string, display: number, sessionId: str
   // it's never handed to the Mac.
   if (onRunner()) {
     if (s && live(s) && !s.blocker) patchSession(sessionId, { blocker: "sign_in" });
-    return `${owner}'s saved logins sign in only from Bops on their Mac, not here. Say in one short line that you need ${owner} to sign in on your screen, and stop there: once they have, you carry on.`;
+    return `${owner}'s saved logins sign in only from Oshy Ops on their Mac, not here. Say in one short line that you need ${owner} to sign in on your screen, and stop there: once they have, you carry on.`;
   }
   if (!s || !live(s)) return "This task isn't running anymore.";
   // A stranger's work (an outside turn's task: outsideThread): the owner's saved logins are only for the people they
@@ -218,11 +218,11 @@ export async function vaultSignIn(botId: string, display: number, sessionId: str
   // others wait for the owner, with the card.
   if (outsideThread(s, session)) {
     if (!s.blocker) patchSession(sessionId, { blocker: "sign_in" });
-    return `${owner}'s saved logins are only for the people ${owner} works with, and someone outside Bops asked for this task. Say in one short line that you need ${owner} to sign in on your screen, and stop there: once they have, you carry on.`;
+    return `${owner}'s saved logins are only for the people ${owner} works with, and someone outside Oshy Ops asked for this task. Say in one short line that you need ${owner} to sign in on your screen, and stop there: once they have, you carry on.`;
   }
   const forMember = memberThread(s, session);
   const ep = screenEndpoint(b, display);
-  if (!ep) return "Bops can't reach that screen right now.";
+  if (!ep) return "Oshy Ops can't reach that screen right now.";
   const pages = await openPages(ep).catch(() => []);
   // Only logins set to sign in by themselves ("Sign in automatically"): the rest ask first, with the card,
   // whoever asks for them, the bot included.
@@ -246,12 +246,12 @@ export async function vaultSignIn(botId: string, display: number, sessionId: str
       return { site: login.site, ...(await signInWith(botId, display, login.id)) };
     });
     if (!done) continue;
-    if ("busy" in done && done.busy) return "Bops is already signing you in on that screen. Wait a few seconds, then look at it again.";
+    if ("busy" in done && done.busy) return "Oshy Ops is already signing you in on that screen. Wait a few seconds, then look at it again.";
     return done.signedIn
       ? `Signed in to ${done.site} with ${owner}'s saved login. Look at the screen and carry on.`
-      : `Tried ${owner}'s saved ${done.site} login, but the page still needs them (a wrong password, a code Bops can't make, or a check). Stop and say in one sentence what's needed: a card lets ${owner} finish.`;
+      : `Tried ${owner}'s saved ${done.site} login, but the page still needs them (a wrong password, a code Oshy Ops can't make, or a check). Stop and say in one sentence what's needed: a card lets ${owner} finish.`;
   }
-  return `The pages on that screen with a saved login (${fits.map((p) => siteOfUrl(p.url)).join(", ")}) have no fields Bops can fill. If it's a sign-in, stop and say so: a card lets ${owner} finish.`;
+  return `The pages on that screen with a saved login (${fits.map((p) => siteOfUrl(p.url)).join(", ")}) have no fields Oshy Ops can fill. If it's a sign-in, stop and say so: a card lets ${owner} finish.`;
 }
 
 /** Screens a sign-in is being typed into right now: one at a time, or two would type over each other. */

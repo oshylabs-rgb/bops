@@ -37,7 +37,7 @@ function draftOnce(key: string, body: { botId: string; chatId: string; sessionId
         const json = ((await res.json().catch(() => null)) as Drafted | null) ?? {};
         return res.ok && json.draft ? json : { error: json.error ?? "Couldn't write a draft. Try again." };
       })
-      .catch(() => ({ error: "Couldn't reach Bops. Try again." }));
+      .catch(() => ({ error: "Couldn't reach Oshy Ops. Try again." }));
     drafting.set(key, asked);
     void asked.finally(() => drafting.delete(key));
   }
@@ -129,7 +129,7 @@ export function SaveSkillDialog({ botId, chatId, sessionId, onClose }: { botId: 
       }
       setSaved(how);
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
       setBusy(null);
     }
   };

@@ -43,7 +43,7 @@ export const BRAINS_DIR = "/root/.bops/brains";
 export const brainDir = (brainId: string) => `${BRAINS_DIR}/${brainId}`;
 
 /** What a brain route answers in a build without brains (BRAINS_ON): there's nothing there. Null in one with them. */
-export const brainsOff = () => (BRAINS_ON ? null : Response.json({ error: "This version of Bops has no brains." }, { status: 404 }));
+export const brainsOff = () => (BRAINS_ON ? null : Response.json({ error: "This version of Oshy Ops has no brains." }, { status: 404 }));
 
 /** A brain call turned down, with its HTTP status and words for the user. */
 export class BrainError extends Error {
@@ -360,7 +360,7 @@ export async function ensureBrainTools(computerId: string) {
   for (const f of files) {
     if (have.includes(`${f.md5}  ${f.dst}`)) continue;
     const r = await orgo.bash(computerId, `echo ${f.body.toString("base64")} | base64 -d > ${f.dst} && chmod 0755 ${f.dst} && echo ok`, 30);
-    if (!r.output.includes("ok")) throw new BrainError(`Bops couldn't set up the computer for its brains (${r.output.trim().slice(0, 120)}).`, 502);
+    if (!r.output.includes("ok")) throw new BrainError(`Oshy Ops couldn't set up the computer for its brains (${r.output.trim().slice(0, 120)}).`, 502);
   }
   toolsChecked.set(computerId, want);
 }
@@ -501,7 +501,7 @@ export async function startSignIn(brainId: string, botId: string): Promise<{ bot
   if (!c.computerId || c.computerStatus !== "ready") {
     const { ensureComputer } = await import("./sessions");
     await ensureComputer(c.id);
-    if (!fresh()) throw new BrainError("Bops signed out meanwhile.", 409);
+    if (!fresh()) throw new BrainError("Oshy Ops signed out meanwhile.", 409);
     c = workComputer(bot(botId)!);
   }
   const computerId = c.computerId;

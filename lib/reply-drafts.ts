@@ -10,7 +10,7 @@ import type { ReplyDraft } from "./types";
 export const SEND_STALE_MS = 2 * 60_000;
 
 /** What a Send that was never answered says: it may have gone. */
-export const LOST_SEND = "Bops didn't hear back. Check whether it went before you send it again.";
+export const LOST_SEND = "Oshy Ops didn't hear back. Check whether it went before you send it again.";
 
 export type DraftStatus = "draft" | "sending" | "sent" | "failed";
 
@@ -46,7 +46,7 @@ export const draftText = (d: ReplyDraft) => `Reply to ${draftTo(d)} (${DRAFT_APP
 
 /** Drafts as plain words, for where their cards can't go: each one, and where to send them. */
 export const draftsText = (drafts: readonly ReplyDraft[]) =>
-  drafts.length ? `${drafts.map(draftText).join("\n\n")}\n\n${drafts.length === 1 ? "Send it" : "Send them"} from Bops.` : "";
+  drafts.length ? `${drafts.map(draftText).join("\n\n")}\n\n${drafts.length === 1 ? "Send it" : "Send them"} from Oshy Ops.` : "";
 
 /** What a bot's message says when it only offered drafts. */
 export const readyWords = (n: number) => (n === 1 ? "Here's a reply for you to send." : `Here are ${n} replies for you to send.`);

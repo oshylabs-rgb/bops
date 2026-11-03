@@ -81,7 +81,7 @@ export async function cloudJson<T>(path: string, init: RequestInit = {}): Promis
   const res = await cloudFetch(path, init);
   const body = (await res.json().catch(() => null)) as (T & { error?: unknown; code?: unknown }) | null;
   if (!res.ok) throw new CloudError(problem(res.status, typeof body?.error === "string" ? body.error : undefined), res.status, typeof body?.code === "string" ? body.code : undefined);
-  if (body === null || typeof body !== "object") throw new CloudError("Bops Cloud sent back something Bops couldn't read.", res.status);
+  if (body === null || typeof body !== "object") throw new CloudError("Bops Cloud sent back something Oshy Ops couldn't read.", res.status);
   return body;
 }
 
@@ -110,7 +110,7 @@ export function cloudSession(fresh = false): Promise<CloudSession> {
   if (!fresh && box.failed?.key === key && Date.now() - box.failed.at < RETRY_MS) return Promise.reject(box.failed.error);
   const answer: Promise<CloudSession> = cloudJson<CloudSession>("/v1/session", { method: "POST" }).then(
     (value) => {
-      if (typeof value.userId !== "string") throw new CloudError("Bops Cloud sent back something Bops couldn't read.");
+      if (typeof value.userId !== "string") throw new CloudError("Bops Cloud sent back something Oshy Ops couldn't read.");
       // A sign-out or another sign-in while it was out has the last word.
       if (box.asking?.answer === answer) box.session = { key, value };
       return value;

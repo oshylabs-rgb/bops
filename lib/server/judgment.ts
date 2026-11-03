@@ -16,7 +16,7 @@ export async function needsMemory(said: string) {
   if (!said.trim()) return false;
   const owner = ownerName();
   const a = await decide(
-    { app: "Bops" },
+    { app: "Oshy Ops" },
     {
       memory: {
         type: "noul",
@@ -37,7 +37,7 @@ export async function lowRisk(what: string, details: string) {
   const act = `${what}${details ? ` (${details.slice(0, 600)})` : ""}`;
   const owner = ownerName();
   const a = await decide(
-    { app: `Bops: AI assistants act in ${owner}'s apps` },
+    { app: `Oshy Ops: AI assistants act in ${owner}'s apps` },
     {
       reach: {
         type: "noul",
@@ -65,7 +65,7 @@ export async function movesMoney(what: string, details: string) {
   const act = `${what}${details ? ` (${details.slice(0, 600)})` : ""}`;
   const owner = ownerName();
   const a = await decide(
-    { app: `Bops: AI assistants act in ${owner}'s apps` },
+    { app: `Oshy Ops: AI assistants act in ${owner}'s apps` },
     {
       money: {
         type: "noul",

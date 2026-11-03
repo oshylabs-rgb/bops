@@ -140,7 +140,7 @@ export function BotPanel({
         <div className="flex flex-col items-center gap-px">
           <div className="text-[20px] font-semibold leading-6 tracking-[-0.01em]">{b.name}</div>
           <div className="flex items-center gap-1.5 text-[13px] leading-4 text-[#6B6B6B]">
-            {b.isMain ? "Chief of Staff · runs the team" : `${b.role} · Bops team`}
+            {b.isMain ? "Chief of Staff · runs the team" : `${b.role} · Oshy Ops team`}
             <BotBrainBadge state={state} bot={b} />
           </div>
         </div>
@@ -240,7 +240,7 @@ function Details({
   const running = state.sessions.filter((s) => s.botId === b.id && live(s)).length;
   const [copied, setCopied] = useState(false);
   const share = async () => {
-    await navigator.clipboard.writeText([`${b.name} (${b.role}, Bops)`, b.phone, b.email].filter(Boolean).join("\n"));
+    await navigator.clipboard.writeText([`${b.name} (${b.role}, Oshy Ops)`, b.phone, b.email].filter(Boolean).join("\n"));
     setCopied(true);
     setTimeout(() => setCopied(false), 1500);
   };
@@ -255,7 +255,7 @@ function Details({
       <div className="flex flex-col items-center gap-0.5">
         <div className="text-[26px] font-bold leading-[30px] tracking-[-0.02em]">{b.name}</div>
         <div className="flex items-center gap-1.5 text-[13px] font-medium leading-4 text-[#3A3A38]">
-          {b.isMain ? "Chief of Staff · runs the team" : `${b.role} · Bops team`}
+          {b.isMain ? "Chief of Staff · runs the team" : `${b.role} · Oshy Ops team`}
           <BotBrainBadge state={state} bot={b} className="bg-white/60 shadow-[0_0_0_1px_#0000000F]" />
         </div>
         {/* Its place on the team chart: who it answers to and how many it may ask, opening the chart at its sheet. */}
@@ -430,7 +430,7 @@ export function ContactActions({ state, bot: b, plan, onOpenChat, size }: { stat
           <path d="M3 2.2h2.6l1 2.6-1.6 1a7 7 0 003 3l1-1.6 2.6 1V11a.9.9 0 01-.9.9A9.6 9.6 0 012.1 3.1.9.9 0 013 2.2z" fill="#0A0A0A" />
         </ActionButton>
         {/* Video calls with bots aren't here yet; meanwhile it books a video call with the Bops team. */}
-        <ActionButton size={size} label="Book a 20 minute video call with the Bops team" onClick={() => window.open(BOOK_A_CALL)}>
+        <ActionButton size={size} label="Book a 20 minute video call with the Oshy Ops team" onClick={() => window.open(BOOK_A_CALL)}>
           <rect x="1.2" y="3.5" width="8" height="7" rx="1.5" fill="#0A0A0A" />
           <path d="M9.6 6.2l3.2-2v5.6L9.6 7.8z" fill="#0A0A0A" />
         </ActionButton>
@@ -531,12 +531,12 @@ export function ComputerChoice({ state, bot: b, className, onUpgrade }: { state:
           <span className="text-[13px] font-semibold leading-4">Computer</span>
           <span className="text-[12px] leading-4 text-[#6B6B6B]">
             {b.isMain
-              ? `Works on ${your(state)} free Bops computer, which ${main.name} has, with ${b.name}'s team`
+              ? `Works on ${your(state)} free Oshy Ops computer, which ${main.name} has, with ${b.name}'s team`
               : shared
                 ? `Works on ${main.name}'s computer, on screens no one else is using`
                 : plan?.plan?.bops
                   ? ownIsBops(plan.plan, b)
-                    ? "Its own Bops computer"
+                    ? "Its own Oshy Ops computer"
                     : "Its own cloud computer, on your Orgo plan"
                   : "Its own cloud computer, a copy of the main bot's"}
           </span>
@@ -1027,7 +1027,7 @@ export function HowIWork({ bot: b, className, shared }: { bot: Bot; className: s
       setText((now) => (now === words ? words.trim() : now));
       setSaved(true);
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }

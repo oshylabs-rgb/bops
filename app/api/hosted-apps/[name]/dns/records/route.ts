@@ -13,7 +13,7 @@ export const dynamic = "force-dynamic";
  * a domain's visitors and mail go, so it's done only from the Bops window (ui-token.ts), as a deploy is.
  */
 export async function POST(request: Request, ctx: { params: Promise<{ name: string }> }) {
-  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "DNS can only be changed in the Bops app." }, { status: 403 }));
+  const unready = notReady() ?? (fromBopsWindow(request) ? null : Response.json({ error: "DNS can only be changed in the Oshy Ops app." }, { status: 403 }));
   if (unready) return unready;
   // Only an @orgo.ai account has apps on the web for now (lib/apps-access.ts).
   if (!appsOpen(getState())) return Response.json({ error: "Not found" }, { status: 404 });

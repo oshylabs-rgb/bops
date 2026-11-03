@@ -82,10 +82,10 @@ export async function createWorkspace(name: string): Promise<CreateResult> {
       bindLater();
     }
   }
-  const mainId = freeBotId("Boppy");
+  const mainId = freeBotId("Oshy");
   const main: Bot = {
     id: mainId,
-    name: "Boppy",
+    name: "Oshy",
     role: "Chief of Staff",
     color: "#0A0A0A",
     isMain: true,
@@ -573,7 +573,7 @@ export async function deletePreview(workspaceId: string): Promise<DeletePreview>
   const free = freeComputerOnDelete(getState().bots, workspaceId);
   const computers = team
     .filter((b) => b.computerId && !sharesComputer(b) && !(free?.kept && b.computerId === free.id))
-    .map((b) => ({ id: b.computerId!, name: free && b.computerId === free.id ? "Your free Bops computer" : `${b.name}'s computer` }));
+    .map((b) => ({ id: b.computerId!, name: free && b.computerId === free.id ? "Your free Oshy Ops computer" : `${b.name}'s computer` }));
   const keys: string[] = [];
   const skills = refsOf(workspaceId, "skill").map((r) => r.name);
   const apps = refsOf(workspaceId, "app").map((r) => r.name);
@@ -605,7 +605,7 @@ export async function deletePreview(workspaceId: string): Promise<DeletePreview>
     }
     for (const c of there.computers) if (!computers.some((x) => x.id === c.id)) computers.push(c);
     // The free computer made in this workspace's project goes with it, whoever else works on it.
-    for (const c of computers) if (free && c.id === free.id) c.name = "Your free Bops computer";
+    for (const c of computers) if (free && c.id === free.id) c.name = "Your free Oshy Ops computer";
     keys.push(...there.keys);
     skills.push(...there.skills);
     apps.push(...there.apps);

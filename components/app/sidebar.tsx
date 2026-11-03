@@ -672,7 +672,7 @@ export function YouMenuView({
             ) : (
               <button role="menuitem" onClick={() => setRestart(true)} className={item}>
                 <RestartIcon />
-                Restart Bops
+                Restart Oshy Ops
               </button>
             ))}
           {user && (
@@ -851,10 +851,10 @@ const NAMES_SYNC_MS = 10 * 60_000;
  * itself at each start, sign-in and names sync.
  */
 export function heldNameNote(reason: string): string {
-  if (reason === "unreachable") return "Orgo keeps the name bops for now: Bops couldn't reach Orgo, and tries again by itself.";
+  if (reason === "unreachable") return "Orgo keeps the name bops for now: Oshy Ops couldn't reach Orgo, and tries again by itself.";
   if (reason === "no_project") return "Orgo gets this name once its Orgo workspace is made, with your first computer.";
   if (reason === "no_free_name") return "Orgo keeps the name bops: your Orgo already has workspaces with this name.";
-  return `Orgo keeps the name bops until every Bops app you use is updated to ${WORKSPACE_APPS_SINCE}.`;
+  return `Orgo keeps the name bops until every Oshy Ops app you use is updated to ${WORKSPACE_APPS_SINCE}.`;
 }
 
 export function WorkspaceSwitcher({
@@ -959,7 +959,7 @@ export function WorkspaceSwitcher({
       }
       close();
     } catch {
-      setProblem("Couldn't reach Bops. Try again.");
+      setProblem("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }
@@ -975,7 +975,7 @@ export function WorkspaceSwitcher({
       if (!res.ok) return setProblem(j.error ?? "Couldn't open it. Try again.");
       close();
     } catch {
-      setProblem("Couldn't reach Bops. Try again.");
+      setProblem("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }
@@ -992,7 +992,7 @@ export function WorkspaceSwitcher({
       const j = (await res.json().catch(() => ({}))) as DeletePreview & { error?: string };
       setDeleting((d) => (d?.id === id ? (res.ok ? { id, preview: j } : { id, error: j.error ?? "Couldn't tell what's in it. Try again." }) : d));
     } catch {
-      setDeleting((d) => (d?.id === id ? { id, error: "Couldn't reach Bops. Try again." } : d));
+      setDeleting((d) => (d?.id === id ? { id, error: "Couldn't reach Oshy Ops. Try again." } : d));
     }
   };
   const confirmDelete = async () => {
@@ -1008,7 +1008,7 @@ export function WorkspaceSwitcher({
       }
       else setDeleting({ id, preview, error: j.error ?? "That didn't work, so nothing was deleted. Try again." });
     } catch {
-      setDeleting({ id, preview, error: "Couldn't reach Bops. Try again." });
+      setDeleting({ id, preview, error: "Couldn't reach Oshy Ops. Try again." });
     }
   };
   const renamed = state.orgoMigration?.renamed ?? [];

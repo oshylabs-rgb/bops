@@ -210,7 +210,7 @@ function connect() {
     tunnel.socket = undefined;
     if (!tunnel.want) return;
     if (replaced || code === 4000) {
-      console.warn("[cloud] another Bops signed in as this user took over the tunnel: this one stays closed until the next sign-in or start");
+      console.warn("[cloud] another Oshy Ops signed in as this user took over the tunnel: this one stays closed until the next sign-in or start");
       tunnel.want = false;
       tunnel.replaced = true;
       return;

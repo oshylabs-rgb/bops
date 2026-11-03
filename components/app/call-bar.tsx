@@ -293,7 +293,7 @@ export function CallBar({
       } catch (e) {
         if (gone) return;
         hush();
-        setError((e as Error).message.includes("Permission") ? "Bops needs microphone access for calls." : (e as Error).message);
+        setError((e as Error).message.includes("Permission") ? "Oshy Ops needs microphone access for calls." : (e as Error).message);
         setPhase("failed");
         cleanup();
       }

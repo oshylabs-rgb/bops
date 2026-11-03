@@ -151,7 +151,7 @@ export async function startWatch(botId: string, display: number, lookFor?: strin
   if (existing) throw new Error(`${bot(existing.botId)?.name ?? "Another bot"} is already watching that screen`);
   if (busy(botId, display)) throw new Error(`That screen is in use right now`);
   const endpoint = screenEndpoint(b, display);
-  if (!endpoint) throw new Error(`Bops can't see ${b.name}'s screens yet`);
+  if (!endpoint) throw new Error(`Oshy Ops can't see ${b.name}'s screens yet`);
   const page = await currentPage(endpoint).catch(() => null);
   if (!page || !/^https?:/.test(page.url)) throw new Error("open the site you want watched on that screen first");
   const { site, lookFor: usual } = siteOf(page.url, page.title);
@@ -190,7 +190,7 @@ export async function startMacWatch(app: string, windowId: number, title: string
   if (!main) throw new Error("there's no main bot to watch it");
   const existing = watches().find((w) => w.mac && w.mac.app === app && (w.mac.windowId === windowId || w.mac.title === title));
   if (existing) return existing;
-  if (!(await findWindow(app, title, windowId))) throw new Error(`Bops can't find that ${app} window`);
+  if (!(await findWindow(app, title, windowId))) throw new Error(`Oshy Ops can't find that ${app} window`);
   const w: Watch = {
     id: id("watch"),
     botId: main.id,
@@ -341,8 +341,8 @@ const noText = (page: WebPage) => page.kind === "html" && !page.lines.length;
 async function noTextWhy(host: string) {
   const { browserAvailable } = await import("./web-render");
   return browserAvailable()
-    ? `${host} shows no text Bops can read, even in a browser (it may need a sign in). Watch it on a computer instead.`
-    : `${host} shows no text Bops can read without a browser (it may need a sign in or JavaScript). Watch it on a computer instead.`;
+    ? `${host} shows no text Oshy Ops can read, even in a browser (it may need a sign in). Watch it on a computer instead.`
+    : `${host} shows no text Oshy Ops can read without a browser (it may need a sign in or JavaScript). Watch it on a computer instead.`;
 }
 
 const patchPage = (watchId: string, patch: Partial<NonNullable<Watch["page"]>>) =>
@@ -379,7 +379,7 @@ export async function startPageWatch(botId: string, a: { url: string; lookFor?: 
   if (noText(page)) throw new Error(await noTextWhy(host));
   const lines = pageLinesOf(page.lines);
   // Signed out, or another account in, meanwhile: no watch is made in their state.
-  if (epoch !== stateEpoch()) throw new Error("Bops was signed out meanwhile.");
+  if (epoch !== stateEpoch()) throw new Error("Oshy Ops was signed out meanwhile.");
   if (pageWatchOf(botId, url)) throw new Error(`${b.name} is already watching that page.`);
   const usual = siteOf(url, page.title);
   const site = a.site?.trim().slice(0, 40) || usual.site;
@@ -649,7 +649,7 @@ export function draftReply(watchId: string) {
   if (drafting) return drafting;
   // A window on the Mac: bots can't write in the Mac's apps for now (lib/server/mac.ts).
   if (w.mac) throw new Error(`Bots can't write in ${w.mac.app} on your Mac for now.`);
-  if (w.page) throw new Error(`${w.site} is a web page Bops reads on its own: there's no screen to reply on.`);
+  if (w.page) throw new Error(`${w.site} is a web page Oshy Ops reads on its own: there's no screen to reply on.`);
   const what = w.alert?.text ?? [w.told ?? []].flat().at(-1) ?? "the newest thing waiting for me";
   patchWatch(watchId, { alert: undefined });
   return startSession({
@@ -970,7 +970,7 @@ export function watchesNote(botIds: string[], withMac: boolean) {
   const state = (w: Watch) =>
     `${w.paused ? ` · paused by ${owner}` : ""}${w.away ? " · paused (not showing right now)" : ""}${w.page?.error ? ` · the last ${w.page.failures && w.page.failures > 1 ? `${w.page.failures} reads` : "read"} failed: ${w.page.error}` : ""}`;
   return [
-    `Watches (screens, Mac windows and web pages Bops keeps an eye on for ${owner}; stop_watch takes the id):`,
+    `Watches (screens, Mac windows and web pages Oshy Ops keeps an eye on for ${owner}; stop_watch takes the id):`,
     ...mine.map((w) => `- ${w.id}: ${what(w)} · looking for ${w.lookFor}${state(w)}`),
   ].join("\n");
 }

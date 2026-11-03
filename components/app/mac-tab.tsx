@@ -56,7 +56,7 @@ export function MacSettings({ state }: { state: AppState }) {
         <div className={section}>
           <div className="flex flex-col gap-0.5">
             <span className={heading}>These mean your Mac</span>
-            <span className={sub}>A task that mentions one of these runs on your Mac. Otherwise Bops decides, and asks you when it can&apos;t tell.</span>
+            <span className={sub}>A task that mentions one of these runs on your Mac. Otherwise Oshy Ops decides, and asks you when it can&apos;t tell.</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {m?.rules.map((r) => (

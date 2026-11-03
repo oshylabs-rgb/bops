@@ -109,7 +109,7 @@ export const CHART_WORDS = {
   cancel: "Cancel",
   giveBot: (p: string) => `Give ${p} a bot`,
   newBotFor: (p: string) => `Make a new bot for ${p}`,
-  olderBops: "One of your Macs runs an older Bops. These rules hold there once it updates.",
+  olderBops: "One of your Macs runs an older Oshy Ops. These rules hold there once it updates.",
   sheetSub: (what: string, lead: string) => `${what} · reports to ${lead}`,
   chiefSub: "Chief of staff · every bot reports to it",
   people: "Team",

@@ -135,7 +135,7 @@ export const applyCloudflare = (ws: string, name: string, id: string, plan: stri
     `${at(name)}/domains/${encodeURIComponent(id)}/cloudflare`,
     { ws, plan, ...(replace ? { replace: true } : {}), ...(site ? { site } : {}) },
     "POST",
-    "It isn't known whether the records went in. Try again in a minute. Bops looks first, so nothing is set twice.",
+    "It isn't known whether the records went in. Try again in a minute. Oshy Ops looks first, so nothing is set twice.",
   );
 export const setAutoRenew = (ws: string, name: string, zone: string, on: boolean, site?: string) =>
   write<{ renewal: AppRenewal | null }>(`${at(name)}/domains`, { ws, zone, autoRenew: on, ...(site ? { site } : {}) }, "PATCH", "Couldn't change auto-renew. Try again.");
@@ -315,7 +315,7 @@ export function LeftOvers({ ws, app, onChanged }: { ws: string; app: HostedApp; 
   return (
     <div data-left-overs className="flex flex-col">
       <span className={HEAD}>Left over on its computer</span>
-      <span className={HINT}>Made by an older Bops or a test. Bops never deploys to these.</span>
+      <span className={HINT}>Made by an older Oshy Ops or a test. Oshy Ops never deploys to these.</span>
       <div className="-mx-2 flex flex-col">
         {list.map((x) => (
           <div key={x.id} data-left-over={x.name} className="flex flex-col gap-1 rounded-lg px-2 py-1">
@@ -841,7 +841,7 @@ export function AddDomain({
             {sendingOwn ? "Connecting…" : "Connect"}
           </button>
         </div>
-        <span className={HINT}>{cf?.zones?.length ? "One in your Cloudflare is set there by Bops. Anywhere else, you set its DNS records where it's kept: they show here once it's connected." : "You set its DNS records where the domain is kept. They show here once it's connected."}</span>
+        <span className={HINT}>{cf?.zones?.length ? "One in your Cloudflare is set there by Oshy Ops. Anywhere else, you set its DNS records where it's kept: they show here once it's connected." : "You set its DNS records where the domain is kept. They show here once it's connected."}</span>
         {using === null && why}
       </form>
     );
@@ -931,7 +931,7 @@ export function AddDomain({
                   />
                 ))}
                 {cf.more && <span className={`${HINT} pb-1`}>Showing your first 200 Cloudflare domains.</span>}
-                <span className={HINT}>Bops sets its records in Cloudflare as DNS only.</span>
+                <span className={HINT}>Oshy Ops sets its records in Cloudflare as DNS only.</span>
               </div>
             )}
           </>
@@ -1113,7 +1113,7 @@ const proxyOnly = (c: CloudflareChange) => c.op === "change" && c.was === "proxi
  * stays), a record Bops didn't set, one it set before for a domain that's gone.
  */
 const cfNote = (c: CloudflareChange) =>
-  c.op === "blocked" ? "In the way" : proxyOnly(c) ? "Turns off Cloudflare's proxy" : c.theirs ? "Not set by Bops" : c.stale && c.op === "remove" ? "Bops set this before" : null;
+  c.op === "blocked" ? "In the way" : proxyOnly(c) ? "Turns off Cloudflare's proxy" : c.theirs ? "Not set by Oshy Ops" : c.stale && c.op === "remove" ? "Oshy Ops set this before" : null;
 
 /** What a change makes of a record: what it was, then what it becomes (a proxied one keeps its value, said in its note). */
 const cfValue = (c: CloudflareChange) => (c.was && c.was !== "proxied" ? `${c.was} → ${c.value}` : c.value);
@@ -1176,8 +1176,8 @@ export function CloudflarePlanBox({
       ? "Everything is set in Cloudflare already."
       : theirs.length
         ? theirs.every(proxyOnly)
-          ? `Bops didn't set ${theirsSaid}. ${theirs.length === 1 ? "It goes" : "They go"} to Orgo already, so only Cloudflare's proxy turns off.`
-          : `Bops didn't set ${theirsSaid}. Replacing means ${plan.domain} stops going where it goes now.`
+          ? `Oshy Ops didn't set ${theirsSaid}. ${theirs.length === 1 ? "It goes" : "They go"} to Orgo already, so only Cloudflare's proxy turns off.`
+          : `Oshy Ops didn't set ${theirsSaid}. Replacing means ${plan.domain} stops going where it goes now.`
         : `Nothing else in ${plan.zone} changes.`;
   const set = () => {
     setBusy("set");

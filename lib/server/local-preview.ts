@@ -107,7 +107,7 @@ function take(f: Forward, sock: net.Socket) {
       sock.resume();
     });
     up.on("error", () => {
-      if (!open) reply(sock, "502 Bad Gateway", `Bops can't reach ${f.app} on its computer right now.`);
+      if (!open) reply(sock, "502 Bad Gateway", `Oshy Ops can't reach ${f.app} on its computer right now.`);
       else sock.destroy();
     });
     sock.once("close", () => up.destroy());

@@ -249,7 +249,7 @@ export function MadeAppTab({ state, appId }: { state: AppState; appId: string })
             <rect x="1.5" y="2" width="9" height="6.5" rx="1" stroke="#3A3A38" strokeWidth="1.2" />
             <path d="M4 10.5h4" stroke="#3A3A38" strokeWidth="1.2" strokeLinecap="round" />
           </svg>
-          Runs in Bops
+          Runs in Oshy Ops
         </span>
         {app.versions.length > 1 && tab("history", "History")}
         {tab("code", "Code")}

@@ -443,13 +443,13 @@ export async function getData(botId: string, endpointId: string, input: unknown,
   if (!b || !dataOn(b)) return "You don't have business data.";
   const e = await endpointOf(endpointId.trim());
   if (!e) return `No endpoint ${endpointId}. Use find_data to get the exact id.`;
-  if (!callable(e)) return `${endpointId} can't be used from Bops yet (it needs an account of its own, or it's a long-running job). Use find_data for another.`;
+  if (!callable(e)) return `${endpointId} can't be used from Oshy Ops yet (it needs an account of its own, or it's a long-running job). Use find_data for another.`;
   const method = e.method?.toUpperCase() === "GET" ? "GET" : "POST";
   const queryKeys = [...Object.keys(e.input?.pathParams ?? {}), ...Object.keys(e.input?.queryParams ?? e.input?.query ?? {})];
   const usd = Number(e.cost?.usd) || 0;
   const run = (max: number) => call(botId, e.id, method, input ?? {}, max, queryKeys).then((a) => readable(a, e.id));
   if (usd <= CAP) return run(CAP);
-  if (usd > MOST) return `${e.id} costs ${price(e)} a call, more than Bops allows. Use find_data for another.`;
+  if (usd > MOST) return `${e.id} costs ${price(e)} a call, more than Oshy Ops allows. Use find_data for another.`;
   const dear = () => run(Math.min(MOST, usd * 1.5 + 0.01));
   if (opts.approved) return dear();
   // The card reads "<bot> wants to use a paid lookup", with which one, what it does, its price and what goes in.

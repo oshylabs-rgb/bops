@@ -33,6 +33,27 @@ jobs:
         run: npx tsc --noEmit -p .
       - name: Build the Windows app
         run: npm run app:build:win
+        env:
+          # Code signing (Azure Artifact Signing): signs only when these are set in the repo's
+          # Settings > Secrets and variables > Actions. Unset, the build is unsigned.
+          AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+          AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+          AZURE_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
+          AZURE_SIGN_ENDPOINT: ${{ vars.AZURE_SIGN_ENDPOINT }}
+          AZURE_SIGN_ACCOUNT: ${{ vars.AZURE_SIGN_ACCOUNT }}
+          AZURE_SIGN_PROFILE: ${{ vars.AZURE_SIGN_PROFILE }}
+          AZURE_SIGN_PUBLISHER: ${{ vars.AZURE_SIGN_PUBLISHER }}
+      - name: Check the signature
+        if: ${{ vars.AZURE_SIGN_ENDPOINT != '' }}
+        shell: pwsh
+        run: |
+          $files = Get-ChildItem dist-desktop -Filter "OshyOps-*-x64.exe"
+          $files += Get-ChildItem dist-desktop/win-unpacked -Filter "Oshy Ops.exe"
+          foreach ($f in $files) {
+            $sig = Get-AuthenticodeSignature $f.FullName
+            Write-Host "$($f.Name): $($sig.Status) $($sig.SignerCertificate.Subject)"
+            if ($sig.Status -ne "Valid") { throw "$($f.Name) isn't validly signed." }
+          }
       - name: Smoke test the bundled server
         shell: pwsh
         run: |

@@ -19,7 +19,7 @@ const no = (status: number, code: string, error: string) => Response.json({ erro
 
 /** Who may: the Bops window, with no shared workspace open. */
 function refused(request: Request) {
-  if (!fromBopsWindow(request)) return no(403, "window", "Only the Bops app can show the original.");
+  if (!fromBopsWindow(request)) return no(403, "window", "Only the Oshy Ops app can show the original.");
   if (sharedOpen()) return no(403, "shared", "Only the workspace's owner can see the original.");
   return null;
 }

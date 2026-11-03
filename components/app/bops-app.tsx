@@ -1710,7 +1710,7 @@ function ReachSettings() {
       : texting
         ? "Text or call your bots, and they reach you back. They know it's you from the numbers listed here."
         : "Email your bots, and they reach you back. They know it's you from the emails listed here.";
-  const unreachable = "Couldn't reach Bops.";
+  const unreachable = "Couldn't reach Oshy Ops.";
   return (
     <div className="flex flex-col gap-2 px-[22px] pt-4">
       <div className="flex flex-col gap-0.5">
@@ -1753,7 +1753,7 @@ function PhoneService() {
           {info.texting === "none" ? " (carriers approve business texting first (A2P 10DLC), about 7 to 10 business days)" : ""}
         </span>
         <span>
-          <span className="text-[#9A9A98]">Calls to the bots&apos; numbers:</span> {info.calls === "agent" ? "on (each number's agent passes every turn to Bops)" : (info.calls ?? "unknown")}
+          <span className="text-[#9A9A98]">Calls to the bots&apos; numbers:</span> {info.calls === "agent" ? "on (each number's agent passes every turn to Oshy Ops)" : (info.calls ?? "unknown")}
         </span>
         {info.workspaces?.map((w) => (
           <span key={w.id}>
@@ -1822,7 +1822,7 @@ function SelfHosting({ state }: { state: AppState }) {
     <div className="mt-5 flex flex-col border-t border-[#F0F0EE] pb-5">
       <div className="flex flex-col gap-0.5 px-[22px] pt-4">
         <span className="text-[15px] font-semibold">Self-hosting</span>
-        <span className="text-[12.5px] leading-[17px] text-[#6B6B6B]">Your own provider accounts, set in .env.local. The hosted Bops runs these for its users.</span>
+        <span className="text-[12.5px] leading-[17px] text-[#6B6B6B]">Your own provider accounts, set in .env.local. The hosted Oshy Ops runs these for its users.</span>
       </div>
 
       <div className="flex flex-col gap-2 px-[22px] pt-4">
@@ -1948,7 +1948,7 @@ function WorkspaceGeneral({ state }: { state: AppState }) {
     if (res?.ok) {
       setNaming(null);
       setError(null);
-    } else setError(j.error ?? "Couldn't reach Bops. Try again.");
+    } else setError(j.error ?? "Couldn't reach Oshy Ops. Try again.");
   };
   return (
     <div className="flex flex-col gap-2 px-[22px] pt-[18px]">
@@ -2190,7 +2190,7 @@ export function Settings({
   else if (pane === "plan")
     body = (
       <>
-        <PaneHead title="Plan and credit" sub="What you pay for Bops, your credit, and your bots' inboxes and numbers." />
+        <PaneHead title="Plan and credit" sub="What you pay for Oshy Ops, your credit, and your bots' inboxes and numbers." />
         <PlanAndCredit state={state} />
       </>
     );
@@ -2218,7 +2218,7 @@ export function Settings({
   else if (pane === "privacy")
     body = (
       <>
-        <PaneHead title="Privacy" sub="What Bops keeps, for how long, and what it shares." />
+        <PaneHead title="Privacy" sub="What Oshy Ops keeps, for how long, and what it shares." />
         {!selfHosted && <UsageData />}
         {/* Where the user's things are kept and for how long: their own, never a shared workspace's owner's. */}
         {!selfHosted && !shared && <YourData />}
@@ -2319,7 +2319,7 @@ function FirstLoad() {
     return () => clearTimeout(t);
   }, []);
   return (
-    <BoppyLoading label="Loading Bops…">
+    <BoppyLoading label="Loading Oshy Ops…">
       {slow && (
         <div className="flex flex-col items-center gap-3">
           <span>This is taking longer than usual.</span>
@@ -2327,7 +2327,7 @@ function FirstLoad() {
             <div className="flex w-[300px] justify-center">
               <RestartButton className="flex items-center gap-1.5 rounded-full bg-[#F2F2F0] px-3.5 py-1.5 text-[13px] font-medium leading-4 text-ink hover:bg-[#EAEAE7]">
                 <RestartIcon />
-                Restart Bops
+                Restart Oshy Ops
               </RestartButton>
             </div>
           )}

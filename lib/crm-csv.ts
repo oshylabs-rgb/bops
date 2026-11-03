@@ -50,12 +50,12 @@ export const CRM_SAY = {
   nameColumn: "Name the column.",
   cut: "Some cells were over 2,000 characters and were cut.",
   empty: "That file is empty.",
-  notCsv: "Bops opens CSV files. In Numbers, Excel or Google Sheets, export a CSV first.",
+  notCsv: "Oshy Ops opens CSV files. In Numbers, Excel or Google Sheets, export a CSV first.",
   cantOpen: "That file can't be opened here.",
   gone: "That file isn't there anymore.",
   changed: "That row changed while you were editing. Showing the latest.",
   badChange: "That change didn't make sense. Showing the latest.",
-  signIn: "Sign in to Bops first.",
+  signIn: "Sign in to Oshy Ops first.",
   noWorkspace: "No such workspace.",
 } as const;
 

@@ -100,8 +100,8 @@ export function WatchSheet({
           <span className="text-[12.5px] leading-[17px] text-[#6B6B6B]">
             {watch
               ? watch.readAt
-                ? `Bops last read it ${when(watch.readAt)}. It reads the page whenever it changes.`
-                : "Bops reads the page whenever it changes."
+                ? `Oshy Ops last read it ${when(watch.readAt)}. It reads the page whenever it changes.`
+                : "Oshy Ops reads the page whenever it changes."
               : `${b.name} keeps this screen on ${site} and gives you a heads-up in chat when something needs you. Other work uses the other screens.`}
           </span>
         </div>

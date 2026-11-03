@@ -23,7 +23,7 @@ export async function submitSignIn(b: Bot, display: number, values: SignInValues
   if (!filled.length) throw new Error("nothing to fill in");
   // Only into the tab the fields were read on, and only while it's still on that site: another window that
   // came to the front meanwhile (or a page that made itself look like it did) never gets what's typed.
-  if (!read.targetId) throw new Error("Bops needs to look at that page again. Try in a few seconds.");
+  if (!read.targetId) throw new Error("Oshy Ops needs to look at that page again. Try in a few seconds.");
   const host = new URL(read.url).hostname;
   const task = read.sessionId ? (session(read.sessionId)?.goal ?? "") : "";
   const next = await onTab(endpoint, read.targetId, async () => {

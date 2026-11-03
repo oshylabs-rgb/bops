@@ -11,7 +11,7 @@ export const dynamic = "force-dynamic";
  * a stuck server.
  */
 export async function POST(request: Request) {
-  if (!fromThisMac(request)) return Response.json({ ok: false, error: "This works in the Bops app on your Mac." }, { status: 403 });
+  if (!fromThisMac(request)) return Response.json({ ok: false, error: "This works in the Oshy Ops app on your Mac." }, { status: 403 });
   const error = await prepareRestart().then(
     () => undefined,
     (e: Error) => e.message,

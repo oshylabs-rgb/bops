@@ -201,7 +201,7 @@ function takeOut(askId: string) {
 }
 
 /** Why an answered request's action wasn't done: that it was read couldn't be saved (readOut). */
-const NOT_READ = "Not done: Bops couldn't save that it read your answer, so it didn't act on it.";
+const NOT_READ = "Not done: Oshy Ops couldn't save that it read your answer, so it didn't act on it.";
 
 /**
  * Take request `askId` out as its reply is read, and wait until that's saved for every Bops of the user's (in Bops

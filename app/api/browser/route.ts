@@ -14,14 +14,14 @@ export const dynamic = "force-dynamic";
  * doing with it (not watching).
  */
 export async function GET(request: Request) {
-  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Bops window." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Oshy Ops window." }, { status: 403 });
   const q = new URL(request.url).searchParams;
   return watchBrowser(q.get("bot") ?? "", q.get("project") ?? "", request.signal, q.get("only") === "activity");
 }
 
 /** `{ bot, project?, act: "take" | "release" | "input", method?, params? }`: as Bops Cloud answers it (202 sent on to the bot's computer). */
 export async function POST(request: Request) {
-  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Bops window." }, { status: 403 });
+  if (!fromBopsWindow(request)) return Response.json({ error: "Only from the Oshy Ops window." }, { status: 403 });
   const body = (await request.json().catch(() => ({}))) as { bot?: unknown; project?: unknown; act?: unknown; method?: unknown; params?: unknown };
   if (typeof body.bot !== "string" || (body.act !== "take" && body.act !== "release" && body.act !== "input"))
     return Response.json({ error: "bot and act (take, release or input) required" }, { status: 400 });

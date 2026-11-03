@@ -267,7 +267,7 @@ export function WorksOnRow({ state, bot: b, readOnly, className = "" }: { state:
       const res = await post("/api/bots", { botId: b.id, site: app ? { app, site } : null }, "PATCH");
       if (!res.ok) setError(((await res.json().catch(() => ({}))) as { error?: string }).error ?? "That didn't save. Try again.");
     } catch {
-      setError("Couldn't reach Bops. Try again.");
+      setError("Couldn't reach Oshy Ops. Try again.");
     } finally {
       setBusy(false);
     }

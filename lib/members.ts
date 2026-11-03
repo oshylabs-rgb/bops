@@ -153,7 +153,7 @@ export const ADMIN_WORDS = {
   toMember: "Make Member",
   toMemberTip: "They keep only the bots you picked for them before.",
   toMemberTipShared: "They keep only the bots picked for them before.",
-  older: "One of your Macs runs an older Bops. Until it updates, it goes by the bots you picked for them.",
+  older: "One of your Macs runs an older Oshy Ops. Until it updates, it goes by the bots you picked for them.",
   inviteRoleNotReady: "Orgo can't change a waiting invite yet. Resend it to change the role.",
 };
 
@@ -189,7 +189,7 @@ export const APPS_TIPS: Record<AccessLevel, string> = {
 export const APPS_WORDS = {
   row: "Your Apps",
   legend: "Your Apps never shows them variables or keys, and only you buy domains.",
-  older: "One of your Macs runs an older Bops. A change made there can hide Your Apps from someone until this Mac is on again.",
+  older: "One of your Macs runs an older Oshy Ops. A change made there can hide Your Apps from someone until this Mac is on again.",
   needsBot: "Give them a bot first. Your Apps comes with one.",
   notYet: "They see your apps once Bops Cloud updates. Until then, nothing changes for them.",
 };
@@ -235,13 +235,13 @@ export const KEYS_WORDS = {
   unchanged: "Orgo couldn't change Keys just now, so it stayed as it was. Try again in a minute.",
   afterJoin: "You can give Keys once they've joined.",
   guest: "Someone who joined with a link can't get Keys.",
-  bopsOnly: "Keys is only for Bops workspaces.",
+  bopsOnly: "Keys is only for Oshy Ops workspaces.",
   owner: "The owner always has Keys.",
   notYet: "They get Keys once Bops Cloud updates. Until then, nothing changes for them.",
 };
 
 export const ACCESS_TIPS: Record<AccessLevel, string> = {
-  none: "Can't see this bot in Bops. On orgo.ai they still see its computer.",
+  none: "Can't see this bot in Oshy Ops. On orgo.ai they still see its computer.",
   read: "Sees everything this bot does, including your chats with it.",
   write: "Can chat with this bot, have it do work, answer what it asks and stop it. Never your logins, keys or Macs.",
 };
@@ -259,10 +259,10 @@ export const WORDS = {
   orgoError: "Orgo couldn't do that just now. Try again in a minute.",
   orgoLoadError: "Orgo couldn't load who has access. Try again in a minute.",
   loadFailed: "Couldn't load who has access.",
-  noKey: "Bops can't use your Orgo sign-in right now. Sign out, then sign in again.",
+  noKey: "Oshy Ops can't use your Orgo sign-in right now. Sign out, then sign in again.",
   rejected: "Orgo didn't accept this Mac's sign-in. Sign out, then sign in again.",
   selfHosted:
-    "On a self-hosted Bops, add people on orgo.ai, in the workspace your bots use. Self-hosted setups can keep your own keys on your bots' computers, so make someone an Admin only if you'd trust them with those keys.",
+    "On a self-hosted Oshy Ops, add people on orgo.ai, in the workspace your bots use. Self-hosted setups can keep your own keys on your bots' computers, so make someone an Admin only if you'd trust them with those keys.",
   noComputers: "Your bots don't have a computer on Orgo yet. Once they do, you can add people to watch it here.",
   planUnavailable: "Couldn't check your plan just now, so adding people is paused. Try again in a minute.",
   planUnavailableShort: "Couldn't check your plan just now. Try again in a minute.",
@@ -275,7 +275,7 @@ export const WORDS = {
   badEmail: "Check the email address.",
   gone: "They don't have access anymore.",
   notOwner: "Orgo says only the owner can do that.",
-  windowOnly: "People can only be added in the Bops app.",
+  windowOnly: "People can only be added in the Oshy Ops app.",
   fullAccessOff: "Admin is off while your bots' computers hold keys from this Mac.",
   fullAccessOffTip: "Off while your bots' computers hold keys from this Mac.",
   fullAccessNotYet: "Admin starts once Bops Cloud updates. Until then, people join as Members.",
@@ -283,7 +283,7 @@ export const WORDS = {
   keysOffAnyone: "Anyone you add can still read those keys there through Orgo's agent, so add only people you'd trust with them.",
   keysHeld: "Your bots' computers hold keys from this Mac. Anyone you add can read them there through Orgo's agent, so add only people you'd trust with them.",
   copiedPassword: "A computer password they copied keeps working until it's changed.",
-  appUnreachable: "Couldn't reach Bops. Try again.",
+  appUnreachable: "Couldn't reach Oshy Ops. Try again.",
   whatToSend: "Say who to add, and what they can do.",
   sharedOpen: "A workspace shared with you is open. Open one of your own to choose which bots people see.",
   alreadyIn: (email: string) => `${email} already has access.`,

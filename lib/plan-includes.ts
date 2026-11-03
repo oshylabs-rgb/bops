@@ -65,7 +65,7 @@ export function usageCard(p: { fromHourlyCents?: number; hourlyCents?: number; n
     price: "$0",
     per: "/month",
     computers: {
-      title: "Your own Bops computer",
+      title: "Your own Oshy Ops computer",
       detail: one ? "4 cores, 16 GB RAM, 80 GB, multi-screen. It sleeps when nothing's using it." : "Medium or Large, 80 GB, multi-screen. It sleeps when nothing's using it.",
     },
     lines: [
@@ -152,7 +152,7 @@ const backOn = (resetsAt: number) => new Date(resetsAt).toLocaleDateString("en-U
 
 /** Free's computer has used its hours (this month's, when Orgo counts by the month), and when they're back. */
 export const freeHoursOutLine = (t: FreeHours) =>
-  `Your Bops computer has used its ${hoursOf(t.limitSeconds)} hours${byTheMonth(t.resetsAt) ? " this month" : ""}. It's back ${backOn(t.resetsAt)}, or upgrade to Pro to keep it on.`;
+  `Your Oshy Ops computer has used its ${hoursOf(t.limitSeconds)} hours${byTheMonth(t.resetsAt) ? " this month" : ""}. It's back ${backOn(t.resetsAt)}, or upgrade to Pro to keep it on.`;
 
 /**
  * Free's computer time in the account sheet's words: `amount` the figure ("2 of 10 hours used", rounded
@@ -168,7 +168,7 @@ export function freeHoursWords(t: FreeHours): { note: string; amount: string; la
     note:
       t.usedSeconds >= t.limitSeconds
         ? freeHoursOutLine(t)
-        : `${monthly ? `Free includes ${limit} hours a month on your Bops computer. It ${sleeps}` : `Your Bops computer ${sleeps}`} Your hours start over ${backOn(t.resetsAt)}.`,
+        : `${monthly ? `Free includes ${limit} hours a month on your Oshy Ops computer. It ${sleeps}` : `Your Oshy Ops computer ${sleeps}`} Your hours start over ${backOn(t.resetsAt)}.`,
     amount: `${hoursOf(Math.floor(Math.min(t.usedSeconds, t.limitSeconds) / 360) * 360)} of ${limit} hours used`,
     label: monthly ? "Computer time this month" : "Computer time",
   };
@@ -187,7 +187,7 @@ export const upgradeLabel = (upgrade: "plan" | "max") => (upgrade === "plan" ? "
 
 /** Billing by use's limits on numbers and emails: nothing to upgrade to, so no button. */
 const USAGE_NUMBERS_FULL = `You have ${BOPS_USAGE.phoneNumbers} phone numbers, the most one account can have for now.`;
-const USAGE_EMAIL = "Bops includes 1 email, for your main bot.";
+const USAGE_EMAIL = "Oshy Ops includes 1 email, for your main bot.";
 
 /**
  * Whether `bot` may have one more phone number, with `held` numbers on the account now (the main
@@ -227,8 +227,8 @@ export function emailShort(tier: RoomTier, held: number, bot: { isPlanBot: boole
 export function computerShort(tier: BopsTier, held: number, more = 1): PlanRoomShort | null {
   const limit = BOPS_TIERS[tier].computers;
   if (held + more <= limit) return null;
-  if (tier === "max_bops") return { text: `Max includes up to ${MAX.computers} Bops computers, and you have ${MAX.computers}.`, upgrade: null };
-  return { text: `${BOPS_TIERS[tier].name} includes ${limit} Bops computer. Max includes up to ${MAX.computers}.`, upgrade: "max" };
+  if (tier === "max_bops") return { text: `Max includes up to ${MAX.computers} Oshy Ops computers, and you have ${MAX.computers}.`, upgrade: null };
+  return { text: `${BOPS_TIERS[tier].name} includes ${limit} Oshy Ops computer. Max includes up to ${MAX.computers}.`, upgrade: "max" };
 }
 
 /* ---------------- People ---------------- */
