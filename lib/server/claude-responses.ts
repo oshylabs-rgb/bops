@@ -109,7 +109,7 @@ const KEEP_ON_DISK_MS = 7 * 24 * 60 * 60_000;
 const keptDir = () => process.env.BOPS_CLAUDE_RESPONSES_DIR || join(process.cwd(), ".data", "claude-responses");
 const keptFile = (id: string) => join(keptDir(), createHash("sha256").update(id).digest("hex").slice(0, 40) + ".json");
 
-function keep(id: string, messages: BetaMessageParam[]) {
+export function keep(id: string, messages: BetaMessageParam[]) {
   kept.set(id, { messages, at: Date.now() });
   while (kept.size > KEEP_IN_MEMORY) kept.delete(kept.keys().next().value!);
   try {
@@ -131,7 +131,7 @@ function prune() {
   }
 }
 
-function recall(id: string): BetaMessageParam[] | null {
+export function recall(id: string): BetaMessageParam[] | null {
   const m = kept.get(id);
   if (m) return m.messages;
   try {
@@ -417,21 +417,47 @@ function pushReply(conversation: BetaMessageParam[], content: BetaContentBlock[]
 }
 
 /**
- * The client chat, memory, summaries and judgments call: OpenAI's `responses` API in shape, run on Claude when
- * there's an Anthropic key (see the top of this file), else on OpenAI (openai-client.ts) as before.
+ * Which engine answers a call that starts a conversation: BOPS_CHAT_ENGINE ("plan", "api" or "openai"), else
+ * (in the app) the user's Claude plan through Claude Code when it's here and signed in (free beyond the plan),
+ * else Claude's API with an Anthropic key, else OpenAI as before.
+ */
+export type Engine = "plan" | "api" | "openai";
+export async function chatEngine(): Promise<{ engine: Engine; key?: string }> {
+  const want = process.env.BOPS_CHAT_ENGINE?.trim().toLowerCase();
+  if (want === "openai" || process.env.BOPS_CHAT_PROVIDER?.trim().toLowerCase() === "openai") return { engine: "openai" };
+  // On its own only in the app (desktop/main.cjs sets BOPS_CHAT_PLAN_AUTO for the server it starts): a test or a
+  // script run elsewhere never reaches a plan just because Claude Code is signed in there.
+  if (want === "plan" || (want !== "api" && process.env.BOPS_CHAT_PLAN_AUTO === "1")) {
+    const { planStatus } = await import("./claude-code-chat");
+    if ((await planStatus()).signedIn) return { engine: "plan" };
+    if (want === "plan") return { engine: "openai" };
+  }
+  const key = await anthropicKey();
+  return key ? { engine: "api", key } : { engine: "openai" };
+}
+
+/**
+ * The client chat, memory, summaries and judgments call: OpenAI's `responses` API in shape, run on the engine
+ * chatEngine picks. A call that carries on a conversation (previous_response_id) goes back to the engine that
+ * started it.
  */
 export function chatClient(): Pick<OpenAI, "responses"> {
   let oa: Promise<OpenAI> | undefined;
   const openai = () => (oa ??= import("./openai-client").then((m) => m.openaiClient()));
+  const plan = async (params: Params, opts?: Options) => (await import("./claude-code-chat")).claudeCodeCreate(params, opts);
   const create = async (params: Params, opts?: Options) => {
     const prev = params.previous_response_id ?? "";
-    const key = prev && !prev.startsWith(ID_PREFIX) ? null : await anthropicKey();
+    if (prev.startsWith("resp_cc_")) return plan(params, opts);
     if (prev.startsWith(ID_PREFIX)) {
-      if (!key) throw new Error("Chat runs on Claude, but there's no Anthropic key now. Add ANTHROPIC_API_KEY in the Vault.");
+      const key = await anthropicKey();
+      if (!key) throw new Error("This chat runs on Claude's API, but there's no Anthropic key now. Add one under Settings → AI plans.");
       return claudeCreate(key, params, opts);
     }
-    if (!key) return (await openai()).responses.create(params, opts as never);
-    return claudeCreate(key, params, opts);
+    if (prev) return (await openai()).responses.create(params, opts as never);
+    const { engine, key } = await chatEngine();
+    if (engine === "plan") return plan(params, opts);
+    if (engine === "api") return claudeCreate(key!, params, opts);
+    return (await openai()).responses.create(params, opts as never);
   };
   return { responses: { create } } as unknown as Pick<OpenAI, "responses">;
 }

@@ -163,21 +163,63 @@ function useVaultKeys() {
 type ClaudeKeyStatus = { on: boolean; from: "settings" | "computer" | "vault" | null; model: string; lightModel: string; forcedOpenAI: boolean };
 const KEY_FROM: Record<"settings" | "computer" | "vault", string> = { settings: "the settings file", computer: "this computer", vault: "your Vault" };
 
+type PlanState = { installed: boolean; signedIn: boolean; plan?: string; email?: string; engine: "plan" | "api" | "openai" };
+
 export function ClaudeChat() {
   const [status, setStatus] = useState<ClaudeKeyStatus | null>(null);
+  const [plan, setPlan] = useState<PlanState | null>(null);
   const [key, setKey] = useState("");
-  const [busy, setBusy] = useState(false);
+  const [busy, setBusy] = useState<null | "install" | "sign-in" | "key">(null);
   const [error, setError] = useState<string | null>(null);
+  const [waiting, setWaiting] = useState(false);
+  const readPlan = (fresh = false) =>
+    fetch(`/api/claude-plan${fresh ? "?fresh=1" : ""}`, { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => (j ? setPlan(j as PlanState) : null))
+      .catch(() => null);
   useEffect(() => {
     let live = true;
+    void readPlan();
     void fetch("/api/claude-key", { cache: "no-store" })
       .then((r) => (r.ok ? r.json() : null))
       .then((j) => live && setStatus(j as ClaudeKeyStatus | null))
       .catch(() => live && setError("Couldn't read whether chat runs on Claude."));
     return () => void (live = false);
   }, []);
+  // After the sign in window opens: look every 4 seconds, for up to 3 minutes, until Claude Code says it's signed in.
+  useEffect(() => {
+    if (!waiting) return;
+    const started = Date.now();
+    const t = setInterval(() => {
+      if (Date.now() - started > 180_000) return void setWaiting(false);
+      void fetch("/api/claude-plan?fresh=1", { cache: "no-store" })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((j) => {
+          if (!j) return;
+          setPlan(j as PlanState);
+          if ((j as PlanState).signedIn) setWaiting(false);
+        })
+        .catch(() => {});
+    }, 4000);
+    return () => clearInterval(t);
+  }, [waiting]);
+  const planAction = async (action: "install" | "sign-in") => {
+    setBusy(action);
+    setError(null);
+    try {
+      const res = await post("/api/claude-plan", { action });
+      const j = (await res.json().catch(() => ({}))) as PlanState & { error?: string };
+      if (j && typeof j.installed === "boolean") setPlan(j);
+      if (!res.ok) setError(undash(j.error ?? "That didn't work. Try again."));
+      else if (action === "sign-in") setWaiting(true);
+    } catch {
+      setError("Couldn't reach Oshy Ops. Try again.");
+    } finally {
+      setBusy(null);
+    }
+  };
   const send = async (method: "POST" | "DELETE") => {
-    setBusy(true);
+    setBusy("key");
     setError(null);
     try {
       const res = await post("/api/claude-key", method === "POST" ? { key } : {}, method);
@@ -186,50 +228,85 @@ export function ClaudeChat() {
       else {
         setStatus(j);
         setKey("");
+        void readPlan();
       }
     } catch {
       setError("Couldn't reach Oshy Ops. Try again.");
     } finally {
-      setBusy(false);
+      setBusy(null);
     }
   };
-  const line = !status
+  const planName = plan?.plan ? plan.plan.charAt(0).toUpperCase() + plan.plan.slice(1) : null;
+  const line = !plan
     ? "Checking…"
-    : status.forcedOpenAI
-      ? "Chat runs on OpenAI: the settings file says BOPS_CHAT_PROVIDER=openai."
-      : status.on && status.from
-        ? `Chat runs on Claude (${status.model}; light work on ${status.lightModel}), with the key from ${KEY_FROM[status.from]}.`
-        : "Chat runs on OpenAI, on your credit. Add an Anthropic API key to run it on Claude.";
+    : plan.engine === "plan"
+      ? `Chat runs on your Claude${planName ? ` ${planName}` : ""} plan through Claude Code${plan.email ? ` (${plan.email})` : ""}. Nothing extra to pay.`
+      : plan.engine === "api" && status?.from
+        ? `Chat runs on Claude with an API key from ${KEY_FROM[status.from]} (paid per use).`
+        : status?.forcedOpenAI
+          ? "Chat runs on OpenAI: the settings file says so."
+          : "Chat runs on OpenAI for now. Use your Claude plan instead: install Claude Code and sign in.";
+  const btn = "rounded-full px-3.5 py-2 text-[13px] font-semibold leading-4 disabled:opacity-50";
   return (
     <div className="flex flex-col gap-2 px-[22px] pt-4">
       <div className="flex flex-col gap-0.5">
         <span className="text-[13px] font-semibold">Chat on Claude</span>
-        <span className="text-[12px] leading-4 text-[#6B6B6B]">{line}</span>
+        <span className="text-[12px] leading-4 text-[#6B6B6B]" aria-live="polite">
+          {line}
+        </span>
       </div>
-      <div className="flex flex-col gap-2 rounded-[14px] p-3.5 shadow-[0_0_0_1px_#E6E6E3]">
-        <label htmlFor="claude-key" className="text-[12px] leading-4 text-[#6B6B6B]">
-          Anthropic API key. Make one at console.anthropic.com under API keys, in a workspace with a spending limit. It&apos;s kept on this computer only, encrypted, and never shown again.
-        </label>
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            id="claude-key"
-            type="password"
-            autoComplete="off"
-            spellCheck={false}
-            value={key}
-            onChange={(e) => setKey(e.target.value)}
-            placeholder={status?.from === "computer" ? "Saved. Paste a new key to replace it" : "sk-ant-…"}
-            className="min-w-0 flex-1 rounded-[10px] px-3 py-2 text-[13px] leading-4 shadow-[0_0_0_1px_#E6E6E3] outline-none focus:shadow-[0_0_0_2px_#0A0A0A]"
-          />
-          <button disabled={busy || !key.trim()} onClick={() => void send("POST")} className="rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold leading-4 text-white hover:bg-[#2A2A28] disabled:opacity-50">
-            {busy ? "Saving…" : "Save"}
-          </button>
-          {status?.from === "computer" && (
-            <button disabled={busy} onClick={() => void send("DELETE")} className="rounded-full px-3.5 py-2 text-[13px] font-semibold leading-4 text-[#B42318] shadow-[0_0_0_1px_#E6E6E3] hover:bg-[#FBEAE9] disabled:opacity-50">
-              Remove
-            </button>
-          )}
+      <div className="flex flex-col gap-3 rounded-[14px] p-3.5 shadow-[0_0_0_1px_#E6E6E3]">
+        <div className="flex flex-col gap-2">
+          <span className="text-[12px] leading-4 text-[#6B6B6B]">
+            Your Claude plan (Pro or Max) runs chat through Claude Code, Anthropic&apos;s own app, on this computer. Install it once, then sign in with your Claude account in the browser window that opens.
+          </span>
+          <div className="flex flex-wrap items-center gap-2">
+            {plan && !plan.installed && (
+              <button disabled={!!busy} onClick={() => void planAction("install")} className={`${btn} bg-ink text-white hover:bg-[#2A2A28]`}>
+                {busy === "install" ? "Installing… (a minute or two)" : "Install Claude Code"}
+              </button>
+            )}
+            {plan?.installed && !plan.signedIn && (
+              <button disabled={!!busy || waiting} onClick={() => void planAction("sign-in")} className={`${btn} bg-ink text-white hover:bg-[#2A2A28]`}>
+                {waiting ? "Waiting for you to sign in…" : "Sign in with your Claude plan"}
+              </button>
+            )}
+            {plan?.installed && plan.signedIn && <span className="text-[12.5px] font-medium leading-4 text-[#0F7B3F]">Signed in{planName ? ` · ${planName}` : ""}</span>}
+            {plan?.installed && (
+              <button disabled={!!busy} onClick={() => void readPlan(true)} className={`${btn} text-ink shadow-[0_0_0_1px_#E6E6E3] hover:bg-[#F2F2F0]`}>
+                Check again
+              </button>
+            )}
+          </div>
         </div>
+        <details className="group">
+          <summary className="cursor-pointer text-[12px] leading-4 text-[#6B6B6B] hover:text-ink">Advanced: an Anthropic API key instead (paid per use)</summary>
+          <div className="mt-2 flex flex-col gap-2">
+            <label htmlFor="claude-key" className="text-[12px] leading-4 text-[#6B6B6B]">
+              Used only when your Claude plan isn&apos;t signed in here. Kept on this computer only, encrypted, never shown again.
+            </label>
+            <div className="flex flex-wrap items-center gap-2">
+              <input
+                id="claude-key"
+                type="password"
+                autoComplete="off"
+                spellCheck={false}
+                value={key}
+                onChange={(e) => setKey(e.target.value)}
+                placeholder={status?.from === "computer" ? "Saved. Paste a new key to replace it" : "sk-ant-…"}
+                className="min-w-0 flex-1 rounded-[10px] px-3 py-2 text-[13px] leading-4 shadow-[0_0_0_1px_#E6E6E3] outline-none focus:shadow-[0_0_0_2px_#0A0A0A]"
+              />
+              <button disabled={!!busy || !key.trim()} onClick={() => void send("POST")} className={`${btn} bg-ink text-white hover:bg-[#2A2A28]`}>
+                {busy === "key" ? "Saving…" : "Save"}
+              </button>
+              {status?.from === "computer" && (
+                <button disabled={!!busy} onClick={() => void send("DELETE")} className={`${btn} text-[#B42318] shadow-[0_0_0_1px_#E6E6E3] hover:bg-[#FBEAE9]`}>
+                  Remove
+                </button>
+              )}
+            </div>
+          </div>
+        </details>
         {error && (
           <span role="alert" className="text-[12px] leading-4 text-[#B42318]">
             {error}

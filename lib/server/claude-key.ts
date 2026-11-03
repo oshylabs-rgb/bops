@@ -20,3 +20,18 @@ export async function setClaudeKey(key: string) {
 }
 
 export const deleteClaudeKey = () => deleteSecret(ACCOUNT);
+
+/**
+ * A long-lived Claude Code token (`claude setup-token`, on the user's Claude plan), for Claude Code to run with
+ * where it isn't signed in itself (claude-code-chat.ts). Optional: Claude Code's own sign-in works without it.
+ */
+const TOKEN_ACCOUNT = "oshyops:claude-code-token";
+export const isClaudeToken = (t: string) => /^sk-ant-oat[A-Za-z0-9_-]{20,}$/.test(t.trim());
+export async function getClaudeToken(): Promise<string | null> {
+  return process.env.CLAUDE_CODE_OAUTH_TOKEN?.trim() || (await getSecret(TOKEN_ACCOUNT).catch(() => null))?.trim() || null;
+}
+export async function setClaudeToken(token: string) {
+  if (!isClaudeToken(token)) throw new Error("That doesn't look like a Claude Code token (it starts with sk-ant-oat).");
+  await setSecret(TOKEN_ACCOUNT, token.trim());
+}
+export const deleteClaudeToken = () => deleteSecret(TOKEN_ACCOUNT);

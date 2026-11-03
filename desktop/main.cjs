@@ -388,6 +388,8 @@ async function spawnServer() {
           PORT: String(PORT),
           BOPS_UI_TOKEN: windowToken(),
           BOPS_RENDER_SOCKET: renderSocket(),
+          // Chat on the user's Claude plan through Claude Code when it's signed in (lib/server/claude-responses.ts chatEngine).
+          BOPS_CHAT_PLAN_AUTO: "1",
           // Only this Mac can reach the bundled server, unless its settings say BOPS_LISTEN_ALL=1:
           // bot computers' app calls and phone webhooks reach Bops over the tailnet, so they need
           // it (proxy.ts then lets other addresses reach only those paths).
@@ -399,7 +401,7 @@ async function spawnServer() {
       })
     : spawn(WIN ? "npx.cmd" : "npx", ["next", "dev", "--port", String(PORT)], {
         cwd: REPO,
-        env: { ...process.env, PATH, BOPS_UI_TOKEN: windowToken(), BOPS_RENDER_SOCKET: renderSocket() },
+        env: { ...process.env, PATH, BOPS_UI_TOKEN: windowToken(), BOPS_RENDER_SOCKET: renderSocket(), BOPS_CHAT_PLAN_AUTO: "1" },
         stdio: "ignore",
         detached: true,
         windowsHide: true,
