@@ -14,7 +14,7 @@ import { DATA_TOOL_NAMES, DATA_TOOLS, dataNote, runDataTool } from "./treg";
 import { CRM_TOOL_NAMES, CRM_TOOLS, crmNote, crmNowLine, runCrmTool } from "./crm";
 import { ORBIT_OWNER_ONLY, ORBIT_TOOL_NAMES, ORBIT_TOOLS, orbitNote, orbitNowLine, runOrbitTool } from "./orbit";
 import type { ResponseInputItem } from "openai/resources/responses/responses";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { contactLine, createBot, namesTheUser } from "./bots";
 import { creditsOut, noteOutOfCredit, outOfCreditWords } from "./cloud";
 import { noOwnComputer } from "./plan";
@@ -65,7 +65,7 @@ import { LIGHT, logRoute, routeChat, speedFor, tierParam, withSpeed, type Config
  * chat run is one turn of its bot with no one waiting on it (backgroundTurn).
  */
 
-const client = openaiClient();
+const client = chatClient();
 const CHAT_MODEL = setting("gpt-6.1-sol", "BOPS_CHAT_MODEL", "BOPS_SAM_MODEL");
 /** Texting should feel instant: chat turns mostly reply and route, so they think lightly. Threads think harder. */
 const CHAT_REASONING = { effort: setting("low", "BOPS_CHAT_EFFORT") as "low" | "medium" | "high" };

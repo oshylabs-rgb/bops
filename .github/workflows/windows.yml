@@ -25,6 +25,8 @@ jobs:
       - run: npm ci
       - name: Windows vault test (DPAPI)
         run: node --conditions=react-server scripts/test-win-vault.mjs
+      - name: Chat on Claude test (fake Claude, no key)
+        run: node --conditions=react-server scripts/test-claude-chat.mjs
       - name: Route types
         run: npx next typegen
       - name: Typecheck

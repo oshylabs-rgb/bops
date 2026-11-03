@@ -3,7 +3,7 @@ import { compactBlocked, heard } from "@/lib/chat-summary";
 import { redact } from "@/lib/secret-patterns";
 import type { ChatSummary, MemberSaid, Message } from "@/lib/types";
 import { creditsOut, noteOutOfCredit, outOfCreditWords } from "./cloud";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { LIGHT, speedFor, tierParam, withSpeed } from "./routing";
 import { addMessage, bot, chat, getState, ownerName, sameState, session, stateEpoch, update } from "./store";
 import { recordTokens, usageTags } from "./usage";
@@ -24,7 +24,7 @@ import { recordTokens, usageTags } from "./usage";
  * Always on for now: a bot's own switch would only skip foldChat, and drop what history reads of it.
  */
 
-const client = openaiClient();
+const client = chatClient();
 
 /**
  * The bot reads at least a chat's last HISTORY messages, from a start that moves HISTORY_STEP messages at

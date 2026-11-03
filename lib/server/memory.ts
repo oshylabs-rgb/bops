@@ -2,7 +2,7 @@ import "server-only";
 import { LIGHT } from "./routing";
 import { setting } from "./models";
 import { Honcho, Session as HonchoSessionRef, type Peer, type Session as HonchoSession } from "@honcho-ai/sdk";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { MAIN_WORKSPACE, workspaceOf, type MemoryGroup } from "@/lib/types";
@@ -428,7 +428,7 @@ const WORTH_REMEMBERING = (said: string): Question => ({
   criteria: { true: "States a lasting fact worth remembering", false: "A request, question, small talk, or passing state" },
 });
 
-const openai = openaiClient();
+const openai = chatClient();
 
 /** Asking to keep something from someone ("don't tell Sam yet", "keep this between us"): caught at once, before Jev. */
 const SECRET = /\b(don'?t|do not|never) (tell|share|mention|let)\b|\bkeep (it|this|that)? ?(from|between|private|quiet)|\bbetween (us|you and me)\b|\b(this is|it's|that's) private\b|\boff the record\b/i;

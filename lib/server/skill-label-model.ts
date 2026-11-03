@@ -1,7 +1,7 @@
 import "server-only";
 import { SKILL_LABEL_MAX, UNSORTED } from "@/lib/skill-labels";
 import { noteOutOfCredit, creditsOut } from "./cloud";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { LIGHT } from "./routing";
 import { setting } from "./models";
 import { recordTokens, usageTags } from "./usage";
@@ -16,7 +16,7 @@ import { recordTokens, usageTags } from "./usage";
  */
 
 const MODEL = () => setting(LIGHT(), "BOPS_SKILL_LABEL_MODEL");
-const openai = openaiClient();
+const openai = chatClient();
 
 const SCHEMA = {
   type: "object",

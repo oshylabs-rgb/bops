@@ -20,6 +20,7 @@
     "two-person:stop": "node scripts/dev-two-person.mjs stop"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^1.4.0",
     "@base-ui/react": "^1.8.0",
     "@composio/core": "^0.22.0",
     "@composio/openai": "^0.13.0",

@@ -8,7 +8,7 @@ import { CATEGORIES, CATEGORY_IDS, categoriesOpen, type CategoryId, type ItemSou
 import { creditsOut, noteOutOfCredit } from "./cloud";
 import { MAIN_WORKSPACE } from "@/lib/types";
 import { bankOf, bankOwner, bindingOf, cardOf, dream as askToDream, existingFacts, factSource, factsByIds, memoryOn, privateLines, purgeMemory, saidSince, scanFacts, sessionWorkspace, type FactRow } from "./memory";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { orbitChanged, orbitOpened, orbitPreview } from "./orbit-sync";
 import { loopHere, onPostgres } from "./persist";
 import { getState, ownerName, sameState, stateEpoch, update, userDir } from "./store";
@@ -191,7 +191,7 @@ const g = globalThis as unknown as { bopsCategories?: Live };
 const live: Live = (g.bopsCategories ??= { spaces: new Map() });
 live.dropped ??= new Set();
 
-const openai = openaiClient();
+const openai = chatClient();
 
 /** On this Mac (not a hosted server), signed in, with memory set up, for an account they're open to. */
 export const categoriesOn = () => !onPostgres() && userDir() !== null && memoryOn() && categoriesOpen(getState());

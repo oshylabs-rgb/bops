@@ -1,5 +1,5 @@
 import "server-only";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { SOL } from "./routing";
 import { recordTokens, usageTags } from "./usage";
 
@@ -11,7 +11,7 @@ import { recordTokens, usageTags } from "./usage";
  */
 export async function judgeAnswer(task: string, rubric: string, answer: string): Promise<{ pass: boolean; why: string }> {
   if (!answer.trim()) return { pass: false, why: "No answer." };
-  const client = openaiClient();
+  const client = chatClient();
   const res = await client.responses.create(
     {
       model: SOL(),

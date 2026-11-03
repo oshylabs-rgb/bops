@@ -1,7 +1,7 @@
 import "server-only";
 import { APIError, OpenAIError } from "openai";
 import { live, workspaceOf, type Bot, type Message, type Session, type SkillRef } from "@/lib/types";
-import { openaiClient } from "./openai-client";
+import { chatClient } from "./claude-responses";
 import { billedByUse, noteOutOfCredit, shortOfCredit } from "./cloud";
 import { bot, chat, getState, ownerName, stateEpoch } from "./store";
 import { recordTokens, usageTags } from "./usage";
@@ -16,7 +16,7 @@ import { createSkill, findRef, publishSkill, refsOf, SkillError, skillDetail, up
  * Skills replaced procedures, a bot's own list (state.procedures, moved into skills by adoptProcedures).
  */
 
-const openai = openaiClient();
+const openai = chatClient();
 /** The chat's model: drafting a skill is one short structured answer, at low effort. */
 const model = () => process.env.BOPS_CHAT_MODEL ?? process.env.BOPS_SAM_MODEL ?? "gpt-6.1-sol";
 
