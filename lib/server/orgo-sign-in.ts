@@ -120,7 +120,7 @@ export async function startSignIn(provider?: SignInProvider): Promise<SignInStar
     verification_uri_complete?: string;
     expires_in_seconds?: number;
     interval_seconds?: number;
-  }>("/api/cli/auth/start", { client: "Oshy Ops", hostname: await macName() });
+  }>("/api/cli/auth/start", { client: "Bops", hostname: await macName() });
   if (!r.device_code || !r.user_code) throw new SignInError("orgo", "/api/cli/auth/start: no code in the answer");
   const fallback = `${orgoOrigin()}/cli/approve?code=${encodeURIComponent(r.user_code)}`;
   const pending: Pending = {

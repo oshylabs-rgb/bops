@@ -136,7 +136,7 @@ const READY_MS = 60_000;
  */
 export function authorOf(botId: string | undefined): string {
   const b = botId ? bot(botId) : undefined;
-  const name = (b?.name ?? "Oshy Ops").replace(/[\u0000-\u001f\u007f;]+/g, " ").trim() || "Oshy Ops";
+  const name = (b?.name ?? "Bops").replace(/[\u0000-\u001f\u007f;]+/g, " ").trim() || "Bops";
   return `${b?.id ?? "bops"}; ${name}`;
 }
 

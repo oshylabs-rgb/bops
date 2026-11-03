@@ -9,7 +9,7 @@ Until code signing is set up (below), Windows SmartScreen warns the first time: 
 
 ## Set it up
 1. Open Oshy Ops and sign in with Orgo (or Google / email).
-2. **Chat on Claude:** add your Anthropic API key in the Vault as **Anthropic** (`ANTHROPIC_API_KEY`). Chat picks it up within 5 minutes. Or put `ANTHROPIC_API_KEY=` in `%APPDATA%\Oshy Ops\.env.local` and restart.
+2. **Chat on Claude:** Settings → AI plans → **Chat on Claude**: paste your Anthropic API key and press Save. It's kept on this PC only (encrypted for your Windows account) and chat runs on Claude from the next message. Alternatives: `ANTHROPIC_API_KEY=` in `%APPDATA%\Oshy Ops\.env.local`, or the Vault's **Anthropic** key (used once the Vault's list has been opened).
 3. **Tasks on Claude Code:** Settings → Brain → add Claude Code on your Claude plan, sign in to Claude on the bot's screen, and pick that brain in the bot's profile.
 4. **GitHub for the bots:** add a fine-grained GitHub token to the Vault as the GitHub key, limited to the repos they need.
 
@@ -52,6 +52,10 @@ Then the build checks the signature and fails if it isn't valid. Without them it
 - Mac-only features: Full access to your Mac's apps, "Route through this Mac" (the relay agent is a private Orgo binary), the screen-share permission prompts.
 - Cloud routines' runner bundle. Routines run in the app while it's open.
 - Bops Cloud (Orgo's server) keeps its name where the app mentions it: it's Orgo's service.
+
+## Tests
+- `scripts/test-claude-chat.mjs` (chat on Claude, against a fake Claude) and `scripts/test-win-vault.mjs` (Windows only) run on every Windows build.
+- Bops' own tests check its wording exactly ("Bops", "Boppy"). `scripts/test-renamed.sh` runs them against a copy with the names swapped back, so a test that fails there is a real change, not the rename. Checked 3 Nov 2026: the same results as upstream on all 130 (one timing test, `test-web` readPage, is flaky in this container on upstream too).
 
 ## Build it yourself (on Windows)
 ```

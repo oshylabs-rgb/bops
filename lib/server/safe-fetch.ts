@@ -279,7 +279,7 @@ function pinned(addresses: LookupAddress[]): LookupFunction {
   };
 }
 
-const userAgent = () => `Oshy Ops/${appVersion() ?? "dev"} (+https://bops.bot)`;
+const userAgent = () => `Bops/${appVersion() ?? "dev"} (+https://bops.bot)`;
 
 /** One GET to one checked address; resolves with the response once its headers are in. */
 function get(u: URL, addresses: LookupAddress[], signal: AbortSignal): Promise<http.IncomingMessage> {

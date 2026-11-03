@@ -76,7 +76,7 @@ const run = (file: string, args: string[]) =>
 export async function download(dir: string) {
   const target = `${process.arch === "arm64" ? "aarch64" : "x86_64"}-apple-darwin`;
   const name = `codex-${target}.tar.gz`;
-  const res = await fetch(RELEASE, { headers: { Accept: "application/vnd.github+json", "User-Agent": "Oshy Ops" }, signal: AbortSignal.timeout(30_000) });
+  const res = await fetch(RELEASE, { headers: { Accept: "application/vnd.github+json", "User-Agent": "Bops" }, signal: AbortSignal.timeout(30_000) });
   if (!res.ok) throw new Error(`GitHub answered ${res.status} for the latest Codex release.`);
   const release = (await res.json()) as { tag_name?: string; assets?: { name: string; browser_download_url: string; digest?: string | null }[] };
   const asset = release.assets?.find((a) => a.name === name);
@@ -87,7 +87,7 @@ export async function download(dir: string) {
   const work = await mkdtemp(join(dir, ".install-"));
   try {
     const file = join(work, name);
-    const got = await fetch(asset.browser_download_url, { headers: { "User-Agent": "Oshy Ops" }, signal: AbortSignal.timeout(20 * 60_000) });
+    const got = await fetch(asset.browser_download_url, { headers: { "User-Agent": "Bops" }, signal: AbortSignal.timeout(20 * 60_000) });
     if (!got.ok || !got.body) throw new Error(`The Codex download failed (${got.status}).`);
     const hash = createHash("sha256");
     const tap = new Transform({ transform: (chunk: Buffer, _, done) => (hash.update(chunk), done(null, chunk)) });

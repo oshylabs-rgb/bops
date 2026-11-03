@@ -519,7 +519,7 @@ export const nameTaken = (e: unknown) =>
   e instanceof OrgoError && e.status === 400 && (e.code === "WORKSPACE_NAME_TAKEN" || /already exists|name.*taken/i.test(e.said ?? e.message));
 
 /** The names tried for a Bops workspace whose name the user's Orgo already has: "orgo (Bops)", then "orgo (Bops 2)", and so on. */
-export const collisionNames = (name: string) => [name, `${name} (Oshy Ops)`, ...Array.from({ length: 8 }, (_, i) => `${name} (Oshy Ops ${i + 2})`)];
+export const collisionNames = (name: string) => [name, `${name} (Bops)`, ...Array.from({ length: 8 }, (_, i) => `${name} (Bops ${i + 2})`)];
 
 /**
  * A Bops workspace's own Orgo project, made now when it has none: marked product "bops" and tied to it,

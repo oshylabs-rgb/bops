@@ -31,9 +31,9 @@ import type OpenAI from "openai";
  * judgments: OpenAI's "luna", "mini" and "nano" models) Claude Haiku 5.5 (BOPS_CLAUDE_LIGHT_MODEL). Opus
  * and Sonnet calls ask for Anthropic's server-side fallback when Claude declines a request for safety.
  *
- * The key: ANTHROPIC_API_KEY in the settings (.env.local), else the ANTHROPIC_API_KEY key in the Vault.
- * With neither, or BOPS_CHAT_PROVIDER=openai, calls go to OpenAI as before. A previous_response_id from
- * one provider always goes back to that provider.
+ * The key: anthropicKeyFrom below (the settings file, this computer's secure store, or the Vault). With none,
+ * or BOPS_CHAT_PROVIDER=openai, calls go to OpenAI as before. A previous_response_id from one provider always
+ * goes back to that provider.
  */
 
 type Params = OpenAI.Responses.ResponseCreateParamsNonStreaming;
@@ -57,28 +57,47 @@ export function claudeModelFor(model: string | undefined | null): string {
 
 /* ---------------- The key ---------------- */
 
-let vaultKey: { value: string; at: number } | undefined;
-const VAULT_TTL = 5 * 60_000;
+let found: { value: string; from: KeyFrom; at: number } | undefined;
+const KEY_TTL = 5 * 60_000;
+export type KeyFrom = "settings" | "computer" | "vault" | null;
 
-/** The Anthropic key chat runs on, or null: chat stays on OpenAI. */
-export async function anthropicKey(): Promise<string | null> {
-  if (process.env.BOPS_CHAT_PROVIDER?.trim().toLowerCase() === "openai") return null;
+/** The Vault's key names as keys.ts last read them, without asking Orgo: chat never adds a call to the Vault. */
+const vaultHasIt = () =>
+  !!(globalThis as unknown as { bopsKeys?: { keys?: { name?: string }[] } }).bopsKeys?.keys?.some((k) => k.name === "ANTHROPIC_API_KEY");
+
+/**
+ * The Anthropic key chat runs on, and where it came from: ANTHROPIC_API_KEY in the settings file, else the one
+ * saved on this computer in Settings → AI plans (claude-key.ts), else the Vault's ANTHROPIC_API_KEY when the
+ * Vault's list (already read for Keys) has one. None, or BOPS_CHAT_PROVIDER=openai: chat stays on OpenAI.
+ */
+export async function anthropicKeyFrom(): Promise<{ key: string | null; from: KeyFrom }> {
+  if (process.env.BOPS_CHAT_PROVIDER?.trim().toLowerCase() === "openai") return { key: null, from: null };
   const env = process.env.ANTHROPIC_API_KEY?.trim();
-  if (env) return env;
-  if (vaultKey && Date.now() - vaultKey.at < VAULT_TTL) return vaultKey.value || null;
+  if (env) return { key: env, from: "settings" };
+  if (found && Date.now() - found.at < KEY_TTL) return { key: found.value || null, from: found.value ? found.from : null };
   let value = "";
+  let from: KeyFrom = null;
   try {
-    // The same way a Claude Code brain on a key gets it (brains.ts): the app's own use, never a bot's tools or a
-    // model's. Loaded only when needed: brains.ts brings the whole server with it.
-    const { revealNamedKey } = await import("./brains");
-    value = (await revealNamedKey("ANTHROPIC_API_KEY", "")).trim();
+    // Loaded only when needed: the stores bring the whole server with them.
+    const { getClaudeKey } = await import("./claude-key");
+    value = (await getClaudeKey()) ?? "";
+    if (value) from = "computer";
+    else if (vaultHasIt()) {
+      // The same way a Claude Code brain on a key gets it (brains.ts): the app's own use, never a bot's tools or a model's.
+      const { revealNamedKey } = await import("./brains");
+      value = (await revealNamedKey("ANTHROPIC_API_KEY", "")).trim();
+      if (value) from = "vault";
+    }
   } catch {}
-  vaultKey = { value, at: Date.now() };
-  return value || null;
+  found = { value, from, at: Date.now() };
+  return { key: value || null, from };
 }
 
-/** Forget the Vault's key, so the next call reads it again (after the user adds or changes it). */
-export const forgetAnthropicKey = () => void (vaultKey = undefined);
+/** The Anthropic key chat runs on, or null: chat stays on OpenAI. */
+export const anthropicKey = async () => (await anthropicKeyFrom()).key;
+
+/** Forget the key found, so the next call looks again (after the user adds, changes or removes it). */
+export const forgetAnthropicKey = () => void (found = undefined);
 
 /* ---------------- Conversations kept for previous_response_id ---------------- */
 

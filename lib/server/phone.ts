@@ -768,7 +768,7 @@ const START_WORDS = new Set(["start", "unstop"]);
 const HELP_WORDS = new Set(["help", "info"]);
 /** The HELP reply carriers require; the contact is BOPS_SUPPORT_EMAIL. */
 const helpText = () =>
-  `Bops by Orgo: texts from your Oshy Ops assistants. Msg & data rates may apply. Reply STOP to opt out.${process.env.BOPS_SUPPORT_EMAIL ? ` Help: ${process.env.BOPS_SUPPORT_EMAIL}` : ""}`;
+  `Bops by Orgo: texts from your Bops assistants. Msg & data rates may apply. Reply STOP to opt out.${process.env.BOPS_SUPPORT_EMAIL ? ` Help: ${process.env.BOPS_SUPPORT_EMAIL}` : ""}`;
 
 /** STOP: no more texts to that number (one confirmation); START: texts again; HELP: what this is and how to stop. */
 async function keywordIn(b: Bot, from: string, keyword: string) {

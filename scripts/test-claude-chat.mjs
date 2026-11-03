@@ -32,7 +32,7 @@ process.env.ANTHROPIC_BASE_URL = `http://127.0.0.1:${server.address().port}`;
 process.env.ANTHROPIC_API_KEY = "sk-ant-test-made-up";
 process.env.BOPS_CLAUDE_RESPONSES_DIR = dir;
 delete process.env.BOPS_CHAT_PROVIDER;
-const { chatClient, anthropicKey, claudeModelFor } = await import("../lib/server/claude-responses.ts");
+const { chatClient, anthropicKey, anthropicKeyFrom, forgetAnthropicKey, claudeModelFor } = await import("../lib/server/claude-responses.ts");
 const client = chatClient();
 const last = () => seen.at(-1);
 
@@ -129,6 +129,16 @@ try {
   assert.equal(await anthropicKey(), null);
   delete process.env.BOPS_CHAT_PROVIDER;
   assert.equal(await anthropicKey(), "sk-ant-test-made-up");
+
+  // 9b. No key in the settings, none saved on this computer, and the Vault's list not read: no key, and no call
+  // anywhere to look for one (chat never adds a call to Orgo's Vault).
+  delete process.env.ANTHROPIC_API_KEY;
+  forgetAnthropicKey();
+  const calls = seen.length;
+  assert.deepEqual(await anthropicKeyFrom(), { key: null, from: null });
+  assert.equal(seen.length, calls);
+  process.env.ANTHROPIC_API_KEY = "sk-ant-test-made-up";
+  forgetAnthropicKey();
 
   // 10. A kept conversation that's gone says so instead of starting over silently.
   await assert.rejects(client.responses.create({ model: "gpt-6.1-sol", previous_response_id: "resp_claude_missing", input: "x" }), /no longer kept/);

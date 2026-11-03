@@ -159,6 +159,87 @@ function useVaultKeys() {
  * Add a brain. `onShowScreen`: a sign-in started, show that bot's screen (Settings closes); `onOpenVault`:
  * to add a key there.
  */
+/** Chat on Claude (app/api/claude-key): whether chat runs on Claude, where its key is from, and a field to save one on this computer. */
+type ClaudeKeyStatus = { on: boolean; from: "settings" | "computer" | "vault" | null; model: string; lightModel: string; forcedOpenAI: boolean };
+const KEY_FROM: Record<"settings" | "computer" | "vault", string> = { settings: "the settings file", computer: "this computer", vault: "your Vault" };
+
+export function ClaudeChat() {
+  const [status, setStatus] = useState<ClaudeKeyStatus | null>(null);
+  const [key, setKey] = useState("");
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  useEffect(() => {
+    let live = true;
+    void fetch("/api/claude-key", { cache: "no-store" })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((j) => live && setStatus(j as ClaudeKeyStatus | null))
+      .catch(() => live && setError("Couldn't read whether chat runs on Claude."));
+    return () => void (live = false);
+  }, []);
+  const send = async (method: "POST" | "DELETE") => {
+    setBusy(true);
+    setError(null);
+    try {
+      const res = await post("/api/claude-key", method === "POST" ? { key } : {}, method);
+      const j = (await res.json().catch(() => ({}))) as ClaudeKeyStatus & { error?: string };
+      if (!res.ok) setError(undash(j.error ?? "That didn't change. Try again."));
+      else {
+        setStatus(j);
+        setKey("");
+      }
+    } catch {
+      setError("Couldn't reach Oshy Ops. Try again.");
+    } finally {
+      setBusy(false);
+    }
+  };
+  const line = !status
+    ? "Checking…"
+    : status.forcedOpenAI
+      ? "Chat runs on OpenAI: the settings file says BOPS_CHAT_PROVIDER=openai."
+      : status.on && status.from
+        ? `Chat runs on Claude (${status.model}; light work on ${status.lightModel}), with the key from ${KEY_FROM[status.from]}.`
+        : "Chat runs on OpenAI, on your credit. Add an Anthropic API key to run it on Claude.";
+  return (
+    <div className="flex flex-col gap-2 px-[22px] pt-4">
+      <div className="flex flex-col gap-0.5">
+        <span className="text-[13px] font-semibold">Chat on Claude</span>
+        <span className="text-[12px] leading-4 text-[#6B6B6B]">{line}</span>
+      </div>
+      <div className="flex flex-col gap-2 rounded-[14px] p-3.5 shadow-[0_0_0_1px_#E6E6E3]">
+        <label htmlFor="claude-key" className="text-[12px] leading-4 text-[#6B6B6B]">
+          Anthropic API key. Make one at console.anthropic.com under API keys, in a workspace with a spending limit. It&apos;s kept on this computer only, encrypted, and never shown again.
+        </label>
+        <div className="flex flex-wrap items-center gap-2">
+          <input
+            id="claude-key"
+            type="password"
+            autoComplete="off"
+            spellCheck={false}
+            value={key}
+            onChange={(e) => setKey(e.target.value)}
+            placeholder={status?.from === "computer" ? "Saved. Paste a new key to replace it" : "sk-ant-…"}
+            className="min-w-0 flex-1 rounded-[10px] px-3 py-2 text-[13px] leading-4 shadow-[0_0_0_1px_#E6E6E3] outline-none focus:shadow-[0_0_0_2px_#0A0A0A]"
+          />
+          <button disabled={busy || !key.trim()} onClick={() => void send("POST")} className="rounded-full bg-ink px-3.5 py-2 text-[13px] font-semibold leading-4 text-white hover:bg-[#2A2A28] disabled:opacity-50">
+            {busy ? "Saving…" : "Save"}
+          </button>
+          {status?.from === "computer" && (
+            <button disabled={busy} onClick={() => void send("DELETE")} className="rounded-full px-3.5 py-2 text-[13px] font-semibold leading-4 text-[#B42318] shadow-[0_0_0_1px_#E6E6E3] hover:bg-[#FBEAE9] disabled:opacity-50">
+              Remove
+            </button>
+          )}
+        </div>
+        {error && (
+          <span role="alert" className="text-[12px] leading-4 text-[#B42318]">
+            {error}
+          </span>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export function BrainSettings({ state, onShowScreen, onOpenVault }: { state: AppState; onShowScreen: Shown; onOpenVault: () => void }) {
   const team = teamOf(state);
   const brains = (state.brains ?? []).filter((x) => x.workspaceId === currentWorkspace(state));
@@ -188,7 +269,7 @@ export function BrainSettings({ state, onShowScreen, onOpenVault }: { state: App
             <span className="min-w-0 truncate text-[12px] leading-4 text-[#9A9A98]">Credit</span>
           </div>
           <div className="flex flex-wrap items-center gap-1">
-            {agent.length ? agent.map((b) => <BotChip key={b.id} bot={b} tip={`${b.name} works with Bops agent`} />) : <span className="text-[12px] leading-4 text-[#9A9A98]">No bot uses it</span>}
+            {agent.length ? agent.map((b) => <BotChip key={b.id} bot={b} tip={`${b.name} works with Oshy Ops agent`} />) : <span className="text-[12px] leading-4 text-[#9A9A98]">No bot uses it</span>}
           </div>
         </div>
         {brains.map((x) => (

@@ -14,7 +14,7 @@ import { BotPanel, type Section } from "./bot-panel";
 import { BotBrowser, WatchChip } from "./bot-browser";
 import { ChatEdge, gridColumns, storedChatWidth } from "./chat-edge";
 import { BotComputers } from "./bot-computers";
-import { BrainSettings } from "./brains";
+import { BrainSettings, ClaudeChat } from "./brains";
 import { CallBar } from "./call-bar";
 import { ChatView, forgetSheet, ThreadSheet, ToPicker } from "./chat-view";
 import { ComputerPeek, ComputerView, defaultDisplay } from "./computer";
@@ -2212,6 +2212,7 @@ export function Settings({
     body = (
       <>
         <PaneHead title="AI plans" sub="Your own AI plans and agent sign ins, for your bots' work." />
+        <ClaudeChat />
         <BrainSettings state={state} onShowScreen={onShowScreen} onOpenVault={onOpenVault} />
       </>
     );
